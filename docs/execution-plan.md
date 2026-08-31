@@ -23,9 +23,10 @@ report they would run this week.
 **Gate:** At least five practitioners recognize the proposed bundle; at least two can provide a
 sanitized/local-only example; at least one identifies an owner and recurring budget/workflow.
 
-## Stage 1 — Safety Evidence Packet contract
+## Stage 1 — Safety Memory Packet contract
 
-Create only after Stage 0 evidence:
+A bounded synthetic contract slice may be built to test authority and portability without claiming
+workflow validation. Promotion beyond that slice still requires the Stage 0 evidence gate:
 
 - versioned JSON schema;
 - source/artifact/revision identities;

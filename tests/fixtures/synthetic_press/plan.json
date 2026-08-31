@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "plan_id": "plan-synthetic-maintenance-001",
+  "asset_model": "SYN-PRESS-7",
+  "asset_serial": "SP7-0042",
+  "declared_evidence_keys": ["energy_isolation.main_disconnect"]
+}

@@ -3,6 +3,9 @@
 This repository is private during product discovery. Contributions must preserve the evidence and
 no-control boundaries in `AGENTS.md`.
 
+Unless explicitly designated otherwise, contributions intentionally submitted for inclusion are
+accepted under the repository's Apache License 2.0 terms.
+
 Before proposing runtime behavior:
 
 1. Link the user or authority problem to direct evidence.

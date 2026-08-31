@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "fixture_id": "synthetic-press-7-v1",
+  "license": "CC0-1.0",
+  "files": [
+    {"path": "sources/manual-rev2.txt", "sha256": "4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d"},
+    {"path": "sources/site-procedure-rev1.txt", "sha256": "036de1fe4fec743b2b93ec7eaca33bfedceda484431273a87948a1f637d0fe18"},
+    {"path": "sources/site-procedure-rev2.txt", "sha256": "22034aeb45716c53c77cac5fe426e1808580c307632bce4f0f972c69abb4f972"}
+  ],
+  "note": "Synthetic source bytes only. Expected audit findings are intentionally not stored here."
+}

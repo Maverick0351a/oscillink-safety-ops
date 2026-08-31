@@ -1,0 +1,6 @@
+Synthetic Site Procedure Rev 2
+Asset model: SYN-PRESS-7
+Revision: rev-2 (current)
+Authorized role: synthetic-maintenance-reviewer
+Energy classification: electrical and stored hydraulic energy
+Verification: zero-energy state requires authorized review

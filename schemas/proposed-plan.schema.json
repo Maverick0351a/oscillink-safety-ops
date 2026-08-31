@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "asset_model": {
+      "title": "Asset Model",
+      "type": "string"
+    },
+    "asset_serial": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Asset Serial"
+    },
+    "declared_evidence_keys": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Declared Evidence Keys",
+      "type": "array"
+    },
+    "plan_id": {
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "plan_id",
+    "asset_model",
+    "declared_evidence_keys"
+  ],
+  "title": "ProposedPlan",
+  "type": "object"
+}

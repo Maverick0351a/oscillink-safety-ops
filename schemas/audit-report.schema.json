@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "AuditFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "citation": {
+          "$ref": "#/$defs/Citation"
+        },
+        "constraint_id": {
+          "title": "Constraint Id",
+          "type": "string"
+        },
+        "evidence_key": {
+          "title": "Evidence Key",
+          "type": "string"
+        },
+        "related_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Ids",
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/FindingState"
+        }
+      },
+      "required": [
+        "constraint_id",
+        "evidence_key",
+        "state",
+        "citation"
+      ],
+      "title": "AuditFinding",
+      "type": "object"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "quote_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Quote Sha256",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "locator",
+        "quote_sha256"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "FindingState": {
+      "enum": [
+        "matched",
+        "missing_evidence",
+        "asset_mismatch",
+        "revision_stale",
+        "source_conflict",
+        "ambiguous",
+        "unreadable",
+        "unsupported_interpretation",
+        "requires_authorized_review"
+      ],
+      "title": "FindingState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/AuditFinding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "packet_id": {
+      "title": "Packet Id",
+      "type": "string"
+    },
+    "plan_id": {
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "policy_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "packet_id",
+    "plan_id",
+    "policy_sha256",
+    "findings"
+  ],
+  "title": "AuditReport",
+  "type": "object"
+}

@@ -1,0 +1,5 @@
+SYNTHETIC SITE PROCEDURE — REVISION 1
+Permissive test fixture; not operational guidance.
+This fixture revision is superseded by site-procedure-rev2, which is intentionally absent.
+Reviewed evidence statement S1: the responsible role is [UNREADABLE IN SOURCE].
+Reviewed evidence statement S2: the recorded energy classification conflicts with manual rev2.

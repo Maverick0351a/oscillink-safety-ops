@@ -1,0 +1,5 @@
+SYNTHETIC MANUAL — SYN-PRESS-7 — REVISION 2
+Permissive test fixture; not operational guidance.
+Asset applicability: model SYN-PRESS-7, serial SP7-0042.
+Reviewed evidence statement M1: record evidence for the main energy-isolating device.
+Reviewed evidence statement M2: record evidence that the zero-energy verification occurred.

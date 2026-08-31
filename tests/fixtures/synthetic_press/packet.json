@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "packet_id": "packet-synthetic-press-7",
+  "policy_sha256": "sha256:de448ff659d8a1df8c976bb8f73c90122239f5a64093da6b7b7a3339b39f387b",
+  "sources": [
+    {
+      "source_id": "manual-rev2",
+      "source_class": "manufacturer_manual",
+      "revision": "rev-2",
+      "sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d",
+      "effective_at": "2026-08-31T00:00:00Z",
+      "applicability": {"asset_model": "SYN-PRESS-7", "asset_serial": "SP7-0042"}
+    },
+    {
+      "source_id": "site-procedure-rev1",
+      "source_class": "site_procedure",
+      "revision": "rev-1",
+      "sha256": "sha256:036de1fe4fec743b2b93ec7eaca33bfedceda484431273a87948a1f637d0fe18",
+      "effective_at": "2026-08-01T00:00:00Z",
+      "applicability": {"site": "synthetic-site", "asset_model": "SYN-PRESS-7"},
+      "superseded_by": "site-procedure-rev2"
+    },
+    {
+      "source_id": "site-procedure-rev2",
+      "source_class": "site_procedure",
+      "revision": "rev-2",
+      "sha256": "sha256:22034aeb45716c53c77cac5fe426e1808580c307632bce4f0f972c69abb4f972",
+      "effective_at": "2026-08-31T00:00:00Z",
+      "applicability": {"site": "synthetic-site", "asset_model": "SYN-PRESS-7"}
+    }
+  ],
+  "constraints": [
+    {
+      "constraint_id": "m1-isolation-evidence",
+      "kind": "required_evidence",
+      "evidence_key": "energy_isolation.main_disconnect",
+      "statement": "Evidence of the main energy-isolating device is required.",
+      "citation": {"source_id": "manual-rev2", "locator": "line:4", "quote_sha256": "sha256:1f40ddb645e5555cf68ff80f5c6265c8752e0fcd4b2a1b601dae2f13b53d2b69"},
+      "applicability": {"asset_model": "SYN-PRESS-7", "asset_serial": "SP7-0042"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"}
+    },
+    {
+      "constraint_id": "m2-verification-evidence",
+      "kind": "required_evidence",
+      "evidence_key": "verification.zero_energy",
+      "statement": "Evidence of zero-energy verification is required.",
+      "citation": {"source_id": "manual-rev2", "locator": "line:5", "quote_sha256": "sha256:e989a126e75221ffcd662e614c399db84703445eec4fcec1243a19c5fa641071"},
+      "applicability": {"asset_model": "SYN-PRESS-7", "asset_serial": "SP7-0042"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"}
+    },
+    {
+      "constraint_id": "s1-unreadable-role",
+      "kind": "required_evidence",
+      "evidence_key": "role.identity",
+      "statement": "The responsible role field is unreadable.",
+      "citation": {"source_id": "site-procedure-rev1", "locator": "line:4", "quote_sha256": "sha256:ffd1f22a5c50f70cc71f4300bdf7108fa659cf36cab3a74fa0d6703e98ba6397"},
+      "applicability": {"site": "synthetic-site", "asset_model": "SYN-PRESS-7"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"},
+      "content_state": "unreadable"
+    },
+    {
+      "constraint_id": "s2-source-conflict",
+      "kind": "required_evidence",
+      "evidence_key": "energy.classification",
+      "statement": "The reviewed sources contain an unresolved energy-classification conflict.",
+      "citation": {"source_id": "site-procedure-rev1", "locator": "line:5", "quote_sha256": "sha256:9efdfa860f6b05341d1e3235cde85996ab4dce08c1622cd0b0f392686ef800c7"},
+      "applicability": {"site": "synthetic-site", "asset_model": "SYN-PRESS-7"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"},
+      "conflict_with": ["m1-isolation-evidence"]
+    },
+    {
+      "constraint_id": "s3-stale-revision",
+      "kind": "required_evidence",
+      "evidence_key": "procedure.current_revision",
+      "statement": "The cited site-procedure revision has a recorded successor.",
+      "citation": {"source_id": "site-procedure-rev1", "locator": "line:3", "quote_sha256": "sha256:036de1fe4fec743b2b93ec7eaca33bfedceda484431273a87948a1f637d0fe18"},
+      "applicability": {"site": "synthetic-site", "asset_model": "SYN-PRESS-7"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"}
+    },
+    {
+      "constraint_id": "x1-asset-mismatch",
+      "kind": "required_evidence",
+      "evidence_key": "asset.identity",
+      "statement": "This reviewed constraint applies to a different model.",
+      "citation": {"source_id": "manual-rev2", "locator": "line:3", "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d"},
+      "applicability": {"asset_model": "SYN-PRESS-8"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"}
+    },
+    {
+      "constraint_id": "x2-unsupported-interpretation",
+      "kind": "required_evidence",
+      "evidence_key": "inferred.limit",
+      "statement": "The normalization is recorded as unsupported.",
+      "citation": {"source_id": "manual-rev2", "locator": "line:2", "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d"},
+      "applicability": {"asset_model": "SYN-PRESS-7"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"},
+      "interpretation_supported": false
+    },
+    {
+      "constraint_id": "x3-review-gate",
+      "kind": "review_gate",
+      "evidence_key": "authorization.review",
+      "statement": "An authorized reviewer must resolve this evidence gate.",
+      "citation": {"source_id": "manual-rev2", "locator": "line:2", "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d"},
+      "applicability": {"asset_model": "SYN-PRESS-7"},
+      "approval": {"state": "approved", "reviewer_id": "reviewer:synthetic-authorized-role", "reviewed_at": "2026-08-31T00:00:00Z"}
+    }
+  ]
+}

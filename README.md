@@ -6,8 +6,9 @@ Oscillink Safety Ops connects workplace regulations, company SOPs, equipment man
 labels, risk assessments, work orders, and physical-intelligence plans or datasets through cited,
 human-reviewed evidence.
 
-> **Status:** Private product discovery. This repository does not yet contain operational software
-> and makes no safety, compliance, certification, or deployment claim.
+> **Status:** Private product discovery with an experimental, read-only contract slice. The code
+> performs deterministic offline evidence comparison only and makes no safety, compliance,
+> certification, authorization, or deployment claim.
 
 ## First candidate outcome
 
@@ -20,8 +21,25 @@ reviewable **Safety Evidence Packet** showing:
 - stale procedures, source conflicts, missing evidence, ambiguity, and unreadable fields; and
 - human review, correction, retraction, and supersession lineage.
 
-The first workflow candidate is a read-only **LOTO/SOP Safety Evidence Reconciler**. It will be
-implemented only after practitioner validation and a contract-first fixture.
+The first workflow candidate is a read-only **LOTO/SOP Safety Evidence Reconciler**. A synthetic,
+provider-neutral contract slice now tests its authority boundary; the workflow itself remains
+unapproved pending practitioner validation.
+
+## Local contract demonstration
+
+Python 3.11 and `uv` are required. The fixture contains only project-authored synthetic bytes.
+
+```bash
+uv sync --dev
+uv run safety-ops audit \
+  --packet tests/fixtures/synthetic_press/packet.json \
+  --plan tests/fixtures/synthetic_press/plan.json \
+  --manifest tests/fixtures/synthetic_press/manifest.json
+uv run python scripts/verify.py
+```
+
+The CLI reads immutable local inputs and emits cited evidence findings as JSON. It has no network,
+robotics, permit, control, or physical-action integration.
 
 ## Authority boundary
 
@@ -109,13 +127,15 @@ See:
 
 - [Product and authority boundary](docs/product-boundary.md)
 - [Initial evidence map](docs/research/initial-evidence-map.md)
+- [2026-08-31 platform, market, and integration decision](docs/research/platform-market-integration-2026-08-31.md)
 - [Execution plan](docs/execution-plan.md)
 - [Practitioner interview protocol](docs/interview-protocol.md)
 - [Security policy](SECURITY.md)
 
 ## Current gate
 
-Before runtime implementation:
+The synthetic contract slice may support technical risk reduction, but no workflow, adapter, or
+commercial claim is approved before practitioner validation:
 
 1. Interview at least five relevant practitioners.
 2. Confirm the proposed document/task bundle reflects real work.
@@ -128,6 +148,8 @@ or stop this direction.
 
 ## Licensing
 
-This private discovery repository does not yet grant a public software license. A reviewed
-open-source/commercial boundary and third-party document-rights policy are required before public
-release.
+Oscillink Safety Ops is licensed under the [Apache License 2.0](LICENSE). The license applies to
+the project-authored source and documentation in this repository unless a file states otherwise.
+It does not grant rights to third-party standards, manuals, customer procedures, datasets, model
+weights, services, or trademarks. A reviewed commercial boundary and document-rights policy are
+still required before public release.
