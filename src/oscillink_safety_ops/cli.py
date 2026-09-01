@@ -17,10 +17,17 @@ from .io import (
     load_operational_review_ledger,
     load_packet,
     load_plan,
+    load_regulatory_section_snapshot,
+    load_regulatory_source_evidence,
     sha256_file,
     store_operational_export,
     verify_envelope_payload,
     verify_manifest,
+)
+from .regulatory_artifacts import (
+    compare_cfr_section_snapshots,
+    extract_regulatory_section_xml,
+    verify_regulatory_artifact,
 )
 
 
@@ -60,6 +67,27 @@ def _parser() -> argparse.ArgumentParser:
     impact.add_argument("--batch-id", required=True)
     impact.add_argument("--source-revision", required=True)
     impact.add_argument("--adapter-config-sha256", required=True)
+    regulatory = subparsers.add_parser("regulatory", help="work with regulatory source evidence")
+    regulatory_actions = regulatory.add_subparsers(dest="regulatory_action", required=True)
+    artifact_verify = regulatory_actions.add_parser(
+        "artifact-verify", help="verify exact bounded regulatory artifact bytes"
+    )
+    artifact_verify.add_argument("--evidence", type=Path, required=True)
+    artifact_verify.add_argument("--artifact-ref", required=True)
+    artifact_verify.add_argument("--root", type=Path, required=True)
+    section_extract = regulatory_actions.add_parser(
+        "section-extract", help="extract one source-bound regulatory XML section candidate"
+    )
+    section_extract.add_argument("--evidence", type=Path, required=True)
+    section_extract.add_argument("--artifact-ref", required=True)
+    section_extract.add_argument("--root", type=Path, required=True)
+    section_extract.add_argument("--citation", required=True)
+    section_extract.add_argument("--parser-config-sha256", required=True)
+    section_compare = regulatory_actions.add_parser(
+        "section-compare", help="compare annual-CFR and dated-eCFR section candidates"
+    )
+    section_compare.add_argument("--annual", type=Path, required=True)
+    section_compare.add_argument("--ecfr", type=Path, required=True)
     return parser
 
 
@@ -103,6 +131,32 @@ def run(argv: Sequence[str] | None = None) -> int:
             "stored_artifact": asdict(artifact),
         }
         print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if args.subcommand == "regulatory":
+        if args.regulatory_action == "section-compare":
+            comparison = compare_cfr_section_snapshots(
+                load_regulatory_section_snapshot(args.annual),
+                load_regulatory_section_snapshot(args.ecfr),
+            )
+            print(comparison.model_dump_json(indent=2))
+            return 0
+        evidence = load_regulatory_source_evidence(args.evidence)
+        if args.regulatory_action == "section-extract":
+            snapshot = extract_regulatory_section_xml(
+                evidence,
+                artifact_ref=args.artifact_ref,
+                root=args.root,
+                citation=args.citation,
+                parser_config_sha256=args.parser_config_sha256,
+            )
+            print(snapshot.model_dump_json(indent=2))
+            return 0
+        verification = verify_regulatory_artifact(
+            evidence,
+            artifact_ref=args.artifact_ref,
+            root=args.root,
+        )
+        print(verification.model_dump_json(indent=2))
         return 0
     packet = load_packet(args.packet)
     verified_hashes = verify_manifest(args.manifest)

@@ -151,8 +151,46 @@ the exact artifact, locator, parser identity/configuration, and normalized-text 
 
 An exact annual-CFR/eCFR normalized-text hash match emits reconciliation evidence only. Any text
 difference remains `unresolved_difference` until separately cited Federal Register and LSA evidence
-explains it. This slice does not yet parse amendment instructions, effective dates, corrections, or
-LSA coverage, and it cannot verify, interpret, approve, or operationalize a requirement.
+is collected and accepted by an externally authorized source reviewer. The normalized Federal
+Register candidate preserves document number, publication/effective date, action, exact affected
+citations, raw instruction text and hash, source locator, and parser configuration. The normalized
+LSA candidate preserves its exact citation, through-date, listed Federal Register document numbers,
+raw entry and hash, locator, and parser configuration. A review bundle fails closed when the
+comparison is already matched, citations or document references do not align, effective dates are
+missing or later than the eCFR date, or LSA coverage ends before the eCFR date.
+
+Only an external review bound to the exact bundle SHA-256 can emit an
+`explained_official_change` source finding. Unknown or withdrawn amendment actions cannot be marked
+explained. This is source-review evidence only: no accepted bundle establishes legal meaning,
+applicability, compliance, an approved constraint, or operational authority. The current code does
+not parse real Federal Register or LSA publications into these normalized candidates; those
+source-specific parsers and real official fixtures remain required.
+
+Exact verified-source reviews are also reassessed against current official evidence. A missing
+required role, changed artifact hash, changed official package identity, or changed dated-eCFR
+`as_of` date marks the prior source verification stale and identifies every affected review. Reviews
+never carry automatically onto new source bytes or revisions.
+
+The bounded artifact and section commands are available offline:
+
+```bash
+PYTHONPATH= uv run safety-ops regulatory artifact-verify \
+  --evidence runtime/regulatory/evidence.json \
+  --artifact-ref source.xml \
+  --root runtime/regulatory
+PYTHONPATH= uv run safety-ops regulatory section-extract \
+  --evidence runtime/regulatory/evidence.json \
+  --artifact-ref source.xml \
+  --root runtime/regulatory \
+  --citation "29 CFR 1910.147" \
+  --parser-config-sha256 sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+PYTHONPATH= uv run safety-ops regulatory section-compare \
+  --annual runtime/regulatory/annual-section.json \
+  --ecfr runtime/regulatory/ecfr-section.json
+```
+
+All paths above are illustrative. The commands consume caller-supplied local evidence and emit JSON;
+they do not retrieve sources, review findings, promote sources, or contact equipment.
 
 ## Authority boundary
 

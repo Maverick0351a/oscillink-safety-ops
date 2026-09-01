@@ -1,0 +1,244 @@
+{
+  "$defs": {
+    "RegulatoryEvidenceRole": {
+      "enum": [
+        "annual_cfr_baseline",
+        "ecfr_point_in_time",
+        "federal_register_change",
+        "lsa_change_index"
+      ],
+      "title": "RegulatoryEvidenceRole",
+      "type": "string"
+    },
+    "RegulatorySourceEvidenceImpact": {
+      "additionalProperties": false,
+      "description": "Change evidence for one exact official-source role in a verified revision.",
+      "properties": {
+        "affected_review_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Affected Review Ids",
+          "type": "array"
+        },
+        "applicability_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Applicability Authority",
+          "type": "string"
+        },
+        "authority_state": {
+          "const": "change_evidence_only",
+          "default": "change_evidence_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "compliance_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Compliance Authority",
+          "type": "string"
+        },
+        "current_artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current Artifact Sha256"
+        },
+        "current_evidence_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current Evidence Id"
+        },
+        "current_package_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current Package Id"
+        },
+        "interpretation_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Interpretation Authority",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "prior_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prior Artifact Sha256",
+          "type": "string"
+        },
+        "prior_evidence_id": {
+          "minLength": 1,
+          "title": "Prior Evidence Id",
+          "type": "string"
+        },
+        "prior_package_id": {
+          "minLength": 1,
+          "title": "Prior Package Id",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "enum": [
+              "artifact_changed",
+              "as_of_changed",
+              "evidence_missing",
+              "package_changed"
+            ],
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "role": {
+          "$ref": "#/$defs/RegulatoryEvidenceRole"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "state": {
+          "enum": [
+            "current",
+            "stale"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "prior_evidence_id",
+        "prior_package_id",
+        "prior_artifact_sha256",
+        "current_evidence_id",
+        "current_package_id",
+        "current_artifact_sha256",
+        "state",
+        "reasons",
+        "affected_review_ids"
+      ],
+      "title": "RegulatorySourceEvidenceImpact",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Staleness report for an exact externally reviewed regulatory source revision.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "change_evidence_only",
+      "default": "change_evidence_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "current_ecfr_as_of": {
+      "format": "date",
+      "title": "Current Ecfr As Of",
+      "type": "string"
+    },
+    "impacts": {
+      "items": {
+        "$ref": "#/$defs/RegulatorySourceEvidenceImpact"
+      },
+      "title": "Impacts",
+      "type": "array"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "prior_ecfr_as_of": {
+      "format": "date",
+      "title": "Prior Ecfr As Of",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_review_id": {
+      "minLength": 1,
+      "title": "Source Review Id",
+      "type": "string"
+    },
+    "source_state": {
+      "enum": [
+        "verified_regulatory_source",
+        "source_verification_stale"
+      ],
+      "title": "Source State",
+      "type": "string"
+    },
+    "verification_candidate_id": {
+      "minLength": 1,
+      "title": "Verification Candidate Id",
+      "type": "string"
+    },
+    "verification_candidate_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Verification Candidate Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verification_candidate_id",
+    "verification_candidate_sha256",
+    "source_review_id",
+    "prior_ecfr_as_of",
+    "current_ecfr_as_of",
+    "impacts",
+    "source_state"
+  ],
+  "title": "RegulatorySourceImpactReport",
+  "type": "object"
+}

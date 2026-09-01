@@ -1,0 +1,108 @@
+{
+  "$defs": {
+    "RegulatoryDifferenceReviewDecision": {
+      "enum": [
+        "accept_explained_official_change",
+        "reject_change_explanation"
+      ],
+      "title": "RegulatoryDifferenceReviewDecision",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "External source-only review of one exact official-change evidence bundle.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "source_review_only",
+      "default": "source_review_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "bundle_id": {
+      "minLength": 1,
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "bundle_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "decision": {
+      "$ref": "#/$defs/RegulatoryDifferenceReviewDecision"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "rationale": {
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "review_id": {
+      "minLength": 1,
+      "title": "Review Id",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "format": "date-time",
+      "title": "Reviewed At",
+      "type": "string"
+    },
+    "reviewer_authority_ref": {
+      "minLength": 1,
+      "title": "Reviewer Authority Ref",
+      "type": "string"
+    },
+    "reviewer_id": {
+      "minLength": 1,
+      "title": "Reviewer Id",
+      "type": "string"
+    },
+    "reviewer_role": {
+      "minLength": 1,
+      "title": "Reviewer Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "review_id",
+    "bundle_id",
+    "bundle_sha256",
+    "decision",
+    "reviewer_id",
+    "reviewer_role",
+    "reviewer_authority_ref",
+    "reviewed_at",
+    "rationale"
+  ],
+  "title": "RegulatoryDifferenceReview",
+  "type": "object"
+}

@@ -64,15 +64,23 @@ applicability, interpretation, compliance, or operational approval.
 
 The first contract slice now models exact annual-CFR, dated-eCFR, Federal Register, and LSA evidence;
 section-level reconciliation findings; external source-review identity; candidate-hash binding; and
-source-only promotion. It is exercised with synthetic metadata and hashes only. Official artifact
-retrieval, amendment/effective-date logic, corrections, and stale propagation remain required before
-any real source revision can be considered for promotion.
+source-only promotion. It is exercised with synthetic metadata and hashes only.
 
 The next implemented contract slice adds 16-MiB bounded and root-contained local artifact
 verification, exact byte-count/SHA-256 checks, DTD/entity rejection, deterministic extraction for the
 currently observed eCFR and GovInfo annual-CFR XML section shapes, and conservative normalized-text
 comparison. A mismatch remains unresolved; no heuristic or parser can explain it without cited
 Federal Register and LSA evidence. Current parser coverage is intentionally narrow and synthetic.
+
+The next contract slice adds normalized Federal Register action/effective-date candidates, exact LSA
+coverage candidates, deterministic source-change bundles, and external reviews bound to exact bundle
+hashes. It rejects mismatched citations, missing LSA document references, future or absent effective
+dates, incomplete LSA coverage, unsupported actions, rejected reviews, and review transfer to changed
+bundle bytes. Exact verified-source impact reports now mark missing roles, changed artifact hashes,
+changed package identities, and changed dated-eCFR dates stale. Bounded CLI commands verify artifacts,
+extract supported XML sections, and conservatively compare exact snapshots. Real Federal Register and
+LSA publication parsers, real official fixtures, correction/delay chains, and Linux/hosted-CI evidence
+remain required before any real source revision can be considered for promotion.
 
 **Gate:** every promoted source revision is reproducible from pinned official publications; every
 difference is explained by cited amendment evidence or remains explicitly unresolved; no source or
@@ -178,8 +186,9 @@ Two bounded tracks may proceed without conflating technical evidence with produc
    change scenarios, including record loss, artifact/revision changes, adapter-configuration changes,
    correction, retraction, and malformed lineage. Do not permit reviews to carry forward onto
    changed bytes.
-3. Add the official-CFR verification and source-promotion contract while keeping applicability and
-   extracted constraints under external review.
+3. Build narrowly versioned real Federal Register and LSA parsers plus permissibly redistributable
+   deterministic fixtures; preserve unsupported correction, delay, withdrawal, and redesignation
+   chains explicitly rather than inferring them.
 4. Add NFPA 70E and related licensed standards as metadata-only sources until licensed bytes and
    authorized review are available.
 5. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-

@@ -14,6 +14,8 @@ from .domain import (
     OperationalReviewLedger,
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
+    RegulatorySectionSnapshot,
+    RegulatorySourceEvidence,
     SafetyMemoryPacket,
 )
 
@@ -63,6 +65,16 @@ def load_plan(path: Path) -> ProposedPlan:
 
 def load_envelope(path: Path) -> PhysicalIntelligenceEvidenceEnvelope:
     return PhysicalIntelligenceEvidenceEnvelope.model_validate(_json_object(path))
+
+
+def load_regulatory_source_evidence(path: Path) -> RegulatorySourceEvidence:
+    """Load one bounded strict official-source evidence declaration."""
+    return RegulatorySourceEvidence.model_validate(_json_object(path))
+
+
+def load_regulatory_section_snapshot(path: Path) -> RegulatorySectionSnapshot:
+    """Load one bounded strict regulatory section extraction candidate."""
+    return RegulatorySectionSnapshot.model_validate(_json_object(path))
 
 
 def load_operational_review_ledger(path: Path) -> OperationalReviewLedger:

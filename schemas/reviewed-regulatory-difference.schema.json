@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "RegulatoryReconciliationFinding": {
+      "additionalProperties": false,
+      "description": "A deterministic section-level source comparison outcome.",
+      "properties": {
+        "authority_state": {
+          "const": "source_comparison_only",
+          "default": "source_comparison_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "finding_id": {
+          "minLength": 1,
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RegulatoryReconciliationStatus"
+        }
+      },
+      "required": [
+        "finding_id",
+        "citation",
+        "status",
+        "evidence_ids",
+        "statement"
+      ],
+      "title": "RegulatoryReconciliationFinding",
+      "type": "object"
+    },
+    "RegulatoryReconciliationStatus": {
+      "enum": [
+        "verified_match",
+        "explained_official_change",
+        "unresolved_difference",
+        "missing_evidence"
+      ],
+      "title": "RegulatoryReconciliationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Externally reviewed source explanation preserving exact bundle and finding lineage.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "reviewed_source_explanation_only",
+      "default": "reviewed_source_explanation_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "bundle_id": {
+      "minLength": 1,
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "bundle_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "finding": {
+      "$ref": "#/$defs/RegulatoryReconciliationFinding"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "review_id": {
+      "minLength": 1,
+      "title": "Review Id",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "format": "date-time",
+      "title": "Reviewed At",
+      "type": "string"
+    },
+    "reviewer_id": {
+      "minLength": 1,
+      "title": "Reviewer Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "bundle_sha256",
+    "review_id",
+    "reviewer_id",
+    "reviewed_at",
+    "finding"
+  ],
+  "title": "ReviewedRegulatoryDifference",
+  "type": "object"
+}

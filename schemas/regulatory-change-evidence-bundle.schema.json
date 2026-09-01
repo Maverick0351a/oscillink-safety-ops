@@ -1,0 +1,504 @@
+{
+  "$defs": {
+    "FederalRegisterAction": {
+      "enum": [
+        "amend",
+        "correct",
+        "delay_effective_date",
+        "redesignate",
+        "remove",
+        "withdraw",
+        "unknown"
+      ],
+      "title": "FederalRegisterAction",
+      "type": "string"
+    },
+    "FederalRegisterChangeCandidate": {
+      "additionalProperties": false,
+      "description": "Candidate extraction of one Federal Register change instruction.",
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/FederalRegisterAction"
+        },
+        "affected_citations": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Affected Citations",
+          "type": "array"
+        },
+        "applicability_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Applicability Authority",
+          "type": "string"
+        },
+        "candidate_id": {
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "compliance_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Compliance Authority",
+          "type": "string"
+        },
+        "document_number": {
+          "minLength": 1,
+          "title": "Document Number",
+          "type": "string"
+        },
+        "effective_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Effective Date"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_role": {
+          "const": "federal_register_change",
+          "default": "federal_register_change",
+          "title": "Evidence Role",
+          "type": "string"
+        },
+        "extraction_state": {
+          "const": "source_extraction_candidate",
+          "default": "source_extraction_candidate",
+          "title": "Extraction State",
+          "type": "string"
+        },
+        "interpretation_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Interpretation Authority",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "parser_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Parser Config Sha256",
+          "type": "string"
+        },
+        "parser_identity": {
+          "default": "federal-register-change-candidate",
+          "minLength": 1,
+          "title": "Parser Identity",
+          "type": "string"
+        },
+        "parser_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Parser Version",
+          "type": "integer"
+        },
+        "publication_date": {
+          "format": "date",
+          "title": "Publication Date",
+          "type": "string"
+        },
+        "raw_instruction": {
+          "minLength": 1,
+          "title": "Raw Instruction",
+          "type": "string"
+        },
+        "raw_instruction_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Instruction Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "source_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Artifact Sha256",
+          "type": "string"
+        },
+        "source_locator": {
+          "minLength": 1,
+          "title": "Source Locator",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "evidence_id",
+        "source_artifact_sha256",
+        "document_number",
+        "publication_date",
+        "effective_date",
+        "action",
+        "affected_citations",
+        "source_locator",
+        "raw_instruction",
+        "raw_instruction_sha256",
+        "parser_config_sha256"
+      ],
+      "title": "FederalRegisterChangeCandidate",
+      "type": "object"
+    },
+    "LsaCoverageCandidate": {
+      "additionalProperties": false,
+      "description": "Candidate extraction of LSA coverage for one exact CFR citation.",
+      "properties": {
+        "applicability_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Applicability Authority",
+          "type": "string"
+        },
+        "candidate_id": {
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "compliance_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Compliance Authority",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_role": {
+          "const": "lsa_change_index",
+          "default": "lsa_change_index",
+          "title": "Evidence Role",
+          "type": "string"
+        },
+        "extraction_state": {
+          "const": "source_extraction_candidate",
+          "default": "source_extraction_candidate",
+          "title": "Extraction State",
+          "type": "string"
+        },
+        "federal_register_document_numbers": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Federal Register Document Numbers",
+          "type": "array"
+        },
+        "interpretation_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Interpretation Authority",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "parser_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Parser Config Sha256",
+          "type": "string"
+        },
+        "parser_identity": {
+          "default": "lsa-coverage-candidate",
+          "minLength": 1,
+          "title": "Parser Identity",
+          "type": "string"
+        },
+        "parser_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Parser Version",
+          "type": "integer"
+        },
+        "raw_entry": {
+          "minLength": 1,
+          "title": "Raw Entry",
+          "type": "string"
+        },
+        "raw_entry_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Entry Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "source_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Artifact Sha256",
+          "type": "string"
+        },
+        "source_locator": {
+          "minLength": 1,
+          "title": "Source Locator",
+          "type": "string"
+        },
+        "through_date": {
+          "format": "date",
+          "title": "Through Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "evidence_id",
+        "source_artifact_sha256",
+        "through_date",
+        "citation",
+        "federal_register_document_numbers",
+        "source_locator",
+        "raw_entry",
+        "raw_entry_sha256",
+        "parser_config_sha256"
+      ],
+      "title": "LsaCoverageCandidate",
+      "type": "object"
+    },
+    "RegulatorySectionComparison": {
+      "additionalProperties": false,
+      "description": "Conservative source-text comparison evidence for annual CFR and dated eCFR sections.",
+      "properties": {
+        "annual_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Annual Artifact Sha256",
+          "type": "string"
+        },
+        "annual_evidence_id": {
+          "minLength": 1,
+          "title": "Annual Evidence Id",
+          "type": "string"
+        },
+        "annual_text_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Annual Text Sha256",
+          "type": "string"
+        },
+        "applicability_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Applicability Authority",
+          "type": "string"
+        },
+        "authority_state": {
+          "const": "reconciliation_evidence_only",
+          "default": "reconciliation_evidence_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "comparison_id": {
+          "minLength": 1,
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "compliance_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Compliance Authority",
+          "type": "string"
+        },
+        "ecfr_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Ecfr Artifact Sha256",
+          "type": "string"
+        },
+        "ecfr_evidence_id": {
+          "minLength": 1,
+          "title": "Ecfr Evidence Id",
+          "type": "string"
+        },
+        "ecfr_text_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Ecfr Text Sha256",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "minLength": 1,
+              "type": "string"
+            }
+          ],
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "interpretation_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Interpretation Authority",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "verified_match",
+            "unresolved_difference"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "citation",
+        "annual_evidence_id",
+        "annual_artifact_sha256",
+        "annual_text_sha256",
+        "ecfr_evidence_id",
+        "ecfr_artifact_sha256",
+        "ecfr_text_sha256",
+        "evidence_ids",
+        "status",
+        "rationale"
+      ],
+      "title": "RegulatorySectionComparison",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Exact change evidence collected for an unresolved section difference.",
+  "properties": {
+    "amendments": {
+      "items": {
+        "$ref": "#/$defs/FederalRegisterChangeCandidate"
+      },
+      "title": "Amendments",
+      "type": "array"
+    },
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "change_evidence_only",
+      "default": "change_evidence_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "bundle_id": {
+      "minLength": 1,
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "bundle_state": {
+      "const": "requires_authorized_source_review",
+      "default": "requires_authorized_source_review",
+      "title": "Bundle State",
+      "type": "string"
+    },
+    "comparison": {
+      "$ref": "#/$defs/RegulatorySectionComparison"
+    },
+    "comparison_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Comparison Sha256",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "ecfr_as_of": {
+      "format": "date",
+      "title": "Ecfr As Of",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "lsa_coverage": {
+      "$ref": "#/$defs/LsaCoverageCandidate"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "comparison",
+    "comparison_sha256",
+    "amendments",
+    "lsa_coverage",
+    "ecfr_as_of",
+    "generated_at"
+  ],
+  "title": "RegulatoryChangeEvidenceBundle",
+  "type": "object"
+}

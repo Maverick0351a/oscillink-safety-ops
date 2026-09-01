@@ -7,6 +7,8 @@ from pathlib import Path
 
 from oscillink_safety_ops.domain import (
     AuditReport,
+    FederalRegisterChangeCandidate,
+    LsaCoverageCandidate,
     OperationalChangeImpact,
     OperationalEvidenceBatch,
     OperationalImpactReport,
@@ -15,16 +17,24 @@ from oscillink_safety_ops.domain import (
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
     RegulatoryArtifactVerification,
+    RegulatoryChangeEvidenceBundle,
+    RegulatoryDifferenceReview,
     RegulatorySectionComparison,
     RegulatorySectionSnapshot,
+    RegulatorySourceImpactReport,
     RegulatorySourceVerificationCandidate,
     RegulatorySourceVerificationReview,
+    ReviewedRegulatoryDifference,
     SafetyMemoryPacket,
     VerifiedRegulatorySource,
 )
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
+    "federal-register-change-candidate.schema.json": (
+        FederalRegisterChangeCandidate.model_json_schema()
+    ),
+    "lsa-coverage-candidate.schema.json": LsaCoverageCandidate.model_json_schema(),
     "operational-change-impact.schema.json": OperationalChangeImpact.model_json_schema(),
     "operational-evidence-batch.schema.json": OperationalEvidenceBatch.model_json_schema(),
     "operational-interpretation-candidate.schema.json": (
@@ -36,11 +46,16 @@ SCHEMAS = {
         PhysicalIntelligenceEvidenceEnvelope.model_json_schema()
     ),
     "proposed-plan.schema.json": ProposedPlan.model_json_schema(),
+    "regulatory-change-evidence-bundle.schema.json": (
+        RegulatoryChangeEvidenceBundle.model_json_schema()
+    ),
+    "regulatory-difference-review.schema.json": RegulatoryDifferenceReview.model_json_schema(),
     "regulatory-artifact-verification.schema.json": (
         RegulatoryArtifactVerification.model_json_schema()
     ),
     "regulatory-section-comparison.schema.json": RegulatorySectionComparison.model_json_schema(),
     "regulatory-section-snapshot.schema.json": RegulatorySectionSnapshot.model_json_schema(),
+    "regulatory-source-impact-report.schema.json": RegulatorySourceImpactReport.model_json_schema(),
     "regulatory-source-verification-candidate.schema.json": (
         RegulatorySourceVerificationCandidate.model_json_schema()
     ),
@@ -48,6 +63,7 @@ SCHEMAS = {
         RegulatorySourceVerificationReview.model_json_schema()
     ),
     "safety-memory-packet.schema.json": SafetyMemoryPacket.model_json_schema(),
+    "reviewed-regulatory-difference.schema.json": ReviewedRegulatoryDifference.model_json_schema(),
     "verified-regulatory-source.schema.json": VerifiedRegulatorySource.model_json_schema(),
 }
 

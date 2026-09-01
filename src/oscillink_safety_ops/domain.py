@@ -123,6 +123,21 @@ class RegulatorySourceReviewDecision(StrEnum):
     REJECT_SOURCE_VERIFICATION = "reject_source_verification"
 
 
+class RegulatoryDifferenceReviewDecision(StrEnum):
+    ACCEPT_EXPLAINED_OFFICIAL_CHANGE = "accept_explained_official_change"
+    REJECT_CHANGE_EXPLANATION = "reject_change_explanation"
+
+
+class FederalRegisterAction(StrEnum):
+    AMEND = "amend"
+    CORRECT = "correct"
+    DELAY_EFFECTIVE_DATE = "delay_effective_date"
+    REDESIGNATE = "redesignate"
+    REMOVE = "remove"
+    WITHDRAW = "withdraw"
+    UNKNOWN = "unknown"
+
+
 class OperationalEvidenceRecord(ContractModel):
     """One untrusted record from a read-only facility or autonomous-system export."""
 
@@ -414,6 +429,117 @@ class RegulatorySectionComparison(ContractModel):
     operational_authority: Literal["none"] = "none"
 
 
+class FederalRegisterChangeCandidate(ContractModel):
+    """Candidate extraction of one Federal Register change instruction."""
+
+    schema_version: Literal[1] = 1
+    candidate_id: NonEmptyStr
+    evidence_id: NonEmptyStr
+    evidence_role: Literal[RegulatoryEvidenceRole.FEDERAL_REGISTER_CHANGE] = (
+        RegulatoryEvidenceRole.FEDERAL_REGISTER_CHANGE
+    )
+    source_artifact_sha256: Sha256
+    document_number: NonEmptyStr
+    publication_date: date
+    effective_date: date | None
+    action: FederalRegisterAction
+    affected_citations: tuple[NonEmptyStr, ...]
+    source_locator: NonEmptyStr
+    raw_instruction: NonEmptyStr
+    raw_instruction_sha256: Sha256
+    parser_identity: NonEmptyStr = "federal-register-change-candidate"
+    parser_version: Literal[1] = 1
+    parser_config_sha256: Sha256
+    extraction_state: Literal["source_extraction_candidate"] = "source_extraction_candidate"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+    @model_validator(mode="after")
+    def verify_raw_instruction_hash(self) -> Self:
+        if not self.affected_citations:
+            raise ValueError("Federal Register candidate requires an affected citation")
+        digest = "sha256:" + hashlib.sha256(self.raw_instruction.encode("utf-8")).hexdigest()
+        if digest != self.raw_instruction_sha256:
+            raise ValueError("raw instruction hash mismatch")
+        return self
+
+
+class LsaCoverageCandidate(ContractModel):
+    """Candidate extraction of LSA coverage for one exact CFR citation."""
+
+    schema_version: Literal[1] = 1
+    candidate_id: NonEmptyStr
+    evidence_id: NonEmptyStr
+    evidence_role: Literal[RegulatoryEvidenceRole.LSA_CHANGE_INDEX] = (
+        RegulatoryEvidenceRole.LSA_CHANGE_INDEX
+    )
+    source_artifact_sha256: Sha256
+    through_date: date
+    citation: NonEmptyStr
+    federal_register_document_numbers: tuple[NonEmptyStr, ...]
+    source_locator: NonEmptyStr
+    raw_entry: NonEmptyStr
+    raw_entry_sha256: Sha256
+    parser_identity: NonEmptyStr = "lsa-coverage-candidate"
+    parser_version: Literal[1] = 1
+    parser_config_sha256: Sha256
+    extraction_state: Literal["source_extraction_candidate"] = "source_extraction_candidate"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+    @model_validator(mode="after")
+    def verify_raw_entry_hash(self) -> Self:
+        if not self.federal_register_document_numbers:
+            raise ValueError("LSA candidate requires a Federal Register document number")
+        digest = "sha256:" + hashlib.sha256(self.raw_entry.encode("utf-8")).hexdigest()
+        if digest != self.raw_entry_sha256:
+            raise ValueError("raw LSA entry hash mismatch")
+        return self
+
+
+class RegulatoryChangeEvidenceBundle(ContractModel):
+    """Exact change evidence collected for an unresolved section difference."""
+
+    schema_version: Literal[1] = 1
+    bundle_id: NonEmptyStr
+    comparison: RegulatorySectionComparison
+    comparison_sha256: Sha256
+    amendments: tuple[FederalRegisterChangeCandidate, ...]
+    lsa_coverage: LsaCoverageCandidate
+    ecfr_as_of: date
+    generated_at: AwareDatetime
+    bundle_state: Literal["requires_authorized_source_review"] = "requires_authorized_source_review"
+    authority_state: Literal["change_evidence_only"] = "change_evidence_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
+class RegulatoryDifferenceReview(ContractModel):
+    """External source-only review of one exact official-change evidence bundle."""
+
+    schema_version: Literal[1] = 1
+    review_id: NonEmptyStr
+    bundle_id: NonEmptyStr
+    bundle_sha256: Sha256
+    decision: RegulatoryDifferenceReviewDecision
+    reviewer_id: NonEmptyStr
+    reviewer_role: NonEmptyStr
+    reviewer_authority_ref: NonEmptyStr
+    reviewed_at: AwareDatetime
+    rationale: NonEmptyStr
+    authority_state: Literal["source_review_only"] = "source_review_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
 class RegulatoryReconciliationFinding(ContractModel):
     """A deterministic section-level source comparison outcome."""
 
@@ -424,6 +550,25 @@ class RegulatoryReconciliationFinding(ContractModel):
     evidence_ids: tuple[NonEmptyStr, ...]
     statement: NonEmptyStr
     authority_state: Literal["source_comparison_only"] = "source_comparison_only"
+
+
+class ReviewedRegulatoryDifference(ContractModel):
+    """Externally reviewed source explanation preserving exact bundle and finding lineage."""
+
+    schema_version: Literal[1] = 1
+    bundle_id: NonEmptyStr
+    bundle_sha256: Sha256
+    review_id: NonEmptyStr
+    reviewer_id: NonEmptyStr
+    reviewed_at: AwareDatetime
+    finding: RegulatoryReconciliationFinding
+    authority_state: Literal["reviewed_source_explanation_only"] = (
+        "reviewed_source_explanation_only"
+    )
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
 
 
 class RegulatorySourceVerificationCandidate(ContractModel):
@@ -504,6 +649,48 @@ class VerifiedRegulatorySource(ContractModel):
     applicability_state: Literal["undetermined"] = "undetermined"
     constraint_state: Literal["not_approved"] = "not_approved"
     compliance_state: Literal["no_conclusion"] = "no_conclusion"
+    operational_authority: Literal["none"] = "none"
+
+
+class RegulatorySourceEvidenceImpact(ContractModel):
+    """Change evidence for one exact official-source role in a verified revision."""
+
+    schema_version: Literal[1] = 1
+    role: RegulatoryEvidenceRole
+    prior_evidence_id: NonEmptyStr
+    prior_package_id: NonEmptyStr
+    prior_artifact_sha256: Sha256
+    current_evidence_id: NonEmptyStr | None
+    current_package_id: NonEmptyStr | None
+    current_artifact_sha256: Sha256 | None
+    state: Literal["current", "stale"]
+    reasons: tuple[
+        Literal["artifact_changed", "as_of_changed", "evidence_missing", "package_changed"],
+        ...,
+    ]
+    affected_review_ids: tuple[NonEmptyStr, ...]
+    authority_state: Literal["change_evidence_only"] = "change_evidence_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
+class RegulatorySourceImpactReport(ContractModel):
+    """Staleness report for an exact externally reviewed regulatory source revision."""
+
+    schema_version: Literal[1] = 1
+    verification_candidate_id: NonEmptyStr
+    verification_candidate_sha256: Sha256
+    source_review_id: NonEmptyStr
+    prior_ecfr_as_of: date
+    current_ecfr_as_of: date
+    impacts: tuple[RegulatorySourceEvidenceImpact, ...]
+    source_state: Literal["verified_regulatory_source", "source_verification_stale"]
+    authority_state: Literal["change_evidence_only"] = "change_evidence_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
     operational_authority: Literal["none"] = "none"
 
 

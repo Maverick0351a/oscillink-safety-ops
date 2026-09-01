@@ -1,0 +1,127 @@
+{
+  "additionalProperties": false,
+  "description": "Candidate extraction of LSA coverage for one exact CFR citation.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "citation": {
+      "minLength": 1,
+      "title": "Citation",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "evidence_role": {
+      "const": "lsa_change_index",
+      "default": "lsa_change_index",
+      "title": "Evidence Role",
+      "type": "string"
+    },
+    "extraction_state": {
+      "const": "source_extraction_candidate",
+      "default": "source_extraction_candidate",
+      "title": "Extraction State",
+      "type": "string"
+    },
+    "federal_register_document_numbers": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Federal Register Document Numbers",
+      "type": "array"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "parser_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parser Config Sha256",
+      "type": "string"
+    },
+    "parser_identity": {
+      "default": "lsa-coverage-candidate",
+      "minLength": 1,
+      "title": "Parser Identity",
+      "type": "string"
+    },
+    "parser_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Parser Version",
+      "type": "integer"
+    },
+    "raw_entry": {
+      "minLength": 1,
+      "title": "Raw Entry",
+      "type": "string"
+    },
+    "raw_entry_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Entry Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Artifact Sha256",
+      "type": "string"
+    },
+    "source_locator": {
+      "minLength": 1,
+      "title": "Source Locator",
+      "type": "string"
+    },
+    "through_date": {
+      "format": "date",
+      "title": "Through Date",
+      "type": "string"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "evidence_id",
+    "source_artifact_sha256",
+    "through_date",
+    "citation",
+    "federal_register_document_numbers",
+    "source_locator",
+    "raw_entry",
+    "raw_entry_sha256",
+    "parser_config_sha256"
+  ],
+  "title": "LsaCoverageCandidate",
+  "type": "object"
+}
