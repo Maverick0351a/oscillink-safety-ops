@@ -8,6 +8,7 @@ from pathlib import Path
 from oscillink_safety_ops.domain import (
     AuditReport,
     FederalRegisterChangeCandidate,
+    FederalRegisterChangeChain,
     LsaCoverageCandidate,
     OperationalChangeImpact,
     OperationalEvidenceBatch,
@@ -31,6 +32,7 @@ from oscillink_safety_ops.domain import (
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
+    "federal-register-change-chain.schema.json": FederalRegisterChangeChain.model_json_schema(),
     "federal-register-change-candidate.schema.json": (
         FederalRegisterChangeCandidate.model_json_schema()
     ),

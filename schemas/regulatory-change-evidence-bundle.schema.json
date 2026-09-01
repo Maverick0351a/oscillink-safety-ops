@@ -79,6 +79,19 @@
           "title": "Extraction State",
           "type": "string"
         },
+        "federal_register_start_page": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Federal Register Start Page"
+        },
         "interpretation_authority": {
           "const": "none",
           "default": "none",
@@ -122,6 +135,19 @@
           "pattern": "^sha256:[0-9a-f]{64}$",
           "title": "Raw Instruction Sha256",
           "type": "string"
+        },
+        "related_document_number": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Related Document Number"
         },
         "schema_version": {
           "const": 1,
@@ -201,11 +227,21 @@
           "type": "string"
         },
         "federal_register_document_numbers": {
+          "default": [],
           "items": {
             "minLength": 1,
             "type": "string"
           },
           "title": "Federal Register Document Numbers",
+          "type": "array"
+        },
+        "federal_register_pages": {
+          "default": [],
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          "title": "Federal Register Pages",
           "type": "array"
         },
         "interpretation_authority": {
@@ -263,6 +299,19 @@
           "title": "Source Locator",
           "type": "string"
         },
+        "status_text": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status Text"
+        },
         "through_date": {
           "format": "date",
           "title": "Through Date",
@@ -275,7 +324,6 @@
         "source_artifact_sha256",
         "through_date",
         "citation",
-        "federal_register_document_numbers",
         "source_locator",
         "raw_entry",
         "raw_entry_sha256",

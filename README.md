@@ -152,19 +152,25 @@ the exact artifact, locator, parser identity/configuration, and normalized-text 
 An exact annual-CFR/eCFR normalized-text hash match emits reconciliation evidence only. Any text
 difference remains `unresolved_difference` until separately cited Federal Register and LSA evidence
 is collected and accepted by an externally authorized source reviewer. The normalized Federal
-Register candidate preserves document number, publication/effective date, action, exact affected
-citations, raw instruction text and hash, source locator, and parser configuration. The normalized
-LSA candidate preserves its exact citation, through-date, listed Federal Register document numbers,
-raw entry and hash, locator, and parser configuration. A review bundle fails closed when the
-comparison is already matched, citations or document references do not align, effective dates are
-missing or later than the eCFR date, or LSA coverage ends before the eCFR date.
+Register candidate preserves document number, publication/effective date, Federal Register start
+page, action, exact affected citations, raw instruction text and hash, source locator, and parser
+configuration. The normalized LSA candidate preserves its exact citation, through-date, status text,
+listed Federal Register page references, raw entry and hash, locator, and parser configuration. A
+review bundle fails closed when the comparison is already matched, citations or official page/
+document references do not align, effective dates are missing or later than the eCFR date, or LSA
+coverage ends before the eCFR date.
 
 Only an external review bound to the exact bundle SHA-256 can emit an
 `explained_official_change` source finding. Unknown or withdrawn amendment actions cannot be marked
 explained. This is source-review evidence only: no accepted bundle establishes legal meaning,
-applicability, compliance, an approved constraint, or operational authority. The current code does
-not parse real Federal Register or LSA publications into these normalized candidates; those
-source-specific parsers and real official fixtures remain required.
+applicability, compliance, an approved constraint, or operational authority. Narrow, versioned
+parsers now recognize GovInfo Federal Register issue XML amendment paragraphs and monthly LSA HTML
+section entries only after exact artifact verification. Federal Register correction, delayed-date,
+and withdrawal candidates require explicit prior-document links before deterministic chain
+resolution; withdrawals and unsupported actions remain explicit and cannot become explained
+findings. Parser fixtures are synthetic representations of observed official shapes. Broader official
+publication coverage and pinned redistributable official fixtures remain required before real source
+promotion.
 
 Exact verified-source reviews are also reassessed against current official evidence. A missing
 required role, changed artifact hash, changed official package identity, or changed dated-eCFR

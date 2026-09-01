@@ -72,15 +72,17 @@ currently observed eCFR and GovInfo annual-CFR XML section shapes, and conservat
 comparison. A mismatch remains unresolved; no heuristic or parser can explain it without cited
 Federal Register and LSA evidence. Current parser coverage is intentionally narrow and synthetic.
 
-The next contract slice adds normalized Federal Register action/effective-date candidates, exact LSA
-coverage candidates, deterministic source-change bundles, and external reviews bound to exact bundle
-hashes. It rejects mismatched citations, missing LSA document references, future or absent effective
-dates, incomplete LSA coverage, unsupported actions, rejected reviews, and review transfer to changed
-bundle bytes. Exact verified-source impact reports now mark missing roles, changed artifact hashes,
-changed package identities, and changed dated-eCFR dates stale. Bounded CLI commands verify artifacts,
-extract supported XML sections, and conservatively compare exact snapshots. Real Federal Register and
-LSA publication parsers, real official fixtures, correction/delay chains, and Linux/hosted-CI evidence
-remain required before any real source revision can be considered for promotion.
+The next contract slices add normalized Federal Register action/effective-date/page candidates, exact
+LSA status and Federal Register page-coverage candidates, deterministic source-change bundles, and
+external reviews bound to exact bundle hashes. Narrow versioned parsers recognize observed GovInfo
+Federal Register issue XML amendment paragraphs and monthly LSA HTML section entries only after exact
+artifact verification. Explicit correction, delayed-date, and withdrawal links produce deterministic
+publication chains while unsupported and withdrawn states remain non-explainable. Exact verified-
+source impact reports mark missing roles, changed artifact hashes, changed package identities, and
+changed dated-eCFR dates stale. Bounded CLI commands verify artifacts, extract supported XML sections,
+and conservatively compare snapshots. Pinned redistributable official fixtures, broader publication
+shape coverage, and Linux/hosted-CI evidence remain required before any real source revision can be
+considered for promotion.
 
 **Gate:** every promoted source revision is reproducible from pinned official publications; every
 difference is explained by cited amendment evidence or remains explicitly unresolved; no source or

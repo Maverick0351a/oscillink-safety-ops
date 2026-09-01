@@ -79,6 +79,19 @@
       "title": "Extraction State",
       "type": "string"
     },
+    "federal_register_start_page": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Federal Register Start Page"
+    },
     "interpretation_authority": {
       "const": "none",
       "default": "none",
@@ -122,6 +135,19 @@
       "pattern": "^sha256:[0-9a-f]{64}$",
       "title": "Raw Instruction Sha256",
       "type": "string"
+    },
+    "related_document_number": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Related Document Number"
     },
     "schema_version": {
       "const": 1,

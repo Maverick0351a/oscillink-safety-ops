@@ -9,6 +9,7 @@ from pydantic import ValidationError
 from oscillink_safety_ops.domain import (
     FederalRegisterAction,
     FederalRegisterChangeCandidate,
+    FederalRegisterChangeChain,
     LsaCoverageCandidate,
     RegulatoryDifferenceReview,
     RegulatoryDifferenceReviewDecision,
@@ -18,6 +19,7 @@ from oscillink_safety_ops.domain import (
 )
 from oscillink_safety_ops.regulatory_artifacts import compare_cfr_section_snapshots
 from oscillink_safety_ops.regulatory_changes import (
+    build_federal_register_change_chain,
     build_regulatory_change_evidence_bundle,
     record_reviewed_regulatory_difference,
     regulatory_change_bundle_sha256,
@@ -177,7 +179,7 @@ def test_change_candidates_require_exact_citation_and_document_coverage() -> Non
 
     lsa_payload = lsa().model_dump(mode="json")
     lsa_payload["federal_register_document_numbers"] = []
-    with pytest.raises(ValidationError, match="Federal Register document number"):
+    with pytest.raises(ValidationError, match="Federal Register page or document number"):
         LsaCoverageCandidate.model_validate(lsa_payload)
 
 
@@ -238,6 +240,80 @@ def test_change_bundle_requires_lsa_reference_for_every_fr_document() -> None:
             ecfr_as_of=date(2026, 8, 27),
             generated_at=NOW,
         )
+
+
+def test_change_bundle_accepts_exact_official_lsa_page_coverage() -> None:
+    exact_page_amendment = amendment().model_copy(update={"federal_register_start_page": 27999})
+    official_lsa = lsa().model_copy(
+        update={
+            "federal_register_document_numbers": (),
+            "federal_register_pages": (27999,),
+        }
+    )
+
+    bundle = build_regulatory_change_evidence_bundle(
+        unresolved_comparison(),
+        amendments=(exact_page_amendment,),
+        lsa_coverage=official_lsa,
+        ecfr_as_of=date(2026, 8, 27),
+        generated_at=NOW,
+    )
+
+    assert bundle.lsa_coverage.federal_register_pages == (27999,)
+
+
+def test_federal_register_delay_chain_establishes_controlling_effective_date() -> None:
+    original = amendment(effective_date=date(2026, 7, 1))
+    delay = amendment(effective_date=date(2026, 8, 15)).model_copy(
+        update={
+            "candidate_id": "fr-change:2026-23456:delay",
+            "document_number": "2026-23456",
+            "publication_date": date(2026, 6, 20),
+            "action": FederalRegisterAction.DELAY_EFFECTIVE_DATE,
+            "related_document_number": original.document_number,
+        }
+    )
+
+    chain = build_federal_register_change_chain(CITATION, (original, delay))
+
+    assert isinstance(chain, FederalRegisterChangeChain)
+    assert chain.chain_state == "effective_date_established"
+    assert chain.controlling_effective_date == date(2026, 8, 15)
+    assert chain.interpretation_authority == "none"
+
+
+def test_federal_register_correction_chain_requires_explicit_prior_document() -> None:
+    correction = amendment().model_copy(
+        update={
+            "candidate_id": "fr-change:2026-23456:correction",
+            "document_number": "2026-23456",
+            "publication_date": date(2026, 6, 20),
+            "action": FederalRegisterAction.CORRECT,
+            "related_document_number": None,
+        }
+    )
+
+    with pytest.raises(ValueError, match="explicit related Federal Register document"):
+        build_federal_register_change_chain(CITATION, (amendment(), correction))
+
+
+def test_federal_register_withdrawal_chain_remains_explicitly_withdrawn() -> None:
+    original = amendment()
+    withdrawal = amendment(effective_date=None).model_copy(
+        update={
+            "candidate_id": "fr-change:2026-23456:withdrawal",
+            "document_number": "2026-23456",
+            "publication_date": date(2026, 6, 20),
+            "action": FederalRegisterAction.WITHDRAW,
+            "related_document_number": original.document_number,
+        }
+    )
+
+    chain = build_federal_register_change_chain(CITATION, (original, withdrawal))
+
+    assert chain.chain_state == "withdrawn"
+    assert chain.controlling_effective_date is None
+    assert chain.operational_authority == "none"
 
 
 @pytest.mark.parametrize("effective_date", [None, date(2026, 9, 1)])
@@ -381,6 +457,10 @@ def test_change_evidence_schemas_preserve_source_only_authority() -> None:
         "federal-register-change-candidate.schema.json": (
             "extraction_state",
             "source_extraction_candidate",
+        ),
+        "federal-register-change-chain.schema.json": (
+            "authority_state",
+            "source_change_lineage_only",
         ),
         "lsa-coverage-candidate.schema.json": (
             "extraction_state",

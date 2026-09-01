@@ -442,6 +442,8 @@ class FederalRegisterChangeCandidate(ContractModel):
     document_number: NonEmptyStr
     publication_date: date
     effective_date: date | None
+    federal_register_start_page: Annotated[StrictInt, Field(gt=0)] | None = None
+    related_document_number: NonEmptyStr | None = None
     action: FederalRegisterAction
     affected_citations: tuple[NonEmptyStr, ...]
     source_locator: NonEmptyStr
@@ -466,6 +468,23 @@ class FederalRegisterChangeCandidate(ContractModel):
         return self
 
 
+class FederalRegisterChangeChain(ContractModel):
+    """Deterministic publication lineage without legal or semantic interpretation."""
+
+    schema_version: Literal[1] = 1
+    chain_id: NonEmptyStr
+    citation: NonEmptyStr
+    candidates: tuple[FederalRegisterChangeCandidate, ...]
+    chain_state: Literal["effective_date_established", "withdrawn", "unsupported_chain"]
+    controlling_effective_date: date | None
+    unresolved_reasons: tuple[NonEmptyStr, ...] = ()
+    authority_state: Literal["source_change_lineage_only"] = "source_change_lineage_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
 class LsaCoverageCandidate(ContractModel):
     """Candidate extraction of LSA coverage for one exact CFR citation."""
 
@@ -478,7 +497,9 @@ class LsaCoverageCandidate(ContractModel):
     source_artifact_sha256: Sha256
     through_date: date
     citation: NonEmptyStr
-    federal_register_document_numbers: tuple[NonEmptyStr, ...]
+    status_text: NonEmptyStr | None = None
+    federal_register_pages: tuple[Annotated[StrictInt, Field(gt=0)], ...] = ()
+    federal_register_document_numbers: tuple[NonEmptyStr, ...] = ()
     source_locator: NonEmptyStr
     raw_entry: NonEmptyStr
     raw_entry_sha256: Sha256
@@ -493,8 +514,8 @@ class LsaCoverageCandidate(ContractModel):
 
     @model_validator(mode="after")
     def verify_raw_entry_hash(self) -> Self:
-        if not self.federal_register_document_numbers:
-            raise ValueError("LSA candidate requires a Federal Register document number")
+        if not self.federal_register_pages and not self.federal_register_document_numbers:
+            raise ValueError("LSA candidate requires a Federal Register page or document number")
         digest = "sha256:" + hashlib.sha256(self.raw_entry.encode("utf-8")).hexdigest()
         if digest != self.raw_entry_sha256:
             raise ValueError("raw LSA entry hash mismatch")
