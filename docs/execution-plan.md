@@ -193,8 +193,9 @@ Bounded tracks may proceed without conflating technical evidence with product va
 2. Preserve the frozen Safety Evidence Packet v1 and leakage-controlled hidden evaluation design.
    The private 12-task bank is balanced across six classes, hash-bound by the public manifest, and
    intentionally unexecuted. Same-model authorship is not independent evaluation.
-3. Add NFPA 70E and related licensed standards as metadata-only sources until licensed bytes and
-   authorized review are available.
+3. Preserve the metadata-only NFPA 70E and ISO 10218 registry. Licensed bytes, excerpts, requirement
+   extraction, and applicability conclusions remain blocked until access, storage/processing rights,
+   and authorized review are established.
 4. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-
    suppression, ammonia-monitoring, and autonomous-system exports plus typed external-review and
    stale-impact contracts, with sequence-gap and parser-warning behavior before considering any

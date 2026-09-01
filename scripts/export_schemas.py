@@ -31,6 +31,7 @@ from oscillink_safety_ops.domain import (
     VerifiedRegulatorySource,
 )
 from oscillink_safety_ops.evaluation import HiddenEvaluationValidation
+from oscillink_safety_ops.standards import LicensedStandardRegistry
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
@@ -39,6 +40,7 @@ SCHEMAS = {
         FederalRegisterChangeCandidate.model_json_schema()
     ),
     "hidden-evaluation-validation.schema.json": HiddenEvaluationValidation.model_json_schema(),
+    "licensed-standard-registry.schema.json": LicensedStandardRegistry.model_json_schema(),
     "lsa-coverage-candidate.schema.json": LsaCoverageCandidate.model_json_schema(),
     "operational-change-impact.schema.json": OperationalChangeImpact.model_json_schema(),
     "operational-evidence-batch.schema.json": OperationalEvidenceBatch.model_json_schema(),

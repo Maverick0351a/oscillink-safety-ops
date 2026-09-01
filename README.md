@@ -68,6 +68,18 @@ fixture is synthetic and reproducible with `scripts/generate_packet_fixture.py`.
 remains `no_conclusion`, and operational authority remains `none`. Constraint-level synthetic review
 records do not turn the packet into a permit, certification, safe-work decision, or approval to act.
 
+## Licensed-standard metadata
+
+The [`LicensedStandardRegistry`](schemas/licensed-standard-registry.schema.json) records publisher,
+designation, edition, publication metadata, official metadata URL, observation time, and explicit
+supersession for NFPA 70E and ISO 10218 metadata. No licensed standard bytes, extracts, storage paths,
+or derived requirements are present. Content access is `not_supplied`; storage and processing rights
+are `not_confirmed`; applicability remains `undetermined`; and review remains `not_reviewed`.
+
+The registry is metadata-only and has no interpretation, applicability, compliance, or operational
+authority. Full-text intake remains blocked until lawful access and compatible storage/processing
+rights are separately confirmed.
+
 ## Physical Intelligence Evidence Envelope
 
 The provider-neutral

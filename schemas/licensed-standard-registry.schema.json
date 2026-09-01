@@ -1,0 +1,174 @@
+{
+  "$defs": {
+    "LicensedStandardRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability_state": {
+          "const": "undetermined",
+          "default": "undetermined",
+          "title": "Applicability State",
+          "type": "string"
+        },
+        "content_access": {
+          "const": "not_supplied",
+          "default": "not_supplied",
+          "title": "Content Access",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "edition": {
+          "minLength": 1,
+          "title": "Edition",
+          "type": "string"
+        },
+        "metadata_observed_at": {
+          "format": "date-time",
+          "title": "Metadata Observed At",
+          "type": "string"
+        },
+        "metadata_source_url": {
+          "minLength": 1,
+          "title": "Metadata Source Url",
+          "type": "string"
+        },
+        "processing_rights": {
+          "const": "not_confirmed",
+          "default": "not_confirmed",
+          "title": "Processing Rights",
+          "type": "string"
+        },
+        "publication_month": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Month"
+        },
+        "publisher": {
+          "minLength": 1,
+          "title": "Publisher",
+          "type": "string"
+        },
+        "record_id": {
+          "minLength": 1,
+          "title": "Record Id",
+          "type": "string"
+        },
+        "review_state": {
+          "const": "not_reviewed",
+          "default": "not_reviewed",
+          "title": "Review State",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "storage_rights": {
+          "const": "not_confirmed",
+          "default": "not_confirmed",
+          "title": "Storage Rights",
+          "type": "string"
+        },
+        "superseded_by": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Superseded By"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "publisher",
+        "designation",
+        "title",
+        "edition",
+        "metadata_source_url",
+        "metadata_observed_at"
+      ],
+      "title": "LicensedStandardRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "metadata_only",
+      "default": "metadata_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "compliance_state": {
+      "const": "no_conclusion",
+      "default": "no_conclusion",
+      "title": "Compliance State",
+      "type": "string"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/LicensedStandardRecord"
+      },
+      "title": "Records",
+      "type": "array"
+    },
+    "registry_id": {
+      "minLength": 1,
+      "title": "Registry Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "registry_id",
+    "records"
+  ],
+  "title": "LicensedStandardRegistry",
+  "type": "object"
+}
