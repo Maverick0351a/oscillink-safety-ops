@@ -10,6 +10,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 TEXT_SUFFIXES = {".md", ".py", ".json", ".toml", ".yaml", ".yml", ".txt"}
 
 
@@ -72,6 +74,15 @@ def check_schemas() -> None:
     print("schemas: ok")
 
 
+def check_repository_surface() -> None:
+    from scripts.verify_repository_surface import validate_repository_surface
+
+    errors = validate_repository_surface(ROOT)
+    if errors:
+        raise SystemExit("\n".join(errors))
+    print("repository surface: ok")
+
+
 def verify_envelope_fixture(fixture: Path) -> str:
     from oscillink_safety_ops.io import load_envelope, verify_envelope_payload
 
@@ -130,6 +141,7 @@ def check_fixture() -> None:
 
 def main() -> None:
     check_text_hygiene()
+    check_repository_surface()
     check_schemas()
     check_osha_catalog()
     check_fixture()

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in research, cite the repository and the exact release or commit SHA you
+  evaluated.
+title: Oscillink Safety Ops
+type: software
+authors:
+  - name: Oscillink
+repository-code: https://github.com/Maverick0351a/oscillink-safety-ops
+url: https://oscillink.com
+license: Apache-2.0
+version: 0.1.0
+abstract: >-
+  Read-only governed compliance-evidence contracts and offline evaluation for physical intelligence.
+keywords:
+  - compliance evidence
+  - physical intelligence
+  - provenance
+  - offline evaluation
+  - safety evidence

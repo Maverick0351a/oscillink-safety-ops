@@ -169,7 +169,12 @@ applicability, or practitioner-validation evidence.
 - [Hidden evaluation protocol](docs/hidden-evaluation-protocol.md)
 - [Practitioner interview protocol](docs/interview-protocol.md)
 - [Security policy](SECURITY.md)
+- [Support](SUPPORT.md)
 - [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Release process](docs/release-process.md)
+- [Publication checklist](docs/publication-checklist.md)
+- [Changelog](CHANGELOG.md)
 
 ## License
 

@@ -5,9 +5,13 @@ service and must not be connected to production equipment or safety systems.
 
 ## Reporting
 
-Report security concerns through the repository's private GitHub collaboration channel. Do not
-place credentials, customer procedures, employee information, facility data, equipment secrets,
-private prompts, licensed standards, or sensitive incident evidence in an issue.
+Report security concerns through the repository's private GitHub collaboration channel. Do not use
+a public issue. The repository must not become public until GitHub private vulnerability reporting
+or another tested confidential route is enabled and documented.
+
+Do not place credentials, customer procedures, employee information, facility data, equipment
+secrets, private prompts, licensed standards, or sensitive incident evidence in an issue or pull
+request. Provide the minimum synthetic reproduction needed to explain the boundary failure.
 
 ## High-priority boundaries
 
@@ -32,3 +36,8 @@ response are reviewed and tested.
 
 Safety Ops is not a safety-rated system, penetration-test report, regulatory approval, warranty,
 or substitute for qualified safety engineering.
+
+## Supported versions
+
+No version is currently supported for production or operational deployment. Security fixes apply to
+the private development line until a release and support policy are explicitly approved.
