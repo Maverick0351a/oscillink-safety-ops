@@ -8,7 +8,9 @@ from .domain import (
     ConstraintKind,
     ContentState,
     EvidenceConstraint,
+    EvidenceEnvelopeBinding,
     FindingState,
+    PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
     SafetyMemoryPacket,
     SourceRevision,
@@ -42,8 +44,15 @@ def _finding_state(
     return FindingState.MISSING_EVIDENCE
 
 
-def audit_plan(packet: SafetyMemoryPacket, plan: ProposedPlan) -> AuditReport:
+def audit_plan(
+    packet: SafetyMemoryPacket,
+    plan: ProposedPlan,
+    *,
+    envelope: PhysicalIntelligenceEvidenceEnvelope,
+) -> AuditReport:
     """Compare a proposed plan with approved memory without mutating either input."""
+    if envelope.artifact_type != "proposed_plan" or envelope.task_id != plan.plan_id:
+        raise ValueError("envelope must identify the audited proposed plan")
     sources = {source.source_id: source for source in packet.sources}
     findings = tuple(
         AuditFinding(
@@ -63,5 +72,18 @@ def audit_plan(packet: SafetyMemoryPacket, plan: ProposedPlan) -> AuditReport:
         packet_id=packet.packet_id,
         plan_id=plan.plan_id,
         policy_sha256=packet.policy_sha256,
+        envelope=EvidenceEnvelopeBinding(
+            platform_id=envelope.platform_id,
+            platform_version=envelope.platform_version,
+            adapter_id=envelope.adapter_id,
+            adapter_version=envelope.adapter_version,
+            adapter_config_sha256=envelope.adapter_config_sha256,
+            artifact_type=envelope.artifact_type,
+            source_ref=envelope.source_ref,
+            source_revision=envelope.source_revision,
+            content_sha256=envelope.content_sha256,
+            observed_at=envelope.observed_at,
+            task_id=envelope.task_id,
+        ),
         findings=findings,
     )

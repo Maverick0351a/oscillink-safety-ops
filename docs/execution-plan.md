@@ -43,6 +43,35 @@ plan, and public OSHA excerpt. Keep expected answers outside agent-readable inpu
 **Gate:** adversarial RED→GREEN tests prove unapproved content cannot become approved constraints,
 source changes stale derived packets, conflicts remain unresolved, and ambiguous OCR abstains.
 
+## Stage 1A — Governed authority-source verification
+
+Build a source-verification layer before promoting extracted requirements:
+
+- reconcile dated eCFR XML with the official annual CFR baseline, Federal Register amendments, and
+  the List of CFR Sections Affected;
+- preserve exact package identities, publication dates, section-level citations, source bytes, and
+  SHA-256 hashes;
+- distinguish `unreviewed_source`, `verified_regulatory_source`, extraction candidate, and approved
+  constraint states;
+- require an external reviewer identity, role, decision, and time before source promotion;
+- preserve unexplained differences, corrections, delayed effective dates, supersession, and stale
+  status; and
+- add metadata-only records for licensed standards such as NFPA 70E until properly licensed content
+  is available.
+
+Source verification confirms publication fidelity only. It does not establish jurisdiction,
+applicability, interpretation, compliance, or operational approval.
+
+The first contract slice now models exact annual-CFR, dated-eCFR, Federal Register, and LSA evidence;
+section-level reconciliation findings; external source-review identity; candidate-hash binding; and
+source-only promotion. It is exercised with synthetic metadata and hashes only. Official artifact
+retrieval, section parsing/diffing, amendment/effective-date logic, corrections, and stale propagation
+remain required before any real source revision can be considered for promotion.
+
+**Gate:** every promoted source revision is reproducible from pinned official publications; every
+difference is explained by cited amendment evidence or remains explicitly unresolved; no source or
+parser can promote its own requirements.
+
 ## Stage 2 — Replaceable OCR/document adapters
 
 Audit candidate extractors such as PaddleOCR, Docling, Marker, and a lightweight baseline. Record
@@ -63,6 +92,46 @@ No plan execution, work-permit issuance, compliance score, or physical command.
 
 **Gate:** deterministic hidden-label evaluation; equal budgets; explicit false-positive/false-
 negative review costs; no unsupported “safe/compliant” output.
+
+## Stage 3A — Read-only operational evidence connectors
+
+Extend the provider-neutral envelope to facility monitoring evidence without entering a safety or
+control loop. Begin with synthetic or sanitized exports for:
+
+- fire-alarm, suppression, supervisory, trouble, impairment, inspection, and test records;
+- ammonia and hazardous-gas detector events, calibration, communication, and quality states;
+- refrigeration, ventilation, pressure, temperature, level, and emergency-shutdown event history;
+- historian tag inventories and configuration revisions; and
+- management-of-change, mechanical-integrity, procedure, and authorized-review records.
+- autonomous-system event logs, run/episode identity, component versions, sequence gaps, parser
+  warnings, and source-declared protective-event history.
+
+Implement connectors in three bounded steps:
+
+1. offline CSV/JSON/XML exports;
+2. read-only historian replicas, vendor reporting APIs, file drops, or broker subscriptions in an
+   approved OT/IT boundary; and
+3. near-real-time evidence discrepancy monitoring only after practitioner, vendor, OT-security, and
+   change-management review.
+
+Every observation must preserve facility/system/device identity, source tag, units, timestamps,
+quality, calibration revision, adapter/configuration hash, immutable payload hash, communication
+gaps, and explicit missing/unsupported fields. Telemetry remains observational evidence and cannot
+establish safe entry, acceptable concentration, system readiness, or permission to operate.
+
+Autonomous-system logs must preserve exact raw bytes separately from normalized records and derived
+interpretations. Interpretations remain cited candidates under external review; they cannot update
+the autonomous policy, change a task plan, issue a protective action, or create a reverse command
+channel.
+
+Adapters must expose no alarm acknowledge/silence/reset, suppression release/abort, zone disable,
+detector inhibit, threshold/calibration write, PLC/BACnet write, OPC UA method, valve/fan/pump/
+compressor command, emergency-shutdown reset, generic protocol pass-through, or credential
+forwarding.
+
+**Gate:** adversarial tests prove the adapter surface is read-only; undeclared tags and methods fail
+closed; bad-quality or missing values never normalize to zero/normal/safe; source changes stale all
+dependent findings; existing listed/certified systems retain all alarm and protective authority.
 
 ## Stage 4 — Private local pilot
 
@@ -86,12 +155,34 @@ manual reconciliation burden.
 - work-instruction authoring;
 - legal/compliance certification;
 - employee authorization decisions;
-- live sensors/robot runtime integration;
+- direct field-device, fire-panel, safety-controller, or robot-runtime integration;
+- replacement or duplication of listed/certified alarms and protective functions;
+- alarm acknowledgement, reset, silence, inhibit, bypass, setpoint, or calibration writes;
 - policy training/promotion;
 - permits, lockout control, PLC/interlock/E-stop integration; and
 - any actuator command.
 
 ## Current next action
 
-Complete the first five practitioner interviews using `docs/interview-protocol.md`. Do not begin the
-runtime until the Stage 0 gate is evaluated honestly.
+Two bounded tracks may proceed without conflating technical evidence with product validation:
+
+1. Complete the first five practitioner interviews using `docs/interview-protocol.md` and evaluate
+   the Stage 0 gate honestly.
+2. Exercise the new bounded review-ledger validation and impact-report CLI against hidden source-
+   change scenarios, including record loss, artifact/revision changes, adapter-configuration changes,
+   correction, retraction, and malformed lineage. Do not permit reviews to carry forward onto
+   changed bytes.
+3. Add the official-CFR verification and source-promotion contract while keeping applicability and
+   extracted constraints under external review.
+4. Add NFPA 70E and related licensed standards as metadata-only sources until licensed bytes and
+   authorized review are available.
+5. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-
+   suppression, ammonia-monitoring, and autonomous-system exports plus typed external-review and
+   stale-impact contracts, with sequence-gap and parser-warning behavior before considering any
+   historian, reporting-system, broker, or robot-runtime integration.
+
+The existing envelope, deterministic CLI validation, operational JSONL normalization and storage,
+candidate-only event interpretation, external review ledger, stale-impact assessment,
+envelope-bound audit report, and OSHA source catalog are experimental contracts. They do not satisfy
+the Stage 0 market gate and do not justify workflow promotion, operational authorization,
+practitioner-value, compliance, or safety claims.

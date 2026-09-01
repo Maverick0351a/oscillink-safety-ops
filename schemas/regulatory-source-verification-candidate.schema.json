@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "RegulatoryEvidenceRole": {
+      "enum": [
+        "annual_cfr_baseline",
+        "ecfr_point_in_time",
+        "federal_register_change",
+        "lsa_change_index"
+      ],
+      "title": "RegulatoryEvidenceRole",
+      "type": "string"
+    },
+    "RegulatoryReconciliationFinding": {
+      "additionalProperties": false,
+      "description": "A deterministic section-level source comparison outcome.",
+      "properties": {
+        "authority_state": {
+          "const": "source_comparison_only",
+          "default": "source_comparison_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "finding_id": {
+          "minLength": 1,
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RegulatoryReconciliationStatus"
+        }
+      },
+      "required": [
+        "finding_id",
+        "citation",
+        "status",
+        "evidence_ids",
+        "statement"
+      ],
+      "title": "RegulatoryReconciliationFinding",
+      "type": "object"
+    },
+    "RegulatoryReconciliationStatus": {
+      "enum": [
+        "verified_match",
+        "explained_official_change",
+        "unresolved_difference",
+        "missing_evidence"
+      ],
+      "title": "RegulatoryReconciliationStatus",
+      "type": "string"
+    },
+    "RegulatorySourceEvidence": {
+      "additionalProperties": false,
+      "description": "Exact official-source bytes used by a regulatory reconciliation candidate.",
+      "properties": {
+        "artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Artifact Sha256",
+          "type": "string"
+        },
+        "authority": {
+          "minLength": 1,
+          "title": "Authority",
+          "type": "string"
+        },
+        "byte_count": {
+          "exclusiveMinimum": 0,
+          "title": "Byte Count",
+          "type": "integer"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "content_treatment": {
+          "const": "untrusted_source_bytes",
+          "default": "untrusted_source_bytes",
+          "title": "Content Treatment",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "package_id": {
+          "minLength": 1,
+          "title": "Package Id",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/RegulatoryEvidenceRole"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "section_citations": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Section Citations",
+          "type": "array"
+        },
+        "source_url": {
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "role",
+        "authority",
+        "citation",
+        "package_id",
+        "source_url",
+        "artifact_sha256",
+        "byte_count",
+        "section_citations",
+        "retrieved_at"
+      ],
+      "title": "RegulatorySourceEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Candidate verification of source bytes, never interpretation or applicability.",
+  "properties": {
+    "annual_cfr_edition": {
+      "title": "Annual Cfr Edition",
+      "type": "integer"
+    },
+    "applicability_state": {
+      "const": "undetermined",
+      "default": "undetermined",
+      "title": "Applicability State",
+      "type": "string"
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "citation": {
+      "minLength": 1,
+      "title": "Citation",
+      "type": "string"
+    },
+    "compliance_state": {
+      "const": "no_conclusion",
+      "default": "no_conclusion",
+      "title": "Compliance State",
+      "type": "string"
+    },
+    "ecfr_as_of": {
+      "format": "date",
+      "title": "Ecfr As Of",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/RegulatorySourceEvidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/RegulatoryReconciliationFinding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "interpretation_state": {
+      "const": "not_approved",
+      "default": "not_approved",
+      "title": "Interpretation State",
+      "type": "string"
+    },
+    "jurisdiction": {
+      "minLength": 1,
+      "title": "Jurisdiction",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "reconciler_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Reconciler Config Sha256",
+      "type": "string"
+    },
+    "reconciler_id": {
+      "minLength": 1,
+      "title": "Reconciler Id",
+      "type": "string"
+    },
+    "reconciler_version": {
+      "minLength": 1,
+      "title": "Reconciler Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_state": {
+      "const": "verification_candidate",
+      "default": "verification_candidate",
+      "title": "Source State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "jurisdiction",
+    "citation",
+    "annual_cfr_edition",
+    "ecfr_as_of",
+    "evidence",
+    "findings",
+    "reconciler_id",
+    "reconciler_version",
+    "reconciler_config_sha256",
+    "generated_at"
+  ],
+  "title": "RegulatorySourceVerificationCandidate",
+  "type": "object"
+}

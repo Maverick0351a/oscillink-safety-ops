@@ -1,0 +1,683 @@
+{
+  "authority_notice": "Source discovery only; no regulation is approved, applicable, or interpreted by this catalog.",
+  "catalog_id": "osha-regulations-standardnumber",
+  "ecfr_as_of": "2026-08-27",
+  "ecfr_status_notice": "The eCFR is continuously updated and is not an official legal edition of the CFR.",
+  "index_sha256": "sha256:d446963561aee6ff12b8612779c4225a43ba22e2f829ba35a32bf257f53d7960",
+  "index_url": "https://www.osha.gov/laws-regs/regulations/standardnumber",
+  "official_annual_cfr_url": "https://www.govinfo.gov/app/collection/cfr",
+  "schema_version": 1,
+  "source_count": 67,
+  "sources": [
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=24",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-24",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/24",
+      "part": "24",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under The Federal Employee Protection Provisions of Six Environmental Statutes and Section 211 of The Energy Reorganization Act of 1974, As Amended"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=70",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-70",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/70",
+      "part": "70",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Production or Disclosure of Information or Materials"
+    },
+    {
+      "content_endpoint": null,
+      "content_status": "unavailable_in_ecfr_snapshot",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-70a",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/70a",
+      "part": "70a",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Protection of Individual Privacy in Records"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=71",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-71",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/71",
+      "part": "71",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Protection of Individual Privacy and Access to Records Under the Privacy Act of 1974"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1900",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1900",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1900",
+      "part": "1900",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1901",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1901",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1901",
+      "part": "1901",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1902",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1902",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1902",
+      "part": "1902",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "State Plans for the Development and Enforcement of State Standards"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1903",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1903",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1903",
+      "part": "1903",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Inspections, Citations, and Proposed Penalties"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1904",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1904",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1904",
+      "part": "1904",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Recording and Reporting Occupational Injuries and Illnesses"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1905",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1905",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1905",
+      "part": "1905",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Rules of Practice for Variances Limitations Variations Tolerances and Exemptions Under the Williams Steiger Occupational Safety and Health Act of 1970"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1906",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1906",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1906",
+      "part": "1906",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Administration Witnesses and Documents in Private Litigation [Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1908",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1908",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1908",
+      "part": "1908",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Consultation Agreements"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1910",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1910",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1910",
+      "part": "1910",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Occupational Safety and Health Standards"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1911",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1911",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1911",
+      "part": "1911",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Rules of Procedure for Promulgating Modifying or Revoking Occupational Safety or Health Standards"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1912",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1912",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1912",
+      "part": "1912",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Advisory Committees on Standards"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1912a",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1912a",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1912a",
+      "part": "1912a",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "National Advisory Committee on Occupational Safety and Health"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1913",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1913",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1913",
+      "part": "1913",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Rules of Agency Practice and Procedure Concerning Osha Access to Employee Medical Records"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1915",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1915",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1915",
+      "part": "1915",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Occupational Safety and Health Standards for Shipyard Employment"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1917",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1917",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1917",
+      "part": "1917",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Marine Terminals"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1918",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1918",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1918",
+      "part": "1918",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Safety and Health Regulations for Longshoring"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1919",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1919",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1919",
+      "part": "1919",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Gear Certification"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1920",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1920",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1920",
+      "part": "1920",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedure for Variations from Safety and Health Regulations Under the Longshoremen's and Harbor Workers Compensation Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1921",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1921",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1921",
+      "part": "1921",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Rules of Practice in Enforcement Proceedings Under Section 41 of the Longshoremen's and Harbor Workers Compensation Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1922",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1922",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1922",
+      "part": "1922",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Investigational Hearings Under Section 41 of the Longshoremen's and Harbor Workers Compensation Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1924",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1924",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1924",
+      "part": "1924",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Safety Standards Applicable to Workshops and Rehabilitation Facilities Assisted by Grants"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1925",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1925",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1925",
+      "part": "1925",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Safety and Health Standards for Federal Service Contracts"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1926",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1926",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1926",
+      "part": "1926",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Safety and Health Regulations for Construction"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1927",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1927",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1927",
+      "part": "1927",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1928",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1928",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1928",
+      "part": "1928",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Occupational Safety and Health Standards for Agriculture"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1949",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1949",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1949",
+      "part": "1949",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Office of Training and Education Occupational Safety and Health Administration"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1952",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1952",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1952",
+      "part": "1952",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Approved State Plans for Enforcement of State Standards"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1953",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1953",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1953",
+      "part": "1953",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Changes to State Plans"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1954",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1954",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1954",
+      "part": "1954",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Evaluation and Monitoring of Approved State Plans"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1955",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1955",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1955",
+      "part": "1955",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for Withdrawal of Approval of State Plans"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1956",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1956",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1956",
+      "part": "1956",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "State Plans for the Development and Enforcement of State Standards Applicable to State and Local Government Employees in States Without Approved Private Employee Plans"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1960",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1960",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1960",
+      "part": "1960",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Basic Program Elements for Federal Employee Occupational Safety and Health Programs and Related Matters"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1975",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1975",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1975",
+      "part": "1975",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Coverage of Employers Under the Williams Steiger Occupational Safety and Health Act of 1970"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1977",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1977",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1977",
+      "part": "1977",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Discrimination Against Employees Exercising Rights Under the Williams Steiger Occupational Safety and Health Act of 1970"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1978",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1978",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1978",
+      "part": "1978",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under the Employee Protection Provision of the Surface Transportation Assistance Act of 1982 (STAA), As Amended"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1979",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1979",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1979",
+      "part": "1979",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Discrimination Complaints Under Section 519 of the Wendell H Ford Aviation Investment and Reform Act for the 21st Century"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1980",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1980",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1980",
+      "part": "1980",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under Section 806 of the Sarbanes Oxley Act of 2002, As Amended"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1981",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1981",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1981",
+      "part": "1981",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Discrimination Complaints Under Section 6 of the Pipeline Safety Improvement Act of 2002"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1982",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1982",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1982",
+      "part": "1982",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under the National Transit Systems Security Act and the Federal Railroad Safety Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1983",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1983",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1983",
+      "part": "1983",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under Section 219 of the Consumer Product Safety Improvement Act of 2008"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1984",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1984",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1984",
+      "part": "1984",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under Section 1558 of the Affordable Care Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1985",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1985",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1985",
+      "part": "1985",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for Handling Retaliation Complaints Under the Employee Protection Provision of the Consumer Financial Protection Act of 2010"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1986",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1986",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1986",
+      "part": "1986",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under the Employee Protection Provision of the Seamans Protection Act (SPA), As Amended"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1987",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1987",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1987",
+      "part": "1987",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for Handling Retaliation Complaints Under Section 402 of the FDA Food Safety Modernization Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1988",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1988",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1988",
+      "part": "1988",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for Handling Retaliation Complaints Under Section 31307 of the Moving Ahead for Progress in the 21st Century Act (MAP-21)"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1989",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1989",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1989",
+      "part": "1989",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures for the Handling of Retaliation Complaints Under the Taxpayer First Act (TFA)"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1990",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1990",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1990",
+      "part": "1990",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Identification Classification and Regulation of Potential Occupational Carcinogens"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1991",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1991",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1991",
+      "part": "1991",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures For The Handling Of Retaliation Complaints Under The Criminal Antitrust Anti-retaliation Act (CAARA)."
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1992",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1992",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1992",
+      "part": "1992",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Procedures For The Handling Of Retaliation Complaints Under The Anti-Money Laundering Act (AMLA)."
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1993",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1993",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1993",
+      "part": "1993",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1994",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1994",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1994",
+      "part": "1994",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1995",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1995",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1995",
+      "part": "1995",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1996",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1996",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1996",
+      "part": "1996",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1997",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1997",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1997",
+      "part": "1997",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1998",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1998",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1998",
+      "part": "1998",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=1999",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-1999",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1999",
+      "part": "1999",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2200",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2200",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2200",
+      "part": "2200",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Rules of Procedure"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2201",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2201",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2201",
+      "part": "2201",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Regulations Implementing the Freedom of Information Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2202",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2202",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2202",
+      "part": "2202",
+      "reserved": true,
+      "review_state": "unreviewed_source",
+      "title": "[Reserved]"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2203",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2203",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2203",
+      "part": "2203",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Regulations Implementing the Government in the Sunshine Act"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2204",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2204",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2204",
+      "part": "2204",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Implementation of the Equal Access to Justice Act in Proceedings Before the Occupational Safety and Health Review Commission"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2205",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2205",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2205",
+      "part": "2205",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Enforcement of Nondiscrimination on the Basis of Disability in Programs or Activities Conducted by the Occupational Safety and Health Review Commission and in Accessibility of Commission Electronic and Information Technology"
+    },
+    {
+      "content_endpoint": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-27/title-29.xml?part=2400",
+      "content_status": "available",
+      "ecfr_url": "https://www.ecfr.gov/current/title-29/part-2400",
+      "osha_url": "https://www.osha.gov/laws-regs/regulations/standardnumber/2400",
+      "part": "2400",
+      "reserved": false,
+      "review_state": "unreviewed_source",
+      "title": "Regulations Implementing the Privacy Act"
+    }
+  ]
+}

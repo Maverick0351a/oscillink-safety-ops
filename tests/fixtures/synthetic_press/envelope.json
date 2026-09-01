@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "platform_id": "synthetic-json-sidecar",
+  "platform_version": "1",
+  "adapter_id": "oscillink-safety-ops-json-reader",
+  "adapter_version": "0.1.0",
+  "adapter_config_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "artifact_type": "proposed_plan",
+  "source_ref": "plan.json",
+  "source_revision": "synthetic-plan-v1",
+  "content_sha256": "sha256:551b03d141e51dfb73b193282509b7a94d9c7d39ce89dc1bb882bde7dc5852fe",
+  "observed_at": "2026-08-31T00:00:00Z",
+  "asset_ids": ["asset:SYN-PRESS-7:SP7-0042"],
+  "task_id": "plan-synthetic-maintenance-001",
+  "provenance_refs": ["fixture:synthetic-press-7-v1"],
+  "payload_ref": "plan.json",
+  "missing_fields": ["run_id", "episode_id", "simulation_id"],
+  "unsupported_fields": ["platform_private_state"],
+  "access_mode": "read_only",
+  "content_treatment": "untrusted_data"
+}

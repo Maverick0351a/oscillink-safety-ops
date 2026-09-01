@@ -1,0 +1,182 @@
+{
+  "$defs": {
+    "OperationalChangeImpact": {
+      "additionalProperties": false,
+      "description": "Deterministic evidence that a candidate/review lineage is current or stale.",
+      "properties": {
+        "affected_review_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Affected Review Ids",
+          "type": "array"
+        },
+        "authority_state": {
+          "const": "change_evidence_only",
+          "default": "change_evidence_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "candidate_id": {
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "current_adapter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Current Adapter Config Sha256",
+          "type": "string"
+        },
+        "current_record_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current Record Sha256"
+        },
+        "current_source_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Current Source Artifact Sha256",
+          "type": "string"
+        },
+        "current_source_revision": {
+          "minLength": 1,
+          "title": "Current Source Revision",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "prior_adapter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prior Adapter Config Sha256",
+          "type": "string"
+        },
+        "prior_record_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prior Record Sha256",
+          "type": "string"
+        },
+        "prior_source_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prior Source Artifact Sha256",
+          "type": "string"
+        },
+        "prior_source_revision": {
+          "minLength": 1,
+          "title": "Prior Source Revision",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "state": {
+          "$ref": "#/$defs/OperationalImpactState"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "state",
+        "prior_source_revision",
+        "current_source_revision",
+        "prior_source_artifact_sha256",
+        "current_source_artifact_sha256",
+        "prior_adapter_config_sha256",
+        "current_adapter_config_sha256",
+        "prior_record_sha256",
+        "current_record_sha256"
+      ],
+      "title": "OperationalChangeImpact",
+      "type": "object"
+    },
+    "OperationalImpactState": {
+      "enum": [
+        "current",
+        "stale_record_changed",
+        "stale_record_missing",
+        "stale_artifact_changed",
+        "stale_source_revision_changed",
+        "stale_adapter_config_changed"
+      ],
+      "title": "OperationalImpactState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Portable change-impact report bound to an exact ledger and current source batch.",
+  "properties": {
+    "authority_state": {
+      "const": "change_evidence_only",
+      "default": "change_evidence_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "current_adapter_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Current Adapter Config Sha256",
+      "type": "string"
+    },
+    "current_batch_id": {
+      "minLength": 1,
+      "title": "Current Batch Id",
+      "type": "string"
+    },
+    "current_source_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Current Source Artifact Sha256",
+      "type": "string"
+    },
+    "current_source_revision": {
+      "minLength": 1,
+      "title": "Current Source Revision",
+      "type": "string"
+    },
+    "impacts": {
+      "items": {
+        "$ref": "#/$defs/OperationalChangeImpact"
+      },
+      "title": "Impacts",
+      "type": "array"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "review_ledger_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Review Ledger Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "review_ledger_sha256",
+    "current_batch_id",
+    "current_source_revision",
+    "current_source_artifact_sha256",
+    "current_adapter_config_sha256",
+    "impacts"
+  ],
+  "title": "OperationalImpactReport",
+  "type": "object"
+}

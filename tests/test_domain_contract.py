@@ -12,11 +12,13 @@ from oscillink_safety_ops.domain import (
     Citation,
     ConstraintKind,
     EvidenceConstraint,
+    PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
     SafetyMemoryPacket,
     SourceClass,
     SourceRevision,
 )
+from scripts.export_schemas import SCHEMAS
 
 SHA_A = "sha256:" + "a" * 64
 SHA_B = "sha256:" + "b" * 64
@@ -181,4 +183,120 @@ def test_plan_rejects_duplicate_declared_evidence_keys() -> None:
             plan_id="plan-maintenance-001",
             asset_model="SYN-PRESS-7",
             declared_evidence_keys=("isolation.main", "isolation.main"),
+        )
+
+
+def test_physical_intelligence_envelope_preserves_provider_neutral_evidence_identity() -> None:
+    envelope = PhysicalIntelligenceEvidenceEnvelope(
+        platform_id="example-physical-intelligence-platform",
+        platform_version="2026.08",
+        adapter_id="example-json-export-reader",
+        adapter_version="1.0.0",
+        adapter_config_sha256=SHA_A,
+        artifact_type="recorded_episode_manifest",
+        source_ref="exports/run-0042/manifest.json",
+        source_revision="revision-17",
+        content_sha256=SHA_B,
+        observed_at=NOW,
+        asset_ids=("robot-cell:synthetic-7",),
+        task_id="task-maintenance-001",
+        run_id="run-0042",
+        episode_id="episode-0003",
+        provenance_refs=("manifest:synthetic-press:revision-17",),
+        payload_ref="payloads/episode-0003.json",
+        missing_fields=("simulation_id",),
+        unsupported_fields=("platform_private_state",),
+    )
+
+    assert envelope.platform_id == "example-physical-intelligence-platform"
+    assert envelope.content_sha256 == SHA_B
+    assert envelope.access_mode == "read_only"
+    assert envelope.content_treatment == "untrusted_data"
+
+    with pytest.raises(ValidationError):
+        PhysicalIntelligenceEvidenceEnvelope.model_validate(
+            {**envelope.model_dump(), "access_mode": "read_write"}
+        )
+    with pytest.raises(ValidationError):
+        PhysicalIntelligenceEvidenceEnvelope.model_validate(
+            {**envelope.model_dump(), "write_token": "forbidden"}
+        )
+
+
+def test_physical_intelligence_envelope_rejects_blank_required_identity() -> None:
+    with pytest.raises(ValidationError):
+        PhysicalIntelligenceEvidenceEnvelope(
+            platform_id="",
+            platform_version="2026.08",
+            adapter_id="example-json-export-reader",
+            adapter_version="1.0.0",
+            adapter_config_sha256=SHA_A,
+            artifact_type="recorded_episode_manifest",
+            source_ref="exports/run-0042/manifest.json",
+            source_revision="revision-17",
+            content_sha256=SHA_B,
+            observed_at=NOW,
+            payload_ref="payloads/episode-0003.json",
+        )
+
+
+def test_physical_intelligence_envelope_rejects_conflicting_field_accounting() -> None:
+    with pytest.raises(ValidationError, match="both missing and unsupported"):
+        PhysicalIntelligenceEvidenceEnvelope(
+            platform_id="example-physical-intelligence-platform",
+            platform_version="2026.08",
+            adapter_id="example-json-export-reader",
+            adapter_version="1.0.0",
+            adapter_config_sha256=SHA_A,
+            artifact_type="recorded_episode_manifest",
+            source_ref="exports/run-0042/manifest.json",
+            source_revision="revision-17",
+            content_sha256=SHA_B,
+            observed_at=NOW,
+            payload_ref="payloads/episode-0003.json",
+            missing_fields=("simulation_id",),
+            unsupported_fields=("simulation_id",),
+        )
+
+
+def test_physical_intelligence_envelope_rejects_duplicate_provenance_references() -> None:
+    with pytest.raises(ValidationError, match="duplicate provenance_refs"):
+        PhysicalIntelligenceEvidenceEnvelope(
+            platform_id="example-physical-intelligence-platform",
+            platform_version="2026.08",
+            adapter_id="example-json-export-reader",
+            adapter_version="1.0.0",
+            adapter_config_sha256=SHA_A,
+            artifact_type="recorded_episode_manifest",
+            source_ref="exports/run-0042/manifest.json",
+            source_revision="revision-17",
+            content_sha256=SHA_B,
+            observed_at=NOW,
+            payload_ref="payloads/episode-0003.json",
+            provenance_refs=("manifest:revision-17", "manifest:revision-17"),
+        )
+
+
+def test_physical_intelligence_envelope_has_a_portable_json_schema() -> None:
+    schema = SCHEMAS["physical-intelligence-evidence-envelope.schema.json"]
+
+    assert schema["additionalProperties"] is False
+    assert schema["properties"]["access_mode"]["const"] == "read_only"
+    assert schema["properties"]["content_treatment"]["const"] == "untrusted_data"
+
+
+def test_physical_intelligence_envelope_requires_an_unambiguous_observation_time() -> None:
+    with pytest.raises(ValidationError):
+        PhysicalIntelligenceEvidenceEnvelope(
+            platform_id="example-physical-intelligence-platform",
+            platform_version="2026.08",
+            adapter_id="example-json-export-reader",
+            adapter_version="1.0.0",
+            adapter_config_sha256=SHA_A,
+            artifact_type="recorded_episode_manifest",
+            source_ref="exports/run-0042/manifest.json",
+            source_revision="revision-17",
+            content_sha256=SHA_B,
+            observed_at=datetime(2026, 8, 31),
+            payload_ref="payloads/episode-0003.json",
         )

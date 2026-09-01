@@ -25,6 +25,7 @@ packages = ["src/oscillink_safety_ops"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers"
+pythonpath = ["."]
 testpaths = ["tests"]
 
 [tool.ruff]

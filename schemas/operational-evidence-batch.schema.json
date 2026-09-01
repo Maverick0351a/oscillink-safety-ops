@@ -1,0 +1,275 @@
+{
+  "$defs": {
+    "ObservationQuality": {
+      "enum": [
+        "good",
+        "bad",
+        "uncertain",
+        "missing"
+      ],
+      "title": "ObservationQuality",
+      "type": "string"
+    },
+    "OperationalEvidenceRecord": {
+      "additionalProperties": false,
+      "description": "One untrusted record from a read-only facility or autonomous-system export.",
+      "properties": {
+        "access_mode": {
+          "const": "read_only",
+          "default": "read_only",
+          "title": "Access Mode",
+          "type": "string"
+        },
+        "authority_state": {
+          "const": "observational_evidence",
+          "default": "observational_evidence",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "calibration_revision": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calibration Revision"
+        },
+        "component_id": {
+          "minLength": 1,
+          "title": "Component Id",
+          "type": "string"
+        },
+        "content_treatment": {
+          "const": "untrusted_data",
+          "default": "untrusted_data",
+          "title": "Content Treatment",
+          "type": "string"
+        },
+        "event_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Code"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "missing_fields": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "quality": {
+          "$ref": "#/$defs/ObservationQuality"
+        },
+        "raw_record_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Record Sha256",
+          "type": "string"
+        },
+        "raw_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Value"
+        },
+        "record_id": {
+          "minLength": 1,
+          "title": "Record Id",
+          "type": "string"
+        },
+        "record_kind": {
+          "$ref": "#/$defs/OperationalRecordKind"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope_id": {
+          "minLength": 1,
+          "title": "Scope Id",
+          "type": "string"
+        },
+        "source_tag": {
+          "minLength": 1,
+          "title": "Source Tag",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/OperationalSourceType"
+        },
+        "system_id": {
+          "minLength": 1,
+          "title": "System Id",
+          "type": "string"
+        },
+        "units": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Units"
+        },
+        "unsupported_fields": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Unsupported Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "record_id",
+        "source_type",
+        "record_kind",
+        "scope_id",
+        "system_id",
+        "component_id",
+        "source_tag",
+        "observed_at",
+        "raw_record_sha256",
+        "raw_value",
+        "quality"
+      ],
+      "title": "OperationalEvidenceRecord",
+      "type": "object"
+    },
+    "OperationalRecordKind": {
+      "enum": [
+        "measurement",
+        "event",
+        "log"
+      ],
+      "title": "OperationalRecordKind",
+      "type": "string"
+    },
+    "OperationalSourceType": {
+      "enum": [
+        "fire_suppression",
+        "ammonia_detection",
+        "autonomous_system"
+      ],
+      "title": "OperationalSourceType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Deterministic batch normalized from one immutable operational export.",
+  "properties": {
+    "access_mode": {
+      "const": "read_only",
+      "default": "read_only",
+      "title": "Access Mode",
+      "type": "string"
+    },
+    "adapter_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Adapter Config Sha256",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "observational_evidence",
+      "default": "observational_evidence",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "batch_id": {
+      "minLength": 1,
+      "title": "Batch Id",
+      "type": "string"
+    },
+    "content_treatment": {
+      "const": "untrusted_data",
+      "default": "untrusted_data",
+      "title": "Content Treatment",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/OperationalEvidenceRecord"
+      },
+      "title": "Records",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Artifact Sha256",
+      "type": "string"
+    },
+    "source_revision": {
+      "minLength": 1,
+      "title": "Source Revision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "batch_id",
+    "source_revision",
+    "source_artifact_sha256",
+    "adapter_config_sha256",
+    "records"
+  ],
+  "title": "OperationalEvidenceBatch",
+  "type": "object"
+}

@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "description": "Reviewable interpretation candidate bound to one immutable raw record.",
+  "properties": {
+    "adapter_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Adapter Config Sha256",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "no_operational_authority",
+      "default": "no_operational_authority",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "category": {
+      "minLength": 1,
+      "title": "Category",
+      "type": "string"
+    },
+    "interpreted_at": {
+      "format": "date-time",
+      "title": "Interpreted At",
+      "type": "string"
+    },
+    "interpreter_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Interpreter Config Sha256",
+      "type": "string"
+    },
+    "interpreter_id": {
+      "minLength": 1,
+      "title": "Interpreter Id",
+      "type": "string"
+    },
+    "interpreter_version": {
+      "minLength": 1,
+      "title": "Interpreter Version",
+      "type": "string"
+    },
+    "raw_record_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Record Sha256",
+      "type": "string"
+    },
+    "record_id": {
+      "minLength": 1,
+      "title": "Record Id",
+      "type": "string"
+    },
+    "review_state": {
+      "const": "candidate",
+      "default": "candidate",
+      "title": "Review State",
+      "type": "string"
+    },
+    "rule_id": {
+      "minLength": 1,
+      "title": "Rule Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Artifact Sha256",
+      "type": "string"
+    },
+    "source_revision": {
+      "minLength": 1,
+      "title": "Source Revision",
+      "type": "string"
+    },
+    "statement": {
+      "minLength": 1,
+      "title": "Statement",
+      "type": "string"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "rule_id",
+    "record_id",
+    "raw_record_sha256",
+    "source_revision",
+    "source_artifact_sha256",
+    "adapter_config_sha256",
+    "category",
+    "statement",
+    "interpreter_id",
+    "interpreter_version",
+    "interpreter_config_sha256",
+    "interpreted_at"
+  ],
+  "title": "OperationalInterpretationCandidate",
+  "type": "object"
+}

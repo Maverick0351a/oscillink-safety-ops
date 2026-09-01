@@ -1,0 +1,268 @@
+{
+  "$defs": {
+    "OperationalInterpretationCandidate": {
+      "additionalProperties": false,
+      "description": "Reviewable interpretation candidate bound to one immutable raw record.",
+      "properties": {
+        "adapter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Adapter Config Sha256",
+          "type": "string"
+        },
+        "authority_state": {
+          "const": "no_operational_authority",
+          "default": "no_operational_authority",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "candidate_id": {
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "category": {
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        },
+        "interpreted_at": {
+          "format": "date-time",
+          "title": "Interpreted At",
+          "type": "string"
+        },
+        "interpreter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Interpreter Config Sha256",
+          "type": "string"
+        },
+        "interpreter_id": {
+          "minLength": 1,
+          "title": "Interpreter Id",
+          "type": "string"
+        },
+        "interpreter_version": {
+          "minLength": 1,
+          "title": "Interpreter Version",
+          "type": "string"
+        },
+        "raw_record_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Record Sha256",
+          "type": "string"
+        },
+        "record_id": {
+          "minLength": 1,
+          "title": "Record Id",
+          "type": "string"
+        },
+        "review_state": {
+          "const": "candidate",
+          "default": "candidate",
+          "title": "Review State",
+          "type": "string"
+        },
+        "rule_id": {
+          "minLength": 1,
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "source_artifact_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Artifact Sha256",
+          "type": "string"
+        },
+        "source_revision": {
+          "minLength": 1,
+          "title": "Source Revision",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "rule_id",
+        "record_id",
+        "raw_record_sha256",
+        "source_revision",
+        "source_artifact_sha256",
+        "adapter_config_sha256",
+        "category",
+        "statement",
+        "interpreter_id",
+        "interpreter_version",
+        "interpreter_config_sha256",
+        "interpreted_at"
+      ],
+      "title": "OperationalInterpretationCandidate",
+      "type": "object"
+    },
+    "OperationalInterpretationReview": {
+      "additionalProperties": false,
+      "description": "Externally authored review of an interpretation, never of operational permission.",
+      "properties": {
+        "authority_state": {
+          "const": "review_record_only",
+          "default": "review_record_only",
+          "title": "Authority State",
+          "type": "string"
+        },
+        "candidate_id": {
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "candidate_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Candidate Sha256",
+          "type": "string"
+        },
+        "corrected_statement": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Corrected Statement"
+        },
+        "decision": {
+          "$ref": "#/$defs/OperationalReviewDecision"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "review_id": {
+          "minLength": 1,
+          "title": "Review Id",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "format": "date-time",
+          "title": "Reviewed At",
+          "type": "string"
+        },
+        "reviewer_authority_ref": {
+          "minLength": 1,
+          "title": "Reviewer Authority Ref",
+          "type": "string"
+        },
+        "reviewer_id": {
+          "minLength": 1,
+          "title": "Reviewer Id",
+          "type": "string"
+        },
+        "reviewer_role": {
+          "minLength": 1,
+          "title": "Reviewer Role",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "supersedes_review_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes Review Id"
+        }
+      },
+      "required": [
+        "review_id",
+        "candidate_id",
+        "candidate_sha256",
+        "decision",
+        "reviewer_id",
+        "reviewer_role",
+        "reviewer_authority_ref",
+        "reviewed_at",
+        "rationale"
+      ],
+      "title": "OperationalInterpretationReview",
+      "type": "object"
+    },
+    "OperationalReviewDecision": {
+      "enum": [
+        "accepted_interpretation",
+        "rejected_interpretation",
+        "corrected_interpretation",
+        "retracted_interpretation"
+      ],
+      "title": "OperationalReviewDecision",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Immutable candidate and external-review lineage with exact content binding.",
+  "properties": {
+    "authority_state": {
+      "const": "evidence_review_only",
+      "default": "evidence_review_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/OperationalInterpretationCandidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "reviews": {
+      "items": {
+        "$ref": "#/$defs/OperationalInterpretationReview"
+      },
+      "title": "Reviews",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "candidates",
+    "reviews"
+  ],
+  "title": "OperationalReviewLedger",
+  "type": "object"
+}

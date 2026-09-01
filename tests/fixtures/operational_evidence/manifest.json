@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "fixture_id": "synthetic-operational-evidence-v1",
+  "license": "CC0-1.0",
+  "files": [
+    {
+      "path": "synthetic-operational.jsonl",
+      "sha256": "8ff2688b105fb9adc16d836c519352f31366c397625e90f2ce101b4b2ae5cb61"
+    }
+  ],
+  "note": "Project-authored synthetic fire, ammonia, and autonomous-system records only. Interpretation and review expectations are intentionally outside the fixture."
+}

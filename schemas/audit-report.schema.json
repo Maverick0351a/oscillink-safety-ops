@@ -60,6 +60,81 @@
       "title": "Citation",
       "type": "object"
     },
+    "EvidenceEnvelopeBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Adapter Config Sha256",
+          "type": "string"
+        },
+        "adapter_id": {
+          "minLength": 1,
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "adapter_version": {
+          "minLength": 1,
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "artifact_type": {
+          "minLength": 1,
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "platform_id": {
+          "minLength": 1,
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "platform_version": {
+          "minLength": 1,
+          "title": "Platform Version",
+          "type": "string"
+        },
+        "source_ref": {
+          "minLength": 1,
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_revision": {
+          "minLength": 1,
+          "title": "Source Revision",
+          "type": "string"
+        },
+        "task_id": {
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform_id",
+        "platform_version",
+        "adapter_id",
+        "adapter_version",
+        "adapter_config_sha256",
+        "artifact_type",
+        "source_ref",
+        "source_revision",
+        "content_sha256",
+        "observed_at",
+        "task_id"
+      ],
+      "title": "EvidenceEnvelopeBinding",
+      "type": "object"
+    },
     "FindingState": {
       "enum": [
         "matched",
@@ -78,6 +153,9 @@
   },
   "additionalProperties": false,
   "properties": {
+    "envelope": {
+      "$ref": "#/$defs/EvidenceEnvelopeBinding"
+    },
     "findings": {
       "items": {
         "$ref": "#/$defs/AuditFinding"
@@ -99,8 +177,8 @@
       "type": "string"
     },
     "schema_version": {
-      "const": 1,
-      "default": 1,
+      "const": 2,
+      "default": 2,
       "title": "Schema Version",
       "type": "integer"
     }
@@ -109,6 +187,7 @@
     "packet_id",
     "plan_id",
     "policy_sha256",
+    "envelope",
     "findings"
   ],
   "title": "AuditReport",

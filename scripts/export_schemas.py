@@ -5,12 +5,42 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from oscillink_safety_ops.domain import AuditReport, ProposedPlan, SafetyMemoryPacket
+from oscillink_safety_ops.domain import (
+    AuditReport,
+    OperationalChangeImpact,
+    OperationalEvidenceBatch,
+    OperationalImpactReport,
+    OperationalInterpretationCandidate,
+    OperationalReviewLedger,
+    PhysicalIntelligenceEvidenceEnvelope,
+    ProposedPlan,
+    RegulatorySourceVerificationCandidate,
+    RegulatorySourceVerificationReview,
+    SafetyMemoryPacket,
+    VerifiedRegulatorySource,
+)
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
+    "operational-change-impact.schema.json": OperationalChangeImpact.model_json_schema(),
+    "operational-evidence-batch.schema.json": OperationalEvidenceBatch.model_json_schema(),
+    "operational-interpretation-candidate.schema.json": (
+        OperationalInterpretationCandidate.model_json_schema()
+    ),
+    "operational-impact-report.schema.json": OperationalImpactReport.model_json_schema(),
+    "operational-review-ledger.schema.json": OperationalReviewLedger.model_json_schema(),
+    "physical-intelligence-evidence-envelope.schema.json": (
+        PhysicalIntelligenceEvidenceEnvelope.model_json_schema()
+    ),
     "proposed-plan.schema.json": ProposedPlan.model_json_schema(),
+    "regulatory-source-verification-candidate.schema.json": (
+        RegulatorySourceVerificationCandidate.model_json_schema()
+    ),
+    "regulatory-source-verification-review.schema.json": (
+        RegulatorySourceVerificationReview.model_json_schema()
+    ),
     "safety-memory-packet.schema.json": SafetyMemoryPacket.model_json_schema(),
+    "verified-regulatory-source.schema.json": VerifiedRegulatorySource.model_json_schema(),
 }
 
 

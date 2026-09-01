@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import shutil
 import subprocess
@@ -60,8 +61,8 @@ def check_text_hygiene() -> None:
 
 
 def check_schemas() -> None:
-    sys.path.insert(0, str(ROOT / "scripts"))
-    from export_schemas import SCHEMAS, render
+    sys.path.insert(0, str(ROOT))
+    from scripts.export_schemas import SCHEMAS, render
 
     for name, schema in SCHEMAS.items():
         expected = render(schema)
@@ -71,8 +72,31 @@ def check_schemas() -> None:
     print("schemas: ok")
 
 
+def verify_envelope_fixture(fixture: Path) -> str:
+    from oscillink_safety_ops.io import load_envelope, verify_envelope_payload
+
+    envelope = load_envelope(fixture / "envelope.json")
+    return verify_envelope_payload(envelope, root=fixture)
+
+
+def check_osha_catalog() -> None:
+    from oscillink_safety_ops.regulations import validate_osha_catalog
+
+    path = ROOT / "knowledge" / "osha" / "catalog.json"
+    catalog = json.loads(path.read_text(encoding="utf-8"))
+    if validate_osha_catalog(catalog) != 67:
+        raise SystemExit("OSHA catalog does not match the reviewed 67-part source snapshot")
+    print("OSHA catalog: ok")
+
+
 def check_fixture() -> None:
-    from oscillink_safety_ops.io import load_packet, load_plan, verify_manifest
+    from oscillink_safety_ops.domain import OperationalSourceType
+    from oscillink_safety_ops.io import (
+        load_operational_jsonl,
+        load_packet,
+        load_plan,
+        verify_manifest,
+    )
 
     fixture = ROOT / "tests" / "fixtures" / "synthetic_press"
     verified = verify_manifest(fixture / "manifest.json")
@@ -81,12 +105,33 @@ def check_fixture() -> None:
     missing = {source.sha256 for source in packet.sources} - verified
     if missing:
         raise SystemExit("fixture packet contains an unpinned source hash")
+    verify_envelope_fixture(fixture)
     print("fixture: ok")
+
+    operational = ROOT / "tests" / "fixtures" / "operational_evidence"
+    operational_hashes = verify_manifest(operational / "manifest.json")
+    batch = load_operational_jsonl(
+        operational / "synthetic-operational.jsonl",
+        batch_id="batch:synthetic-operational-001",
+        source_revision="export:synthetic-operational-001",
+        adapter_config_sha256=("sha256:" + "a" * 64),
+    )
+    expected_sources = {
+        OperationalSourceType.FIRE_SUPPRESSION,
+        OperationalSourceType.AMMONIA_DETECTION,
+        OperationalSourceType.AUTONOMOUS_SYSTEM,
+    }
+    if {record.source_type for record in batch.records} != expected_sources:
+        raise SystemExit("operational fixture does not cover all declared synthetic sources")
+    if batch.source_artifact_sha256 not in operational_hashes:
+        raise SystemExit("operational fixture source hash is not pinned by its manifest")
+    print("operational fixture: ok")
 
 
 def main() -> None:
     check_text_hygiene()
     check_schemas()
+    check_osha_catalog()
     check_fixture()
     run("uv", "run", "ruff", "check", ".")
     run("uv", "run", "ruff", "format", "--check", ".")

@@ -31,15 +31,116 @@ Python 3.11 and `uv` are required. The fixture contains only project-authored sy
 
 ```bash
 uv sync --dev
-uv run safety-ops audit \
+PYTHONPATH= uv run safety-ops envelope validate \
+  --envelope tests/fixtures/synthetic_press/envelope.json \
+  --root tests/fixtures/synthetic_press
+PYTHONPATH= uv run safety-ops audit \
   --packet tests/fixtures/synthetic_press/packet.json \
   --plan tests/fixtures/synthetic_press/plan.json \
-  --manifest tests/fixtures/synthetic_press/manifest.json
-uv run python scripts/verify.py
+  --manifest tests/fixtures/synthetic_press/manifest.json \
+  --envelope tests/fixtures/synthetic_press/envelope.json \
+  --root tests/fixtures/synthetic_press
+PYTHONPATH= uv run safety-ops operational normalize \
+  --input tests/fixtures/operational_evidence/synthetic-operational.jsonl \
+  --batch-id batch:synthetic-operational-001 \
+  --source-revision export:synthetic-operational-001 \
+  --adapter-config-sha256 sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \
+  --store-root runtime/operational-evidence
+PYTHONPATH= uv run python scripts/verify.py
 ```
 
-The CLI reads immutable local inputs and emits cited evidence findings as JSON. It has no network,
-robotics, permit, control, or physical-action integration.
+The CLI reads immutable local inputs and emits cited evidence findings as JSON. Audit reports bind
+the exact platform, adapter configuration, source revision, and payload hash from the validated
+envelope. The audit path has no network, robotics, permit, control, or physical-action integration.
+
+## Physical Intelligence Evidence Envelope
+
+The provider-neutral
+[`PhysicalIntelligenceEvidenceEnvelope`](schemas/physical-intelligence-evidence-envelope.schema.json)
+binds one exported platform artifact to:
+
+- exact platform, adapter, version, and adapter-configuration identities;
+- artifact type, portable source/payload references, immutable source revision, and content hash;
+- timezone-aware observation time plus optional asset, task, run, episode, and simulation identities;
+- portable provenance references and explicit missing or unsupported fields; and
+- fixed `read_only` access and `untrusted_data` treatment.
+
+Unknown fields are rejected. The envelope cannot carry a write token, callback, command method, or
+operational authorization, and `verify_envelope_payload` fails closed if the referenced local bytes
+escape the supplied root, are absent, or no longer match the declared SHA-256. Platform adapters
+remain replaceable readers; they do not define safety-memory semantics or gain approval authority.
+
+## Read-only operational evidence
+
+The experimental provider-neutral JSONL adapter reads synthetic fire-suppression, ammonia-
+detection, and autonomous-system exports through one bounded contract. It:
+
+- preserves system, component, source-tag, timestamp, quality, calibration, missing, and unsupported
+  field evidence;
+- hashes the exact source artifact and each normalized source record;
+- stores the immutable raw export separately under a caller-controlled, content-addressed root;
+- rejects unknown fields, including attempted alarm, controller, or robot command surfaces; and
+- permits exact event-code rules to emit deterministic interpretation candidates only.
+
+Interpretation candidates bind the exact raw-record hash, rule, interpreter identity, version, and
+configuration hash. Their fixed states are `candidate` and `no_operational_authority`; they cannot
+acknowledge an alarm, alter a policy, approve a constraint, establish a safety conclusion, or send a
+command back to the source system. The committed fixture is project-authored synthetic data, not a
+validated facility or autonomous-system integration.
+
+External interpretation reviews bind the exact candidate SHA-256 plus reviewer identity, role,
+authority reference, time, decision, and correction/retraction lineage. Accepting an interpretation
+does not approve a constraint or operation. Deterministic change-impact assessment marks every
+dependent review lineage when its source record disappears, its record bytes change, its enclosing
+artifact changes, or its source revision changes; it never silently carries a review onto new bytes.
+The operational fixture bytes are pinned by
+[`tests/fixtures/operational_evidence/manifest.json`](tests/fixtures/operational_evidence/manifest.json).
+
+Review ledgers and current-source impact can be validated offline with:
+
+```bash
+PYTHONPATH= uv run safety-ops operational review-validate \
+  --ledger runtime/operational-review-ledger.json
+PYTHONPATH= uv run safety-ops operational impact \
+  --ledger runtime/operational-review-ledger.json \
+  --current-input tests/fixtures/operational_evidence/synthetic-operational.jsonl \
+  --batch-id batch:synthetic-operational-current \
+  --source-revision export:synthetic-operational-current \
+  --adapter-config-sha256 sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+```
+
+The impact report binds the exact review-ledger file hash, current source-artifact hash, source
+revision, adapter-configuration hash, and affected review IDs. A changed adapter configuration
+stales prior interpretations even when the exported source bytes are unchanged.
+
+## Starting OSHA source knowledge base
+
+[`knowledge/osha/catalog.json`](knowledge/osha/catalog.json) catalogs all 67 parts in the reviewed
+point-in-time snapshot of OSHA's official Regulations (Standards — 29 CFR) index. It includes
+reserved parts and preserves one currently unavailable eCFR source (`70a`) explicitly rather than
+silently omitting it. Available source XML can be reproduced into a gitignored, content-addressed
+local cache with:
+
+```bash
+PYTHONPATH= uv run python scripts/sync_osha_knowledge.py --jobs 1
+```
+
+The catalog and retrieved regulation bytes remain untrusted source evidence. They do not establish
+jurisdiction, applicability, interpretation, compliance, or an approved safety constraint. See the
+[OSHA catalog notes](knowledge/osha/README.md) for snapshot, refresh, eCFR, and authority limits.
+
+The initial official-source verification contract separately requires exact artifacts for all four
+roles: a GovInfo annual CFR baseline, dated eCFR point-in-time bytes, Federal Register change
+evidence, and the applicable GovInfo List of CFR Sections Affected. Each artifact preserves its
+official package identity, URL, SHA-256, byte count, section citation, and retrieval time. Promotion
+to `verified_regulatory_source` requires an external review bound to the exact candidate SHA-256 and
+is blocked by missing evidence, unexplained differences, or findings that do not cover every source.
+
+`verified_regulatory_source` means only that the reviewed source revision was reconciled against the
+declared official evidence bundle. Its fixed states remain `interpretation_state = not_approved`,
+`applicability_state = undetermined`, `constraint_state = not_approved`,
+`compliance_state = no_conclusion`, and `operational_authority = none`. No real OSHA source revision
+has been promoted by the synthetic contract tests.
 
 ## Authority boundary
 
@@ -65,6 +166,8 @@ It must not emit or grant:
 - lockout/tagout authorization
 - safety PLC, interlock, or emergency-stop changes
 - robot, machine, or actuator commands
+- log-derived policy promotion or autonomous-system commands
+- automatic carry-forward of reviews after source bytes or revisions change
 
 Safety Ops is not a safety-rated control system, legal opinion, compliance certificate, or
 replacement for qualified EHS, maintenance, integration, or safety engineering.
@@ -73,6 +176,7 @@ replacement for qualified EHS, maintenance, integration, or safety engineering.
 
 ```text
 Regulations / standards metadata / manuals / SOPs / labels / work orders
+Facility-monitoring exports / autonomous-system logs
                                  |
                                  v
                     content-addressed source intake
