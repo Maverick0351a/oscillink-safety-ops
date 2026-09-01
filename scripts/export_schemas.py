@@ -30,6 +30,7 @@ from oscillink_safety_ops.domain import (
     SafetyMemoryPacket,
     VerifiedRegulatorySource,
 )
+from oscillink_safety_ops.evaluation import HiddenEvaluationValidation
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
@@ -37,6 +38,7 @@ SCHEMAS = {
     "federal-register-change-candidate.schema.json": (
         FederalRegisterChangeCandidate.model_json_schema()
     ),
+    "hidden-evaluation-validation.schema.json": HiddenEvaluationValidation.model_json_schema(),
     "lsa-coverage-candidate.schema.json": LsaCoverageCandidate.model_json_schema(),
     "operational-change-impact.schema.json": OperationalChangeImpact.model_json_schema(),
     "operational-evidence-batch.schema.json": OperationalEvidenceBatch.model_json_schema(),

@@ -186,20 +186,16 @@ manual reconciliation burden.
 
 ## Current next action
 
-Two bounded tracks may proceed without conflating technical evidence with product validation:
+Bounded tracks may proceed without conflating technical evidence with product validation:
 
 1. Complete the first five practitioner interviews using `docs/interview-protocol.md` and evaluate
    the Stage 0 gate honestly.
-2. Exercise the new bounded review-ledger validation and impact-report CLI against hidden source-
-   change scenarios, including record loss, artifact/revision changes, adapter-configuration changes,
-   correction, retraction, and malformed lineage. Do not permit reviews to carry forward onto
-   changed bytes.
-3. Build narrowly versioned real Federal Register and LSA parsers plus permissibly redistributable
-   deterministic fixtures; preserve unsupported correction, delay, withdrawal, and redesignation
-   chains explicitly rather than inferring them.
-4. Add NFPA 70E and related licensed standards as metadata-only sources until licensed bytes and
+2. Preserve the frozen Safety Evidence Packet v1 and leakage-controlled hidden evaluation design.
+   The private 12-task bank is balanced across six classes, hash-bound by the public manifest, and
+   intentionally unexecuted. Same-model authorship is not independent evaluation.
+3. Add NFPA 70E and related licensed standards as metadata-only sources until licensed bytes and
    authorized review are available.
-5. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-
+4. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-
    suppression, ammonia-monitoring, and autonomous-system exports plus typed external-review and
    stale-impact contracts, with sequence-gap and parser-warning behavior before considering any
    historian, reporting-system, broker, or robot-runtime integration.

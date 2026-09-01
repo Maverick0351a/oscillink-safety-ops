@@ -304,6 +304,7 @@ See:
 - [Initial evidence map](docs/research/initial-evidence-map.md)
 - [2026-08-31 platform, market, and integration decision](docs/research/platform-market-integration-2026-08-31.md)
 - [Execution plan](docs/execution-plan.md)
+- [Hidden evaluation protocol v1](docs/hidden-evaluation-protocol.md)
 - [Practitioner interview protocol](docs/interview-protocol.md)
 - [Security policy](SECURITY.md)
 
@@ -316,7 +317,8 @@ commercial claim is approved before practitioner validation:
 2. Confirm the proposed document/task bundle reflects real work.
 3. Obtain at least two sanitized or local-only example bundles.
 4. Identify an authorized reviewer and measurable reconciliation burden.
-5. Freeze a Safety Evidence Packet contract with hidden expected answers.
+5. Independently review the frozen Safety Evidence Packet v1 and its hash-bound hidden task bank;
+   the current bank has same-model authorship and has intentionally not been executed.
 
 If users primarily need ordinary checklists, CMMS forms, document search, or certification, narrow
 or stop this direction.

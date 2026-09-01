@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "bank_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Bank Sha256",
+      "type": "string"
+    },
+    "class_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Class Counts",
+      "type": "object"
+    },
+    "disclosure_state": {
+      "default": "counts_and_hash_only",
+      "pattern": "^counts_and_hash_only$",
+      "title": "Disclosure State",
+      "type": "string"
+    },
+    "record_count": {
+      "minimum": 1,
+      "title": "Record Count",
+      "type": "integer"
+    },
+    "schema_version": {
+      "default": 1,
+      "maximum": 1,
+      "minimum": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "validated_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Validated At"
+    }
+  },
+  "required": [
+    "record_count",
+    "class_counts",
+    "bank_sha256"
+  ],
+  "title": "HiddenEvaluationValidation",
+  "type": "object"
+}

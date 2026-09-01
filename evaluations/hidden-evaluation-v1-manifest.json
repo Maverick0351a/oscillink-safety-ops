@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "oscillink-safety-ops-hidden-v1",
+  "protocol": "docs/hidden-evaluation-protocol.md",
+  "record_count": 12,
+  "class_counts": {
+    "abstention": 2,
+    "authority": 2,
+    "conflict": 2,
+    "extraction": 2,
+    "lineage": 2,
+    "staleness": 2
+  },
+  "bank_sha256": "sha256:dbfac010860e0eac7f88afac4117b26a9c3e93883879c72fa461d11bcb12d3cb",
+  "disclosure_state": "counts_and_hash_only",
+  "execution_state": "not_executed",
+  "limitations": [
+    "same-model-authorship is not independent evaluation",
+    "passing scores would establish deterministic benchmark behavior only",
+    "no legal, compliance, physical-safety, practitioner-fit, or operational-authority claim"
+  ]
+}
