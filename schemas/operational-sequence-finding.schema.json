@@ -1,0 +1,94 @@
+{
+  "additionalProperties": false,
+  "description": "Adapter-derived evidence of a sequence discontinuity in one source stream.",
+  "properties": {
+    "authority_state": {
+      "const": "observational_evidence",
+      "default": "observational_evidence",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "current_record_id": {
+      "minLength": 1,
+      "title": "Current Record Id",
+      "type": "string"
+    },
+    "current_sequence_number": {
+      "minimum": 0,
+      "title": "Current Sequence Number",
+      "type": "integer"
+    },
+    "missing_sequence_end": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Missing Sequence End"
+    },
+    "missing_sequence_start": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Missing Sequence Start"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "previous_record_id": {
+      "minLength": 1,
+      "title": "Previous Record Id",
+      "type": "string"
+    },
+    "previous_sequence_number": {
+      "minimum": 0,
+      "title": "Previous Sequence Number",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "state": {
+      "enum": [
+        "sequence_gap",
+        "duplicate_sequence",
+        "out_of_order"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "stream_key": {
+      "minLength": 1,
+      "title": "Stream Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "state",
+    "stream_key",
+    "previous_record_id",
+    "current_record_id",
+    "previous_sequence_number",
+    "current_sequence_number"
+  ],
+  "title": "OperationalSequenceFinding",
+  "type": "object"
+}

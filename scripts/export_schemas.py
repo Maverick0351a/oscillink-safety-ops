@@ -16,6 +16,7 @@ from oscillink_safety_ops.domain import (
     OperationalImpactReport,
     OperationalInterpretationCandidate,
     OperationalReviewLedger,
+    OperationalSequenceFinding,
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
     RecordedEpisodeEvidence,
@@ -52,6 +53,7 @@ SCHEMAS = {
     ),
     "operational-impact-report.schema.json": OperationalImpactReport.model_json_schema(),
     "operational-review-ledger.schema.json": OperationalReviewLedger.model_json_schema(),
+    "operational-sequence-finding.schema.json": OperationalSequenceFinding.model_json_schema(),
     "physical-intelligence-evidence-envelope.schema.json": (
         PhysicalIntelligenceEvidenceEnvelope.model_json_schema()
     ),

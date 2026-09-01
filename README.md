@@ -113,6 +113,8 @@ detection, and autonomous-system exports through one bounded contract. It:
 
 - preserves system, component, source-tag, timestamp, quality, calibration, missing, and unsupported
   field evidence;
+- reports bounded per-stream sequence gaps, duplicate/out-of-order sequence values, missing sequence
+  identity, and out-of-order observation times without filling or reordering records;
 - hashes the exact source artifact and each normalized source record;
 - stores the immutable raw export separately under a caller-controlled, content-addressed root;
 - rejects unknown fields, including attempted alarm, controller, or robot command surfaces; and
@@ -123,6 +125,11 @@ configuration hash. Their fixed states are `candidate` and `no_operational_autho
 acknowledge an alarm, alter a policy, approve a constraint, establish a safety conclusion, or send a
 command back to the source system. The committed fixture is project-authored synthetic data, not a
 validated facility or autonomous-system integration.
+
+`adapter_warnings` is reserved for adapter-derived evidence and cannot be supplied by the source.
+Sequence findings retain previous/current record identities and bounded missing ranges, remain
+`observational_evidence`, and carry no operational authority. They do not prove data loss, equipment
+state, alarm state, or unsafe operation.
 
 External interpretation reviews bind the exact candidate SHA-256 plus reviewer identity, role,
 authority reference, time, decision, and correction/retraction lineage. Accepting an interpretation

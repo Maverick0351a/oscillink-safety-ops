@@ -200,10 +200,10 @@ Bounded tracks may proceed without conflating technical evidence with product va
 3. Preserve the metadata-only NFPA 70E and ISO 10218 registry. Licensed bytes, excerpts, requirement
    extraction, and applicability conclusions remain blocked until access, storage/processing rights,
    and authorized review are established.
-4. Extend the experimental generic JSONL adapter, now covered by manifest-bound synthetic fire-
-   suppression, ammonia-monitoring, and autonomous-system exports plus typed external-review and
-   stale-impact contracts, with sequence-gap and parser-warning behavior before considering any
-   historian, reporting-system, broker, or robot-runtime integration.
+4. Preserve the hardened generic JSONL adapter, now covered by manifest-bound synthetic fire-
+   suppression, ammonia-monitoring, and autonomous-system exports, typed external-review and stale-
+   impact contracts, plus sequence-gap, duplicate/out-of-order, missing-sequence, and parser-warning
+   behavior. Historian, reporting-system, broker, and robot-runtime integrations remain later gates.
 
 The existing envelope, deterministic CLI validation, operational JSONL normalization and storage,
 candidate-only event interpretation, external review ledger, stale-impact assessment,

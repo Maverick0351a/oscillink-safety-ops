@@ -157,8 +157,10 @@ class OperationalEvidenceRecord(ContractModel):
     calibration_revision: NonEmptyStr | None = None
     event_code: NonEmptyStr | None = None
     message: NonEmptyStr | None = None
+    sequence_number: Annotated[StrictInt, Field(ge=0)] | None = None
     missing_fields: tuple[NonEmptyStr, ...] = ()
     unsupported_fields: tuple[NonEmptyStr, ...] = ()
+    adapter_warnings: tuple[NonEmptyStr, ...] = ()
     authority_state: Literal["observational_evidence"] = "observational_evidence"
     access_mode: Literal["read_only"] = "read_only"
     content_treatment: Literal["untrusted_data"] = "untrusted_data"
@@ -175,6 +177,33 @@ class OperationalEvidenceRecord(ContractModel):
         return self
 
 
+class OperationalSequenceFinding(ContractModel):
+    """Adapter-derived evidence of a sequence discontinuity in one source stream."""
+
+    schema_version: Literal[1] = 1
+    state: Literal["sequence_gap", "duplicate_sequence", "out_of_order"]
+    stream_key: NonEmptyStr
+    previous_record_id: NonEmptyStr
+    current_record_id: NonEmptyStr
+    previous_sequence_number: Annotated[StrictInt, Field(ge=0)]
+    current_sequence_number: Annotated[StrictInt, Field(ge=0)]
+    missing_sequence_start: Annotated[StrictInt, Field(ge=0)] | None = None
+    missing_sequence_end: Annotated[StrictInt, Field(ge=0)] | None = None
+    authority_state: Literal["observational_evidence"] = "observational_evidence"
+    operational_authority: Literal["none"] = "none"
+
+    @model_validator(mode="after")
+    def require_gap_bounds_only_for_gaps(self) -> Self:
+        start = self.missing_sequence_start
+        end = self.missing_sequence_end
+        if self.state == "sequence_gap":
+            if start is None or end is None or start > end:
+                raise ValueError("sequence gap requires ordered missing sequence bounds")
+        elif (start, end) != (None, None):
+            raise ValueError("only sequence gaps may carry missing sequence bounds")
+        return self
+
+
 class OperationalEvidenceBatch(ContractModel):
     """Deterministic batch normalized from one immutable operational export."""
 
@@ -184,6 +213,7 @@ class OperationalEvidenceBatch(ContractModel):
     source_artifact_sha256: Sha256
     adapter_config_sha256: Sha256
     records: tuple[OperationalEvidenceRecord, ...]
+    sequence_findings: tuple[OperationalSequenceFinding, ...] = ()
     authority_state: Literal["observational_evidence"] = "observational_evidence"
     access_mode: Literal["read_only"] = "read_only"
     content_treatment: Literal["untrusted_data"] = "untrusted_data"
@@ -193,6 +223,10 @@ class OperationalEvidenceBatch(ContractModel):
         identities = [item.record_id for item in self.records]
         if len(identities) != len(set(identities)):
             raise ValueError("duplicate record_id")
+        known = set(identities)
+        for finding in self.sequence_findings:
+            if finding.previous_record_id not in known or finding.current_record_id not in known:
+                raise ValueError("sequence finding references unknown record")
         return self
 
 

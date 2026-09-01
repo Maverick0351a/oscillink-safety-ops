@@ -170,6 +170,59 @@ def test_jsonl_loader_rejects_embedded_control_surface(tmp_path: Path) -> None:
         )
 
 
+def test_jsonl_loader_reports_sequence_gaps_and_out_of_order_records(tmp_path: Path) -> None:
+    first = record(record_id="record:seq-10").model_dump(mode="json")
+    gap = record(record_id="record:seq-12").model_dump(mode="json")
+    late = record(record_id="record:seq-11").model_dump(mode="json")
+    first["sequence_number"] = 10
+    gap["sequence_number"] = 12
+    late["sequence_number"] = 11
+    late["observed_at"] = "2026-08-30T23:59:00Z"
+    path = tmp_path / "sequenced.jsonl"
+    path.write_text(
+        "".join(json.dumps(item, sort_keys=True) + "\n" for item in (first, gap, late)),
+        encoding="utf-8",
+    )
+
+    batch = load_operational_jsonl(
+        path,
+        batch_id="batch:sequenced",
+        source_revision="export:sequenced",
+        adapter_config_sha256=SHA_A,
+    )
+
+    assert [item.state for item in batch.sequence_findings] == ["sequence_gap", "out_of_order"]
+    assert batch.sequence_findings[0].missing_sequence_start == 11
+    assert batch.sequence_findings[0].missing_sequence_end == 11
+    assert batch.records[2].adapter_warnings == ("observed_at_out_of_order",)
+
+
+def test_jsonl_loader_marks_missing_sequence_and_rejects_source_adapter_warnings(
+    tmp_path: Path,
+) -> None:
+    exported = record().model_dump(mode="json")
+    path = tmp_path / "missing-sequence.jsonl"
+    path.write_text(json.dumps(exported) + "\n", encoding="utf-8")
+
+    batch = load_operational_jsonl(
+        path,
+        batch_id="batch:missing-sequence",
+        source_revision="export:missing-sequence",
+        adapter_config_sha256=SHA_A,
+    )
+    assert batch.records[0].adapter_warnings == ("sequence_number_missing",)
+
+    exported["adapter_warnings"] = ["source_attempted_to_hide_parse_error"]
+    path.write_text(json.dumps(exported) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="adapter_warnings is reserved"):
+        load_operational_jsonl(
+            path,
+            batch_id="batch:forbidden-warning",
+            source_revision="export:forbidden-warning",
+            adapter_config_sha256=SHA_A,
+        )
+
+
 def test_jsonl_loader_rejects_oversized_export(tmp_path: Path) -> None:
     path = tmp_path / "operational.jsonl"
     path.write_bytes(b" " * (1024 * 1024 + 1))
