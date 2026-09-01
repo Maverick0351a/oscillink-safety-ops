@@ -65,8 +65,14 @@ applicability, interpretation, compliance, or operational approval.
 The first contract slice now models exact annual-CFR, dated-eCFR, Federal Register, and LSA evidence;
 section-level reconciliation findings; external source-review identity; candidate-hash binding; and
 source-only promotion. It is exercised with synthetic metadata and hashes only. Official artifact
-retrieval, section parsing/diffing, amendment/effective-date logic, corrections, and stale propagation
-remain required before any real source revision can be considered for promotion.
+retrieval, amendment/effective-date logic, corrections, and stale propagation remain required before
+any real source revision can be considered for promotion.
+
+The next implemented contract slice adds 16-MiB bounded and root-contained local artifact
+verification, exact byte-count/SHA-256 checks, DTD/entity rejection, deterministic extraction for the
+currently observed eCFR and GovInfo annual-CFR XML section shapes, and conservative normalized-text
+comparison. A mismatch remains unresolved; no heuristic or parser can explain it without cited
+Federal Register and LSA evidence. Current parser coverage is intentionally narrow and synthetic.
 
 **Gate:** every promoted source revision is reproducible from pinned official publications; every
 difference is explained by cited amendment evidence or remains explicitly unresolved; no source or

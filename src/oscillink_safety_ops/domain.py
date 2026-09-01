@@ -356,6 +356,64 @@ class RegulatorySourceEvidence(ContractModel):
         return self
 
 
+class RegulatoryArtifactVerification(ContractModel):
+    """Integrity result for exact regulatory artifact bytes under a controlled local root."""
+
+    schema_version: Literal[1] = 1
+    evidence_id: NonEmptyStr
+    artifact_ref: NonEmptyStr
+    artifact_sha256: Sha256
+    byte_count: Annotated[StrictInt, Field(gt=0)]
+    integrity_state: Literal["integrity_verified"] = "integrity_verified"
+    content_treatment: Literal["untrusted_source_bytes"] = "untrusted_source_bytes"
+    operational_authority: Literal["none"] = "none"
+
+
+class RegulatorySectionSnapshot(ContractModel):
+    """Deterministic source-text extraction candidate bound to exact regulatory bytes."""
+
+    schema_version: Literal[1] = 1
+    evidence_id: NonEmptyStr
+    evidence_role: RegulatoryEvidenceRole
+    artifact_ref: NonEmptyStr
+    source_artifact_sha256: Sha256
+    citation: NonEmptyStr
+    source_locator: NonEmptyStr
+    heading: NonEmptyStr
+    normalized_text: NonEmptyStr
+    normalized_text_sha256: Sha256
+    parser_identity: Literal["stdlib-elementtree-cfr-section"] = "stdlib-elementtree-cfr-section"
+    parser_version: Literal[1] = 1
+    parser_config_sha256: Sha256
+    extraction_state: Literal["source_extraction_candidate"] = "source_extraction_candidate"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
+class RegulatorySectionComparison(ContractModel):
+    """Conservative source-text comparison evidence for annual CFR and dated eCFR sections."""
+
+    schema_version: Literal[1] = 1
+    comparison_id: NonEmptyStr
+    citation: NonEmptyStr
+    annual_evidence_id: NonEmptyStr
+    annual_artifact_sha256: Sha256
+    annual_text_sha256: Sha256
+    ecfr_evidence_id: NonEmptyStr
+    ecfr_artifact_sha256: Sha256
+    ecfr_text_sha256: Sha256
+    evidence_ids: tuple[NonEmptyStr, NonEmptyStr]
+    status: Literal["verified_match", "unresolved_difference"]
+    rationale: NonEmptyStr
+    authority_state: Literal["reconciliation_evidence_only"] = "reconciliation_evidence_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+
 class RegulatoryReconciliationFinding(ContractModel):
     """A deterministic section-level source comparison outcome."""
 

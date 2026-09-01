@@ -1,0 +1,58 @@
+{
+  "additionalProperties": false,
+  "description": "Integrity result for exact regulatory artifact bytes under a controlled local root.",
+  "properties": {
+    "artifact_ref": {
+      "minLength": 1,
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Artifact Sha256",
+      "type": "string"
+    },
+    "byte_count": {
+      "exclusiveMinimum": 0,
+      "title": "Byte Count",
+      "type": "integer"
+    },
+    "content_treatment": {
+      "const": "untrusted_source_bytes",
+      "default": "untrusted_source_bytes",
+      "title": "Content Treatment",
+      "type": "string"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "integrity_state": {
+      "const": "integrity_verified",
+      "default": "integrity_verified",
+      "title": "Integrity State",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "artifact_ref",
+    "artifact_sha256",
+    "byte_count"
+  ],
+  "title": "RegulatoryArtifactVerification",
+  "type": "object"
+}

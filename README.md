@@ -142,6 +142,18 @@ declared official evidence bundle. Its fixed states remain `interpretation_state
 `compliance_state = no_conclusion`, and `operational_authority = none`. No real OSHA source revision
 has been promoted by the synthetic contract tests.
 
+The bounded regulatory-artifact slice verifies local source bytes under a caller-controlled root
+before parsing: paths cannot escape the root, inputs are capped at 16 MiB, and declared byte counts
+and SHA-256 hashes must match. Its deterministic XML extractor currently recognizes the dated eCFR
+`TYPE="SECTION"`/`N` structure and GovInfo annual-CFR `SECTION`/`SECTNO`/`SUBJECT` structure. DTD and
+entity declarations are rejected. Extracted text remains a `source_extraction_candidate` bound to
+the exact artifact, locator, parser identity/configuration, and normalized-text hash.
+
+An exact annual-CFR/eCFR normalized-text hash match emits reconciliation evidence only. Any text
+difference remains `unresolved_difference` until separately cited Federal Register and LSA evidence
+explains it. This slice does not yet parse amendment instructions, effective dates, corrections, or
+LSA coverage, and it cannot verify, interpret, approve, or operationalize a requirement.
+
 ## Authority boundary
 
 Automated extraction may emit evidence states such as:

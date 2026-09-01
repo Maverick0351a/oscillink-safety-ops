@@ -1,0 +1,126 @@
+{
+  "additionalProperties": false,
+  "description": "Conservative source-text comparison evidence for annual CFR and dated eCFR sections.",
+  "properties": {
+    "annual_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Annual Artifact Sha256",
+      "type": "string"
+    },
+    "annual_evidence_id": {
+      "minLength": 1,
+      "title": "Annual Evidence Id",
+      "type": "string"
+    },
+    "annual_text_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Annual Text Sha256",
+      "type": "string"
+    },
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "reconciliation_evidence_only",
+      "default": "reconciliation_evidence_only",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "citation": {
+      "minLength": 1,
+      "title": "Citation",
+      "type": "string"
+    },
+    "comparison_id": {
+      "minLength": 1,
+      "title": "Comparison Id",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "ecfr_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Ecfr Artifact Sha256",
+      "type": "string"
+    },
+    "ecfr_evidence_id": {
+      "minLength": 1,
+      "title": "Ecfr Evidence Id",
+      "type": "string"
+    },
+    "ecfr_text_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Ecfr Text Sha256",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "minLength": 1,
+          "type": "string"
+        }
+      ],
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "rationale": {
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "verified_match",
+        "unresolved_difference"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "comparison_id",
+    "citation",
+    "annual_evidence_id",
+    "annual_artifact_sha256",
+    "annual_text_sha256",
+    "ecfr_evidence_id",
+    "ecfr_artifact_sha256",
+    "ecfr_text_sha256",
+    "evidence_ids",
+    "status",
+    "rationale"
+  ],
+  "title": "RegulatorySectionComparison",
+  "type": "object"
+}

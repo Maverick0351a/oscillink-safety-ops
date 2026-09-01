@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "RegulatoryEvidenceRole": {
+      "enum": [
+        "annual_cfr_baseline",
+        "ecfr_point_in_time",
+        "federal_register_change",
+        "lsa_change_index"
+      ],
+      "title": "RegulatoryEvidenceRole",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Deterministic source-text extraction candidate bound to exact regulatory bytes.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "artifact_ref": {
+      "minLength": 1,
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "citation": {
+      "minLength": 1,
+      "title": "Citation",
+      "type": "string"
+    },
+    "compliance_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Compliance Authority",
+      "type": "string"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "evidence_role": {
+      "$ref": "#/$defs/RegulatoryEvidenceRole"
+    },
+    "extraction_state": {
+      "const": "source_extraction_candidate",
+      "default": "source_extraction_candidate",
+      "title": "Extraction State",
+      "type": "string"
+    },
+    "heading": {
+      "minLength": 1,
+      "title": "Heading",
+      "type": "string"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "normalized_text": {
+      "minLength": 1,
+      "title": "Normalized Text",
+      "type": "string"
+    },
+    "normalized_text_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Normalized Text Sha256",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "parser_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parser Config Sha256",
+      "type": "string"
+    },
+    "parser_identity": {
+      "const": "stdlib-elementtree-cfr-section",
+      "default": "stdlib-elementtree-cfr-section",
+      "title": "Parser Identity",
+      "type": "string"
+    },
+    "parser_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Parser Version",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_artifact_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Artifact Sha256",
+      "type": "string"
+    },
+    "source_locator": {
+      "minLength": 1,
+      "title": "Source Locator",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "evidence_role",
+    "artifact_ref",
+    "source_artifact_sha256",
+    "citation",
+    "source_locator",
+    "heading",
+    "normalized_text",
+    "normalized_text_sha256",
+    "parser_config_sha256"
+  ],
+  "title": "RegulatorySectionSnapshot",
+  "type": "object"
+}

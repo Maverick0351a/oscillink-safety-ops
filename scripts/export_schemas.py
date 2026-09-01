@@ -14,6 +14,9 @@ from oscillink_safety_ops.domain import (
     OperationalReviewLedger,
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
+    RegulatoryArtifactVerification,
+    RegulatorySectionComparison,
+    RegulatorySectionSnapshot,
     RegulatorySourceVerificationCandidate,
     RegulatorySourceVerificationReview,
     SafetyMemoryPacket,
@@ -33,6 +36,11 @@ SCHEMAS = {
         PhysicalIntelligenceEvidenceEnvelope.model_json_schema()
     ),
     "proposed-plan.schema.json": ProposedPlan.model_json_schema(),
+    "regulatory-artifact-verification.schema.json": (
+        RegulatoryArtifactVerification.model_json_schema()
+    ),
+    "regulatory-section-comparison.schema.json": RegulatorySectionComparison.model_json_schema(),
+    "regulatory-section-snapshot.schema.json": RegulatorySectionSnapshot.model_json_schema(),
     "regulatory-source-verification-candidate.schema.json": (
         RegulatorySourceVerificationCandidate.model_json_schema()
     ),
