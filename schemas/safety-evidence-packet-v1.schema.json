@@ -1,0 +1,575 @@
+{
+  "$defs": {
+    "Applicability": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Model"
+        },
+        "asset_serial": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Serial"
+        },
+        "jurisdiction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jurisdiction"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "site": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Site"
+        },
+        "task_phase": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Phase"
+        }
+      },
+      "title": "Applicability",
+      "type": "object"
+    },
+    "Approval": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewed At"
+        },
+        "reviewer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer Id"
+        },
+        "state": {
+          "$ref": "#/$defs/ApprovalState"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "title": "Approval",
+      "type": "object"
+    },
+    "ApprovalState": {
+      "enum": [
+        "candidate",
+        "approved",
+        "rejected",
+        "retracted"
+      ],
+      "title": "ApprovalState",
+      "type": "string"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "quote_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Quote Sha256",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "locator",
+        "quote_sha256"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "ConstraintKind": {
+      "enum": [
+        "required_evidence",
+        "prohibited_condition",
+        "review_gate"
+      ],
+      "title": "ConstraintKind",
+      "type": "string"
+    },
+    "ContentState": {
+      "enum": [
+        "readable",
+        "ambiguous",
+        "unreadable"
+      ],
+      "title": "ContentState",
+      "type": "string"
+    },
+    "EvidenceConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "$ref": "#/$defs/Applicability"
+        },
+        "approval": {
+          "$ref": "#/$defs/Approval"
+        },
+        "citation": {
+          "$ref": "#/$defs/Citation"
+        },
+        "conflict_with": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Conflict With",
+          "type": "array"
+        },
+        "constraint_id": {
+          "title": "Constraint Id",
+          "type": "string"
+        },
+        "content_state": {
+          "$ref": "#/$defs/ContentState",
+          "default": "readable"
+        },
+        "evidence_key": {
+          "title": "Evidence Key",
+          "type": "string"
+        },
+        "interpretation_supported": {
+          "default": true,
+          "title": "Interpretation Supported",
+          "type": "boolean"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConstraintKind"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "constraint_id",
+        "kind",
+        "evidence_key",
+        "statement",
+        "citation",
+        "applicability",
+        "approval"
+      ],
+      "title": "EvidenceConstraint",
+      "type": "object"
+    },
+    "FindingState": {
+      "enum": [
+        "matched",
+        "missing_evidence",
+        "asset_mismatch",
+        "revision_stale",
+        "source_conflict",
+        "ambiguous",
+        "unreadable",
+        "unsupported_interpretation",
+        "requires_authorized_review"
+      ],
+      "title": "FindingState",
+      "type": "string"
+    },
+    "SafetyEvidenceIssue": {
+      "additionalProperties": false,
+      "description": "One unresolved, cited evidence condition; never an automated safety conclusion.",
+      "properties": {
+        "issue_id": {
+          "minLength": 1,
+          "title": "Issue Id",
+          "type": "string"
+        },
+        "related_constraint_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Related Constraint Ids",
+          "type": "array"
+        },
+        "related_source_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Related Source Ids",
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/FindingState"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "issue_id",
+        "state",
+        "statement"
+      ],
+      "title": "SafetyEvidenceIssue",
+      "type": "object"
+    },
+    "SafetyEvidencePacketContext": {
+      "additionalProperties": false,
+      "description": "Exact asset/task context and explicit unknowns for one reviewable packet.",
+      "properties": {
+        "applicability_unknowns": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Applicability Unknowns",
+          "type": "array"
+        },
+        "asset_model": {
+          "minLength": 1,
+          "title": "Asset Model",
+          "type": "string"
+        },
+        "asset_serial": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Serial"
+        },
+        "jurisdiction": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jurisdiction"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "site": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Site"
+        },
+        "task_id": {
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_phase": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Phase"
+        }
+      },
+      "required": [
+        "asset_model",
+        "task_id"
+      ],
+      "title": "SafetyEvidencePacketContext",
+      "type": "object"
+    },
+    "SafetyMemoryPacket": {
+      "additionalProperties": false,
+      "properties": {
+        "constraints": {
+          "items": {
+            "$ref": "#/$defs/EvidenceConstraint"
+          },
+          "title": "Constraints",
+          "type": "array"
+        },
+        "packet_id": {
+          "title": "Packet Id",
+          "type": "string"
+        },
+        "policy_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceRevision"
+          },
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "packet_id",
+        "policy_sha256",
+        "sources",
+        "constraints"
+      ],
+      "title": "SafetyMemoryPacket",
+      "type": "object"
+    },
+    "SourceClass": {
+      "enum": [
+        "regulator_text",
+        "licensed_standard",
+        "manufacturer_manual",
+        "site_procedure",
+        "task_plan",
+        "dataset_episode"
+      ],
+      "title": "SourceClass",
+      "type": "string"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "$ref": "#/$defs/Applicability"
+        },
+        "effective_at": {
+          "format": "date-time",
+          "title": "Effective At",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_class": {
+          "$ref": "#/$defs/SourceClass"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "superseded_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Superseded By"
+        }
+      },
+      "required": [
+        "source_id",
+        "source_class",
+        "revision",
+        "sha256",
+        "effective_at",
+        "applicability"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Frozen v1 review packet for one exact context, with no compliance or physical authority.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "compliance_state": {
+      "const": "no_conclusion",
+      "default": "no_conclusion",
+      "title": "Compliance State",
+      "type": "string"
+    },
+    "context": {
+      "$ref": "#/$defs/SafetyEvidencePacketContext"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "memory": {
+      "$ref": "#/$defs/SafetyMemoryPacket"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "packet_config_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Packet Config Sha256",
+      "type": "string"
+    },
+    "packet_id": {
+      "minLength": 1,
+      "title": "Packet Id",
+      "type": "string"
+    },
+    "packet_revision": {
+      "minLength": 1,
+      "title": "Packet Revision",
+      "type": "string"
+    },
+    "packet_state": {
+      "const": "reviewable_evidence_packet",
+      "default": "reviewable_evidence_packet",
+      "title": "Packet State",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "unresolved_evidence": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SafetyEvidenceIssue"
+      },
+      "title": "Unresolved Evidence",
+      "type": "array"
+    }
+  },
+  "required": [
+    "packet_id",
+    "packet_revision",
+    "context",
+    "memory",
+    "packet_config_sha256",
+    "generated_at"
+  ],
+  "title": "SafetyEvidencePacket",
+  "type": "object"
+}

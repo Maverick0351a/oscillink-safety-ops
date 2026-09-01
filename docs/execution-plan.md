@@ -43,6 +43,12 @@ plan, and public OSHA excerpt. Keep expected answers outside agent-readable inpu
 **Gate:** adversarial RED→GREEN tests prove unapproved content cannot become approved constraints,
 source changes stale derived packets, conflicts remain unresolved, and ambiguous OCR abstains.
 
+The frozen Safety Evidence Packet v1 now binds one exact Safety Memory Packet to asset/task context,
+explicit applicability unknowns, deterministic configuration identity, and separately typed
+unresolved evidence with source/constraint reference validation. The committed packet is synthetic,
+reviewable evidence only; its schema fixes interpretation/applicability authority to none,
+compliance to no conclusion, and operational authority to none.
+
 ## Stage 1A — Governed authority-source verification
 
 Build a source-verification layer before promoting extracted requirements:

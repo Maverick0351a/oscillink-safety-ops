@@ -1,0 +1,267 @@
+{
+  "applicability_authority": "none",
+  "compliance_state": "no_conclusion",
+  "context": {
+    "applicability_unknowns": [
+      "worker_authorization_record"
+    ],
+    "asset_model": "SYN-PRESS-7",
+    "asset_serial": "SP7-0042",
+    "jurisdiction": "synthetic-jurisdiction",
+    "role": "synthetic-maintenance-role",
+    "site": "synthetic-site",
+    "task_id": "task-maintenance-001",
+    "task_phase": "pre-work-offline-review"
+  },
+  "generated_at": "2026-09-01T00:00:00Z",
+  "interpretation_authority": "none",
+  "memory": {
+    "constraints": [
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "asset_serial": "SP7-0042"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:4",
+          "quote_sha256": "sha256:1f40ddb645e5555cf68ff80f5c6265c8752e0fcd4b2a1b601dae2f13b53d2b69",
+          "source_id": "manual-rev2"
+        },
+        "constraint_id": "m1-isolation-evidence",
+        "evidence_key": "energy_isolation.main_disconnect",
+        "kind": "required_evidence",
+        "statement": "Evidence of the main energy-isolating device is required."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "asset_serial": "SP7-0042"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:5",
+          "quote_sha256": "sha256:e989a126e75221ffcd662e614c399db84703445eec4fcec1243a19c5fa641071",
+          "source_id": "manual-rev2"
+        },
+        "constraint_id": "m2-verification-evidence",
+        "evidence_key": "verification.zero_energy",
+        "kind": "required_evidence",
+        "statement": "Evidence of zero-energy verification is required."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "site": "synthetic-site"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:4",
+          "quote_sha256": "sha256:ffd1f22a5c50f70cc71f4300bdf7108fa659cf36cab3a74fa0d6703e98ba6397",
+          "source_id": "site-procedure-rev1"
+        },
+        "constraint_id": "s1-unreadable-role",
+        "content_state": "unreadable",
+        "evidence_key": "role.identity",
+        "kind": "required_evidence",
+        "statement": "The responsible role field is unreadable."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "site": "synthetic-site"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:5",
+          "quote_sha256": "sha256:9efdfa860f6b05341d1e3235cde85996ab4dce08c1622cd0b0f392686ef800c7",
+          "source_id": "site-procedure-rev1"
+        },
+        "conflict_with": [
+          "m1-isolation-evidence"
+        ],
+        "constraint_id": "s2-source-conflict",
+        "evidence_key": "energy.classification",
+        "kind": "required_evidence",
+        "statement": "The reviewed sources contain an unresolved energy-classification conflict."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "site": "synthetic-site"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:3",
+          "quote_sha256": "sha256:036de1fe4fec743b2b93ec7eaca33bfedceda484431273a87948a1f637d0fe18",
+          "source_id": "site-procedure-rev1"
+        },
+        "constraint_id": "s3-stale-revision",
+        "evidence_key": "procedure.current_revision",
+        "kind": "required_evidence",
+        "statement": "The cited site-procedure revision has a recorded successor."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-8"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:3",
+          "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d",
+          "source_id": "manual-rev2"
+        },
+        "constraint_id": "x1-asset-mismatch",
+        "evidence_key": "asset.identity",
+        "kind": "required_evidence",
+        "statement": "This reviewed constraint applies to a different model."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:2",
+          "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d",
+          "source_id": "manual-rev2"
+        },
+        "constraint_id": "x2-unsupported-interpretation",
+        "evidence_key": "inferred.limit",
+        "interpretation_supported": false,
+        "kind": "required_evidence",
+        "statement": "The normalization is recorded as unsupported."
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7"
+        },
+        "approval": {
+          "reviewed_at": "2026-08-31T00:00:00Z",
+          "reviewer_id": "reviewer:synthetic-authorized-role",
+          "state": "approved"
+        },
+        "citation": {
+          "locator": "line:2",
+          "quote_sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d",
+          "source_id": "manual-rev2"
+        },
+        "constraint_id": "x3-review-gate",
+        "evidence_key": "authorization.review",
+        "kind": "review_gate",
+        "statement": "An authorized reviewer must resolve this evidence gate."
+      }
+    ],
+    "packet_id": "packet-synthetic-press-7",
+    "policy_sha256": "sha256:de448ff659d8a1df8c976bb8f73c90122239f5a64093da6b7b7a3339b39f387b",
+    "schema_version": 1,
+    "sources": [
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "asset_serial": "SP7-0042"
+        },
+        "effective_at": "2026-08-31T00:00:00Z",
+        "revision": "rev-2",
+        "sha256": "sha256:4ea54e264ca45c8b69b1250e6538c07f8ac7b8dca683100874a3920722995e5d",
+        "source_class": "manufacturer_manual",
+        "source_id": "manual-rev2"
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "site": "synthetic-site"
+        },
+        "effective_at": "2026-08-01T00:00:00Z",
+        "revision": "rev-1",
+        "sha256": "sha256:036de1fe4fec743b2b93ec7eaca33bfedceda484431273a87948a1f637d0fe18",
+        "source_class": "site_procedure",
+        "source_id": "site-procedure-rev1",
+        "superseded_by": "site-procedure-rev2"
+      },
+      {
+        "applicability": {
+          "asset_model": "SYN-PRESS-7",
+          "site": "synthetic-site"
+        },
+        "effective_at": "2026-08-31T00:00:00Z",
+        "revision": "rev-2",
+        "sha256": "sha256:22034aeb45716c53c77cac5fe426e1808580c307632bce4f0f972c69abb4f972",
+        "source_class": "site_procedure",
+        "source_id": "site-procedure-rev2"
+      }
+    ]
+  },
+  "operational_authority": "none",
+  "packet_config_sha256": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "packet_id": "packet-synthetic-press-7",
+  "packet_revision": "synthetic-v1",
+  "packet_state": "reviewable_evidence_packet",
+  "schema_version": 1,
+  "unresolved_evidence": [
+    {
+      "issue_id": "issue:unreadable-role",
+      "related_constraint_ids": [
+        "s1-unreadable-role"
+      ],
+      "related_source_ids": [
+        "site-procedure-rev1"
+      ],
+      "state": "unreadable",
+      "statement": "The responsible-role source field remains unreadable."
+    },
+    {
+      "issue_id": "issue:source-conflict",
+      "related_constraint_ids": [
+        "s2-source-conflict",
+        "m1-isolation-evidence"
+      ],
+      "related_source_ids": [
+        "site-procedure-rev1",
+        "manual-rev2"
+      ],
+      "state": "source_conflict",
+      "statement": "The energy-classification conflict remains unresolved."
+    },
+    {
+      "issue_id": "issue:stale-procedure",
+      "related_constraint_ids": [
+        "s3-stale-revision"
+      ],
+      "related_source_ids": [
+        "site-procedure-rev1",
+        "site-procedure-rev2"
+      ],
+      "state": "revision_stale",
+      "statement": "A cited site-procedure revision has a recorded successor."
+    }
+  ]
+}

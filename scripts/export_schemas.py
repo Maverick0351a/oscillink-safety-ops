@@ -26,6 +26,7 @@ from oscillink_safety_ops.domain import (
     RegulatorySourceVerificationCandidate,
     RegulatorySourceVerificationReview,
     ReviewedRegulatoryDifference,
+    SafetyEvidencePacket,
     SafetyMemoryPacket,
     VerifiedRegulatorySource,
 )
@@ -66,6 +67,7 @@ SCHEMAS = {
     ),
     "safety-memory-packet.schema.json": SafetyMemoryPacket.model_json_schema(),
     "reviewed-regulatory-difference.schema.json": ReviewedRegulatoryDifference.model_json_schema(),
+    "safety-evidence-packet-v1.schema.json": SafetyEvidencePacket.model_json_schema(),
     "verified-regulatory-source.schema.json": VerifiedRegulatorySource.model_json_schema(),
 }
 

@@ -806,6 +806,79 @@ class SafetyMemoryPacket(ContractModel):
         return self
 
 
+class SafetyEvidencePacketContext(ContractModel):
+    """Exact asset/task context and explicit unknowns for one reviewable packet."""
+
+    jurisdiction: NonEmptyStr | None = None
+    site: NonEmptyStr | None = None
+    asset_model: NonEmptyStr
+    asset_serial: NonEmptyStr | None = None
+    task_id: NonEmptyStr
+    task_phase: NonEmptyStr | None = None
+    role: NonEmptyStr | None = None
+    applicability_unknowns: tuple[NonEmptyStr, ...] = ()
+
+
+class SafetyEvidenceIssue(ContractModel):
+    """One unresolved, cited evidence condition; never an automated safety conclusion."""
+
+    issue_id: NonEmptyStr
+    state: FindingState
+    statement: NonEmptyStr
+    related_source_ids: tuple[NonEmptyStr, ...] = ()
+    related_constraint_ids: tuple[NonEmptyStr, ...] = ()
+
+    @model_validator(mode="after")
+    def reject_resolved_state(self) -> Self:
+        if self.state is FindingState.MATCHED:
+            raise ValueError("unresolved evidence cannot use matched state")
+        return self
+
+
+class SafetyEvidencePacket(ContractModel):
+    """Frozen v1 review packet for one exact context, with no compliance or physical authority."""
+
+    schema_version: Literal[1] = 1
+    packet_id: NonEmptyStr
+    packet_revision: NonEmptyStr
+    context: SafetyEvidencePacketContext
+    memory: SafetyMemoryPacket
+    unresolved_evidence: tuple[SafetyEvidenceIssue, ...] = ()
+    packet_config_sha256: Sha256
+    generated_at: AwareDatetime
+    packet_state: Literal["reviewable_evidence_packet"] = "reviewable_evidence_packet"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_state: Literal["no_conclusion"] = "no_conclusion"
+    operational_authority: Literal["none"] = "none"
+
+    @model_validator(mode="after")
+    def enforce_exact_packet_references(self) -> Self:
+        if self.packet_id != self.memory.packet_id:
+            raise ValueError("packet_id must match exact safety memory packet")
+        issue_ids = [item.issue_id for item in self.unresolved_evidence]
+        if len(issue_ids) != len(set(issue_ids)):
+            raise ValueError("duplicate evidence issue_id")
+        source_ids = {item.source_id for item in self.memory.sources}
+        constraint_ids = {item.constraint_id for item in self.memory.constraints}
+        for issue in self.unresolved_evidence:
+            unknown_sources = set(issue.related_source_ids) - source_ids
+            if unknown_sources:
+                raise ValueError(
+                    f"evidence issue references unknown source: {sorted(unknown_sources)}"
+                )
+            unknown_constraints = set(issue.related_constraint_ids) - constraint_ids
+            if unknown_constraints:
+                raise ValueError(
+                    f"evidence issue references unknown constraint: {sorted(unknown_constraints)}"
+                )
+        return self
+
+    def content_sha256(self) -> Sha256:
+        digest = hashlib.sha256(self.model_dump_json().encode("utf-8")).hexdigest()
+        return f"sha256:{digest}"
+
+
 class PhysicalIntelligenceEvidenceEnvelope(ContractModel):
     """Portable identity and provenance for one read-only platform artifact."""
 

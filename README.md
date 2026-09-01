@@ -53,6 +53,21 @@ The CLI reads immutable local inputs and emits cited evidence findings as JSON. 
 the exact platform, adapter configuration, source revision, and payload hash from the validated
 envelope. The audit path has no network, robotics, permit, control, or physical-action integration.
 
+## Safety Evidence Packet v1
+
+The frozen [`SafetyEvidencePacket`](schemas/safety-evidence-packet-v1.schema.json) wraps one exact
+Safety Memory Packet in an identified asset/task context. It preserves jurisdiction, site,
+model/serial, task and role context, explicit applicability unknowns, packet/configuration identity,
+and separately typed unresolved evidence. Every issue must reference sources and constraints inside
+the exact nested memory packet. Duplicate or dangling identities fail closed.
+
+The deterministic
+[`safety-evidence-packet-v1.json`](tests/fixtures/synthetic_press/safety-evidence-packet-v1.json)
+fixture is synthetic and reproducible with `scripts/generate_packet_fixture.py`. Its fixed state is
+`reviewable_evidence_packet`; interpretation and applicability authority remain `none`, compliance
+remains `no_conclusion`, and operational authority remains `none`. Constraint-level synthetic review
+records do not turn the packet into a permit, certification, safe-work decision, or approval to act.
+
 ## Physical Intelligence Evidence Envelope
 
 The provider-neutral
