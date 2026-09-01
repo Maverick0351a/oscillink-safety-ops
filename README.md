@@ -338,6 +338,13 @@ See:
 
 ## Current gate
 
+The canonical verifier passed on Windows and on the independent Linux Buildbox for immutable feature
+commit `1337e2f72346966b9fdefae116f1c6f05633fd45`: Ruff, formatting, strict mypy, package builds,
+schema/catalog/fixture checks, and 132 tests. The source distribution hash matched across hosts; wheel
+payload entries matched, while ZIP creator metadata remained platform-specific. Hosted CI has not
+evaluated the local-only maturation commits because they have not been pushed. This is reproducibility
+evidence only, not release, safety, compliance, applicability, or practitioner validation.
+
 The synthetic contract slice may support technical risk reduction, but no workflow, adapter, or
 commercial claim is approved before practitioner validation:
 

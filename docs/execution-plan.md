@@ -188,22 +188,33 @@ manual reconciliation burden.
 - permits, lockout control, PLC/interlock/E-stop integration; and
 - any actuator command.
 
-## Current next action
+## Current maturation state
 
-Bounded tracks may proceed without conflating technical evidence with product validation:
+The non-practitioner technical tracks are complete without conflating engineering evidence with
+product validation:
 
-1. Complete the first five practitioner interviews using `docs/interview-protocol.md` and evaluate
-   the Stage 0 gate honestly.
-2. Preserve the frozen Safety Evidence Packet v1 and leakage-controlled hidden evaluation design.
+1. Preserve the frozen Safety Evidence Packet v1 and leakage-controlled hidden evaluation design.
    The private 12-task bank is balanced across six classes, hash-bound by the public manifest, and
    intentionally unexecuted. Same-model authorship is not independent evaluation.
-3. Preserve the metadata-only NFPA 70E and ISO 10218 registry. Licensed bytes, excerpts, requirement
+2. Preserve the metadata-only NFPA 70E and ISO 10218 registry. Licensed bytes, excerpts, requirement
    extraction, and applicability conclusions remain blocked until access, storage/processing rights,
    and authorized review are established.
-4. Preserve the hardened generic JSONL adapter, now covered by manifest-bound synthetic fire-
+3. Preserve the hardened generic JSONL adapter, now covered by manifest-bound synthetic fire-
    suppression, ammonia-monitoring, and autonomous-system exports, typed external-review and stale-
    impact contracts, plus sequence-gap, duplicate/out-of-order, missing-sequence, and parser-warning
    behavior. Historian, reporting-system, broker, and robot-runtime integrations remain later gates.
+4. Preserve the narrowly versioned Federal Register/LSA extraction and correction/effective-date
+   lineage, exact-source packet bindings, and offline plan/episode evaluator. Unsupported publication
+   structures and unresolved evidence remain explicit.
+5. Resume the first five practitioner interviews using `docs/interview-protocol.md` when access is
+   available, then evaluate the Stage 0 gate honestly.
+
+The canonical gate passed on Windows and Linux Buildbox for feature commit
+`1337e2f72346966b9fdefae116f1c6f05633fd45` with 132 tests. The source distribution hash matched
+across hosts and all wheel payload entries matched; platform-specific ZIP creator metadata caused the
+outer wheel hashes to differ. Hosted CI still reflects `origin/main` because the maturation commits
+remain local-only and no push was authorized. Passing local/Buildbox verification is reproducibility
+evidence only.
 
 The existing envelope, deterministic CLI validation, operational JSONL normalization and storage,
 candidate-only event interpretation, external review ledger, stale-impact assessment,
