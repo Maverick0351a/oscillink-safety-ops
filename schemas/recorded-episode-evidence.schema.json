@@ -1,0 +1,66 @@
+{
+  "additionalProperties": false,
+  "description": "Offline, read-only evidence declared by one exact recorded episode.",
+  "properties": {
+    "asset_model": {
+      "minLength": 1,
+      "title": "Asset Model",
+      "type": "string"
+    },
+    "asset_serial": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Asset Serial"
+    },
+    "episode_id": {
+      "minLength": 1,
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "observed_evidence_keys": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Observed Evidence Keys",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_record_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Source Record Sha256",
+      "type": "array"
+    },
+    "task_id": {
+      "minLength": 1,
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "episode_id",
+    "task_id",
+    "asset_model",
+    "observed_evidence_keys",
+    "source_record_sha256"
+  ],
+  "title": "RecordedEpisodeEvidence",
+  "type": "object"
+}

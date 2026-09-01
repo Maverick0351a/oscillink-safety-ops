@@ -14,8 +14,10 @@ from .domain import (
     OperationalReviewLedger,
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
+    RecordedEpisodeEvidence,
     RegulatorySectionSnapshot,
     RegulatorySourceEvidence,
+    SafetyEvidencePacket,
     SafetyMemoryPacket,
 )
 
@@ -61,6 +63,14 @@ def load_packet(path: Path) -> SafetyMemoryPacket:
 
 def load_plan(path: Path) -> ProposedPlan:
     return ProposedPlan.model_validate(_json_object(path))
+
+
+def load_safety_evidence_packet(path: Path) -> SafetyEvidencePacket:
+    return SafetyEvidencePacket.model_validate(_json_object(path))
+
+
+def load_recorded_episode(path: Path) -> RecordedEpisodeEvidence:
+    return RecordedEpisodeEvidence.model_validate(_json_object(path))
 
 
 def load_envelope(path: Path) -> PhysicalIntelligenceEvidenceEnvelope:

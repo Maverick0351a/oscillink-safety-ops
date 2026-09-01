@@ -7,6 +7,7 @@ from pathlib import Path
 
 from oscillink_safety_ops.domain import (
     AuditReport,
+    EpisodeEvaluationReport,
     FederalRegisterChangeCandidate,
     FederalRegisterChangeChain,
     LsaCoverageCandidate,
@@ -17,6 +18,7 @@ from oscillink_safety_ops.domain import (
     OperationalReviewLedger,
     PhysicalIntelligenceEvidenceEnvelope,
     ProposedPlan,
+    RecordedEpisodeEvidence,
     RegulatoryArtifactVerification,
     RegulatoryChangeEvidenceBundle,
     RegulatoryDifferenceReview,
@@ -35,6 +37,7 @@ from oscillink_safety_ops.standards import LicensedStandardRegistry
 
 SCHEMAS = {
     "audit-report.schema.json": AuditReport.model_json_schema(),
+    "episode-evaluation-report.schema.json": EpisodeEvaluationReport.model_json_schema(),
     "federal-register-change-chain.schema.json": FederalRegisterChangeChain.model_json_schema(),
     "federal-register-change-candidate.schema.json": (
         FederalRegisterChangeCandidate.model_json_schema()
@@ -53,6 +56,7 @@ SCHEMAS = {
         PhysicalIntelligenceEvidenceEnvelope.model_json_schema()
     ),
     "proposed-plan.schema.json": ProposedPlan.model_json_schema(),
+    "recorded-episode-evidence.schema.json": RecordedEpisodeEvidence.model_json_schema(),
     "regulatory-change-evidence-bundle.schema.json": (
         RegulatoryChangeEvidenceBundle.model_json_schema()
     ),

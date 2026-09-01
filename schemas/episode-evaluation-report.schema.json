@@ -1,0 +1,249 @@
+{
+  "$defs": {
+    "AuditFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "citation": {
+          "$ref": "#/$defs/Citation"
+        },
+        "constraint_id": {
+          "title": "Constraint Id",
+          "type": "string"
+        },
+        "evidence_key": {
+          "title": "Evidence Key",
+          "type": "string"
+        },
+        "related_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Ids",
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/FindingState"
+        }
+      },
+      "required": [
+        "constraint_id",
+        "evidence_key",
+        "state",
+        "citation"
+      ],
+      "title": "AuditFinding",
+      "type": "object"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "quote_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Quote Sha256",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "locator",
+        "quote_sha256"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "EvidenceEnvelopeBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_config_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Adapter Config Sha256",
+          "type": "string"
+        },
+        "adapter_id": {
+          "minLength": 1,
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "adapter_version": {
+          "minLength": 1,
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "artifact_type": {
+          "minLength": 1,
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "platform_id": {
+          "minLength": 1,
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "platform_version": {
+          "minLength": 1,
+          "title": "Platform Version",
+          "type": "string"
+        },
+        "source_ref": {
+          "minLength": 1,
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_revision": {
+          "minLength": 1,
+          "title": "Source Revision",
+          "type": "string"
+        },
+        "task_id": {
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform_id",
+        "platform_version",
+        "adapter_id",
+        "adapter_version",
+        "adapter_config_sha256",
+        "artifact_type",
+        "source_ref",
+        "source_revision",
+        "content_sha256",
+        "observed_at",
+        "task_id"
+      ],
+      "title": "EvidenceEnvelopeBinding",
+      "type": "object"
+    },
+    "FindingState": {
+      "enum": [
+        "matched",
+        "missing_evidence",
+        "asset_mismatch",
+        "revision_stale",
+        "source_conflict",
+        "ambiguous",
+        "unreadable",
+        "unsupported_interpretation",
+        "requires_authorized_review"
+      ],
+      "title": "FindingState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Deterministic episode evidence findings with no physical or compliance authority.",
+  "properties": {
+    "applicability_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Applicability Authority",
+      "type": "string"
+    },
+    "compliance_state": {
+      "const": "no_conclusion",
+      "default": "no_conclusion",
+      "title": "Compliance State",
+      "type": "string"
+    },
+    "envelope": {
+      "$ref": "#/$defs/EvidenceEnvelopeBinding"
+    },
+    "episode_id": {
+      "minLength": 1,
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "evaluation_state": {
+      "const": "evidence_findings_only",
+      "default": "evidence_findings_only",
+      "title": "Evaluation State",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/AuditFinding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "interpretation_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Interpretation Authority",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "packet_id": {
+      "minLength": 1,
+      "title": "Packet Id",
+      "type": "string"
+    },
+    "packet_revision": {
+      "minLength": 1,
+      "title": "Packet Revision",
+      "type": "string"
+    },
+    "packet_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Packet Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_record_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Source Record Sha256",
+      "type": "array"
+    },
+    "task_id": {
+      "minLength": 1,
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "packet_id",
+    "packet_revision",
+    "packet_sha256",
+    "episode_id",
+    "task_id",
+    "envelope",
+    "source_record_sha256",
+    "findings"
+  ],
+  "title": "EpisodeEvaluationReport",
+  "type": "object"
+}

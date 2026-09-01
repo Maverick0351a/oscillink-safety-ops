@@ -958,3 +958,42 @@ class AuditReport(ContractModel):
     policy_sha256: Sha256
     envelope: EvidenceEnvelopeBinding
     findings: tuple[AuditFinding, ...]
+
+
+class RecordedEpisodeEvidence(ContractModel):
+    """Offline, read-only evidence declared by one exact recorded episode."""
+
+    schema_version: Literal[1] = 1
+    episode_id: NonEmptyStr
+    task_id: NonEmptyStr
+    asset_model: NonEmptyStr
+    asset_serial: NonEmptyStr | None = None
+    observed_evidence_keys: tuple[NonEmptyStr, ...]
+    source_record_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def reject_duplicate_evidence(self) -> Self:
+        if len(self.observed_evidence_keys) != len(set(self.observed_evidence_keys)):
+            raise ValueError("duplicate observed evidence_key")
+        if len(self.source_record_sha256) != len(set(self.source_record_sha256)):
+            raise ValueError("duplicate source record SHA-256")
+        return self
+
+
+class EpisodeEvaluationReport(ContractModel):
+    """Deterministic episode evidence findings with no physical or compliance authority."""
+
+    schema_version: Literal[1] = 1
+    packet_id: NonEmptyStr
+    packet_revision: NonEmptyStr
+    packet_sha256: Sha256
+    episode_id: NonEmptyStr
+    task_id: NonEmptyStr
+    envelope: EvidenceEnvelopeBinding
+    source_record_sha256: tuple[Sha256, ...]
+    findings: tuple[AuditFinding, ...]
+    evaluation_state: Literal["evidence_findings_only"] = "evidence_findings_only"
+    interpretation_authority: Literal["none"] = "none"
+    applicability_authority: Literal["none"] = "none"
+    compliance_state: Literal["no_conclusion"] = "no_conclusion"
+    operational_authority: Literal["none"] = "none"

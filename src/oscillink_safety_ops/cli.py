@@ -8,7 +8,7 @@ from collections.abc import Sequence
 from dataclasses import asdict
 from pathlib import Path
 
-from .audit import audit_plan
+from .audit import audit_plan, evaluate_recorded_episode
 from .governance import build_operational_impact_report
 from .io import (
     FixtureIntegrityError,
@@ -17,8 +17,10 @@ from .io import (
     load_operational_review_ledger,
     load_packet,
     load_plan,
+    load_recorded_episode,
     load_regulatory_section_snapshot,
     load_regulatory_source_evidence,
+    load_safety_evidence_packet,
     sha256_file,
     store_operational_export,
     verify_envelope_payload,
@@ -40,6 +42,13 @@ def _parser() -> argparse.ArgumentParser:
     audit.add_argument("--manifest", type=Path, required=True)
     audit.add_argument("--envelope", type=Path, required=True)
     audit.add_argument("--root", type=Path, required=True)
+    episode_evaluate = subparsers.add_parser(
+        "episode-evaluate", help="evaluate recorded episode evidence offline"
+    )
+    episode_evaluate.add_argument("--packet", type=Path, required=True)
+    episode_evaluate.add_argument("--episode", type=Path, required=True)
+    episode_evaluate.add_argument("--envelope", type=Path, required=True)
+    episode_evaluate.add_argument("--root", type=Path, required=True)
     envelope = subparsers.add_parser("envelope", help="work with evidence envelopes")
     envelope_actions = envelope.add_subparsers(dest="envelope_action", required=True)
     validate = envelope_actions.add_parser("validate", help="validate a read-only envelope")
@@ -93,6 +102,14 @@ def _parser() -> argparse.ArgumentParser:
 
 def run(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.subcommand == "episode-evaluate":
+        episode_packet = load_safety_evidence_packet(args.packet)
+        episode = load_recorded_episode(args.episode)
+        envelope = load_envelope(args.envelope)
+        verify_envelope_payload(envelope, root=args.root)
+        episode_report = evaluate_recorded_episode(episode_packet, episode, envelope=envelope)
+        print(episode_report.model_dump_json(indent=2))
+        return 0
     if args.subcommand == "envelope":
         envelope = load_envelope(args.envelope)
         verify_envelope_payload(envelope, root=args.root)

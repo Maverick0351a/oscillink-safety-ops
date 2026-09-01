@@ -40,6 +40,11 @@ PYTHONPATH= uv run safety-ops audit \
   --manifest tests/fixtures/synthetic_press/manifest.json \
   --envelope tests/fixtures/synthetic_press/envelope.json \
   --root tests/fixtures/synthetic_press
+PYTHONPATH= uv run safety-ops episode-evaluate \
+  --packet tests/fixtures/synthetic_press/safety-evidence-packet-v1.json \
+  --episode tests/fixtures/synthetic_press/episode.json \
+  --envelope tests/fixtures/synthetic_press/episode-envelope.json \
+  --root tests/fixtures/synthetic_press
 PYTHONPATH= uv run safety-ops operational normalize \
   --input tests/fixtures/operational_evidence/synthetic-operational.jsonl \
   --batch-id batch:synthetic-operational-001 \
@@ -52,6 +57,10 @@ PYTHONPATH= uv run python scripts/verify.py
 The CLI reads immutable local inputs and emits cited evidence findings as JSON. Audit reports bind
 the exact platform, adapter configuration, source revision, and payload hash from the validated
 envelope. The audit path has no network, robotics, permit, control, or physical-action integration.
+The recorded-episode evaluator verifies exact local payload bytes, binds the packet revision and
+packet hash, and emits the same closed evidence states for observed episode evidence. Its fixed output
+is `evidence_findings_only` with no interpretation, applicability, compliance, or operational
+authority.
 
 ## Safety Evidence Packet v1
 

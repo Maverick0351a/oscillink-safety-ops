@@ -49,6 +49,10 @@ unresolved evidence with source/constraint reference validation. The committed p
 reviewable evidence only; its schema fixes interpretation/applicability authority to none,
 compliance to no conclusion, and operational authority to none.
 
+The offline recorded-episode evaluator now verifies an exact provider-neutral episode envelope and
+payload, binds packet revision/hash and source-record hashes, and emits deterministic cited evidence
+states only. It cannot claim compliance, authorize operation, mutate a plan, or control equipment.
+
 ## Stage 1A — Governed authority-source verification
 
 Build a source-verification layer before promoting extracted requirements:
