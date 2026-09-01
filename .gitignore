@@ -30,3 +30,4 @@ incident-data/
 *.pfx
 .DS_Store
 Thumbs.db
+.hermes/
