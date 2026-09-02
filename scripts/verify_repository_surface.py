@@ -18,6 +18,7 @@ REQUIRED_FILES = (
     ".github/ISSUE_TEMPLATE/integration-request.yml",
     ".github/pull_request_template.md",
     "docs/audits/publication-readiness-2026-09-01.md",
+    "docs/audits/release-candidate-0.1.0a1.md",
     "docs/publication-checklist.md",
     "docs/releases/v0.1.0-alpha.1.md",
     "docs/release-process.md",
@@ -43,6 +44,11 @@ REQUIRED_TEXT = {
         "local pre-publication evidence; publication remains blocked",
         "0 findings",
         "known vulnerabilities: 0",
+    ),
+    "docs/audits/release-candidate-0.1.0a1.md": (
+        "private local release-candidate evidence; not published",
+        "uncompressed member payload differences: 0",
+        "Keep the candidate private and unpushed.",
     ),
     "docs/publication-checklist.md": ("separate explicit authorization",),
     "docs/releases/v0.1.0-alpha.1.md": (

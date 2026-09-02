@@ -30,6 +30,16 @@ def test_repository_surface_requires_publication_audit(tmp_path: Path) -> None:
     )
 
 
+def test_repository_surface_requires_release_candidate_evidence(tmp_path: Path) -> None:
+    validate = importlib.import_module(
+        "scripts.verify_repository_surface"
+    ).validate_repository_surface
+
+    assert "missing required repository file: docs/audits/release-candidate-0.1.0a1.md" in validate(
+        tmp_path
+    )
+
+
 def test_repository_surface_requires_prerelease_notes(tmp_path: Path) -> None:
     validate = importlib.import_module(
         "scripts.verify_repository_surface"
