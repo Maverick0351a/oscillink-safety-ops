@@ -19,12 +19,13 @@ REQUIRED_FILES = (
     ".github/pull_request_template.md",
     "docs/audits/publication-readiness-2026-09-01.md",
     "docs/publication-checklist.md",
+    "docs/releases/v0.1.0-alpha.1.md",
     "docs/release-process.md",
 )
 
 REQUIRED_TEXT = {
     "CHANGELOG.md": ("## [Unreleased]", "No public version or release tag has been published."),
-    "CITATION.cff": ("cff-version: 1.2.0", "license: Apache-2.0", "version: 0.1.0"),
+    "CITATION.cff": ("cff-version: 1.2.0", "license: Apache-2.0", "version: 0.1.0a1"),
     "CODE_OF_CONDUCT.md": ("Contributor Covenant", "Report conduct concerns privately"),
     "SECURITY.md": ("must not become public", "No version is currently supported"),
     "SUPPORT.md": ("Do not report vulnerabilities in a public issue.",),
@@ -44,6 +45,11 @@ REQUIRED_TEXT = {
         "known vulnerabilities: 0",
     ),
     "docs/publication-checklist.md": ("separate explicit authorization",),
+    "docs/releases/v0.1.0-alpha.1.md": (
+        "local deterministic engineering prerelease candidate; not published",
+        "Package version: `0.1.0a1`",
+        "Operational authority: none",
+    ),
     "docs/release-process.md": ("requires explicit owner authorization",),
 }
 

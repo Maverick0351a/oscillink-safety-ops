@@ -34,6 +34,7 @@ from oscillink_safety_ops.domain import (
     VerifiedRegulatorySource,
 )
 from oscillink_safety_ops.evaluation import HiddenEvaluationValidation
+from oscillink_safety_ops.release import ReleaseVerification
 from oscillink_safety_ops.standards import LicensedStandardRegistry
 
 SCHEMAS = {
@@ -75,6 +76,7 @@ SCHEMAS = {
     "regulatory-source-verification-review.schema.json": (
         RegulatorySourceVerificationReview.model_json_schema()
     ),
+    "release-verification.schema.json": ReleaseVerification.model_json_schema(),
     "safety-memory-packet.schema.json": SafetyMemoryPacket.model_json_schema(),
     "reviewed-regulatory-difference.schema.json": ReviewedRegulatoryDifference.model_json_schema(),
     "safety-evidence-packet-v1.schema.json": SafetyEvidencePacket.model_json_schema(),

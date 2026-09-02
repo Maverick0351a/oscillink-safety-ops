@@ -14,8 +14,10 @@ A release candidate must use one version across:
 - the annotated Git tag; and
 - release notes and checksum manifest.
 
-Runtime version behavior must be covered by a failing test before implementation changes. The current
-`0.1.0` package version is development metadata, not evidence of a published release.
+Runtime version behavior must be covered by a failing test before implementation changes. The
+current `0.1.0a1` package version is deterministic prerelease-candidate metadata, not evidence of a
+published release. Its intended human-facing tag is `v0.1.0-alpha.1`; do not create that tag without
+separate promotion approval.
 
 ## Candidate sequence
 
@@ -56,7 +58,29 @@ git status --short
 ```
 
 Build artifacts into a fresh directory and inspect their embedded version, license, package contents,
-and exclusion of private or runtime paths.
+and exclusion of private or runtime paths. Then create and verify the portable manifest from an
+isolated copy:
+
+```bash
+SHA=$(git rev-parse HEAD)
+BUILD_ROOT="../safety-ops-release-$SHA"
+mkdir -p "$BUILD_ROOT/artifacts" "$BUILD_ROOT/isolated"
+uv build --out-dir "$BUILD_ROOT/artifacts"
+uv run python scripts/create_release_manifest.py create \
+  --artifact "$BUILD_ROOT/artifacts/oscillink_safety_ops-0.1.0a1.tar.gz" \
+  --artifact "$BUILD_ROOT/artifacts/oscillink_safety_ops-0.1.0a1-py3-none-any.whl" \
+  --output-dir "$BUILD_ROOT/isolated" \
+  --package-version 0.1.0a1 \
+  --candidate-commit "$SHA"
+cp "$BUILD_ROOT/artifacts/"* "$BUILD_ROOT/isolated/"
+rm -rf "$BUILD_ROOT/artifacts"
+uv run python scripts/create_release_manifest.py verify \
+  --release-dir "$BUILD_ROOT/isolated"
+```
+
+The verification directory must contain only the two artifacts, `release-verification.json`, and
+`SHA256SUMS.txt`. Verification rejects non-basename paths, unexpected files, non-regular artifacts,
+changed sizes, changed bytes, and checksum-file drift.
 
 ### 4. Commit the exact candidate
 

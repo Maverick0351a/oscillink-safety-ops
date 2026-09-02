@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "oscillink-safety-ops"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Read-only governed safety-memory auditing for physical intelligence"
 license = "Apache-2.0"
 requires-python = ">=3.11,<3.12"
@@ -23,6 +23,9 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/oscillink_safety_ops"]
+
+[tool.hatch.version]
+path = "src/oscillink_safety_ops/__init__.py"
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers"

@@ -7,6 +7,8 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 ## [Unreleased]
 
+## [0.1.0-alpha.1] — Unreleased
+
 ### Added
 
 - Governed physical-intelligence evidence envelopes with exact local payload verification.

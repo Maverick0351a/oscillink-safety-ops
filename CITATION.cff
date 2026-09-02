@@ -9,7 +9,7 @@ authors:
 repository-code: https://github.com/Maverick0351a/oscillink-safety-ops
 url: https://oscillink.com
 license: Apache-2.0
-version: 0.1.0
+version: 0.1.0a1
 abstract: >-
   Read-only governed compliance-evidence contracts and offline evaluation for physical intelligence.
 keywords:
