@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
 import pytest
 
+from oscillink_safety_ops.io import FixtureIntegrityError
 from oscillink_safety_ops.regulations import (
     parse_osha_regulation_index,
     render_osha_catalog,
@@ -89,3 +91,16 @@ def test_regulation_bytes_are_stored_by_content_hash(tmp_path: Path) -> None:
         "artifacts/sha256/a9/a9bb9378a5b533d1a7b36c7b8d2a978d7aef7340aaef6b1cdbca80a356284149.xml"
     )
     assert (tmp_path / artifact.relative_path).read_bytes() == content
+
+
+def test_regulation_storage_rejects_poisoned_existing_digest_path(tmp_path: Path) -> None:
+    content = b"<ECFR><DIV1 N='1910'>Synthetic regulation bytes</DIV1></ECFR>\n"
+    digest = hashlib.sha256(content).hexdigest()
+    destination = tmp_path / "artifacts" / "sha256" / digest[:2] / f"{digest}.xml"
+    destination.parent.mkdir(parents=True)
+    destination.write_bytes(b"poisoned")
+
+    with pytest.raises(FixtureIntegrityError, match="content-addressed destination hash mismatch"):
+        write_content_addressed_regulation(tmp_path, content)
+
+    assert destination.read_bytes() == b"poisoned"

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
@@ -17,6 +18,7 @@ from oscillink_safety_ops.domain import (
 )
 from oscillink_safety_ops.interpretation import interpret_operational_batch
 from oscillink_safety_ops.io import (
+    FixtureIntegrityError,
     load_operational_jsonl,
     store_operational_export,
     verify_manifest,
@@ -294,6 +296,64 @@ def test_operational_export_is_stored_by_exact_content_hash(tmp_path: Path) -> N
     assert stored.read_bytes() == source.read_bytes()
     assert artifact.sha256.startswith("sha256:")
     assert artifact.relative_path.endswith(".jsonl")
+
+
+def test_operational_export_rejects_poisoned_existing_digest_path(tmp_path: Path) -> None:
+    source = tmp_path / "autonomy.jsonl"
+    content = b'{"event":"synthetic"}\n'
+    source.write_bytes(content)
+    digest = hashlib.sha256(content).hexdigest()
+    destination = tmp_path / "store" / "artifacts" / "sha256" / digest[:2] / f"{digest}.jsonl"
+    destination.parent.mkdir(parents=True)
+    destination.write_bytes(b"poisoned")
+
+    with pytest.raises(FixtureIntegrityError, match="content-addressed destination hash mismatch"):
+        store_operational_export(source, root=tmp_path / "store")
+
+    assert destination.read_bytes() == b"poisoned"
+
+
+def test_operational_export_does_not_publish_partial_destination(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = tmp_path / "autonomy.jsonl"
+    content = b'{"event":"synthetic"}\n'
+    source.write_bytes(content)
+    digest = hashlib.sha256(content).hexdigest()
+    destination = tmp_path / "store" / "artifacts" / "sha256" / digest[:2] / f"{digest}.jsonl"
+
+    def fail_publish(self: Path, target: Path) -> None:
+        raise OSError("simulated publish interruption")
+
+    monkeypatch.setattr(Path, "hardlink_to", fail_publish)
+
+    with pytest.raises(OSError, match="simulated publish interruption"):
+        store_operational_export(source, root=tmp_path / "store")
+
+    assert not destination.exists()
+    assert list(destination.parent.glob("*.tmp")) == []
+
+
+def test_operational_export_accepts_identical_concurrent_publish(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = tmp_path / "autonomy.jsonl"
+    content = b'{"event":"synthetic"}\n'
+    source.write_bytes(content)
+
+    def publish_first(self: Path, target: Path) -> None:
+        self.write_bytes(target.read_bytes())
+        raise FileExistsError("simulated concurrent publish")
+
+    monkeypatch.setattr(Path, "hardlink_to", publish_first)
+
+    artifact = store_operational_export(source, root=tmp_path / "store")
+
+    destination = tmp_path / "store" / artifact.relative_path
+    assert destination.read_bytes() == content
+    assert list(destination.parent.glob("*.tmp")) == []
 
 
 def test_pinned_operational_fixture_covers_fire_ammonia_and_autonomy() -> None:

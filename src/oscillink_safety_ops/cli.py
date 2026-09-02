@@ -16,11 +16,11 @@ from .io import (
     load_operational_jsonl,
     load_operational_review_ledger,
     load_packet,
-    load_plan,
-    load_recorded_episode,
     load_regulatory_section_snapshot,
     load_regulatory_source_evidence,
     load_safety_evidence_packet,
+    load_verified_envelope_episode,
+    load_verified_envelope_plan,
     sha256_file,
     store_operational_export,
     verify_envelope_payload,
@@ -104,9 +104,12 @@ def run(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     if args.subcommand == "episode-evaluate":
         episode_packet = load_safety_evidence_packet(args.packet)
-        episode = load_recorded_episode(args.episode)
         envelope = load_envelope(args.envelope)
-        verify_envelope_payload(envelope, root=args.root)
+        episode = load_verified_envelope_episode(
+            envelope,
+            root=args.root,
+            requested_path=args.episode,
+        )
         episode_report = evaluate_recorded_episode(episode_packet, episode, envelope=envelope)
         print(episode_report.model_dump_json(indent=2))
         return 0
@@ -180,9 +183,12 @@ def run(argv: Sequence[str] | None = None) -> int:
     missing = {source.sha256 for source in packet.sources} - verified_hashes
     if missing:
         raise FixtureIntegrityError("packet source hash is not pinned by manifest")
-    plan = load_plan(args.plan)
     envelope = load_envelope(args.envelope)
-    verify_envelope_payload(envelope, root=args.root)
+    plan = load_verified_envelope_plan(
+        envelope,
+        root=args.root,
+        requested_path=args.plan,
+    )
     report = audit_plan(packet, plan, envelope=envelope)
     print(report.model_dump_json(indent=2))
     return 0

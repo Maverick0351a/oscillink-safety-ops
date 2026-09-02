@@ -57,6 +57,30 @@ def test_cli_audits_pinned_fixture_as_deterministic_json(
     )
 
 
+def test_cli_rejects_plan_path_different_from_verified_envelope_payload(tmp_path: Path) -> None:
+    tampered = tmp_path / "plan.json"
+    plan = json.loads((FIXTURE / "plan.json").read_text(encoding="utf-8"))
+    plan["declared_evidence_keys"].append("verification.zero_energy")
+    tampered.write_text(json.dumps(plan), encoding="utf-8")
+
+    with pytest.raises(FixtureIntegrityError, match="plan path does not match envelope payload"):
+        run(
+            [
+                "audit",
+                "--packet",
+                str(FIXTURE / "packet.json"),
+                "--plan",
+                str(tampered),
+                "--manifest",
+                str(FIXTURE / "manifest.json"),
+                "--envelope",
+                str(FIXTURE / "envelope.json"),
+                "--root",
+                str(FIXTURE),
+            ]
+        )
+
+
 def test_fixture_verification_rejects_changed_source_bytes(tmp_path: Path) -> None:
     fixture_copy = tmp_path / "fixture"
     fixture_copy.mkdir()

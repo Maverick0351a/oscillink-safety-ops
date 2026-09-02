@@ -110,3 +110,25 @@ def test_offline_episode_cli_verifies_payload_and_emits_report(
     assert report["episode_id"] == "episode-synthetic-001"
     assert report["evaluation_state"] == "evidence_findings_only"
     assert report["operational_authority"] == "none"
+
+
+def test_offline_episode_cli_rejects_path_different_from_envelope_payload(tmp_path: Path) -> None:
+    tampered = tmp_path / "episode.json"
+    episode = json.loads((ROOT / "episode.json").read_text(encoding="utf-8"))
+    episode["observed_evidence_keys"].append("verification.zero_energy")
+    tampered.write_text(json.dumps(episode), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="episode path does not match envelope payload"):
+        run(
+            [
+                "episode-evaluate",
+                "--packet",
+                str(ROOT / "safety-evidence-packet-v1.json"),
+                "--episode",
+                str(tampered),
+                "--envelope",
+                str(ROOT / "episode-envelope.json"),
+                "--root",
+                str(ROOT),
+            ]
+        )

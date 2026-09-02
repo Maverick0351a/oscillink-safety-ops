@@ -10,6 +10,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Literal
 
+from .io import _store_content_addressed_bytes
+
 OSHA_INDEX_URL = "https://www.osha.gov/laws-regs/regulations/standardnumber"
 _PART_PATH = re.compile(r"^/laws-regs/regulations/standardnumber/([0-9]+[a-z]?)$")
 _ECFR_UNAVAILABLE_PARTS = {"70a"}
@@ -149,14 +151,9 @@ def validate_osha_catalog(catalog: dict[str, Any]) -> int:
 
 def write_content_addressed_regulation(root: Path, content: bytes) -> RegulationArtifact:
     """Store immutable regulation bytes without granting them review or applicability state."""
-    digest = hashlib.sha256(content).hexdigest()
-    relative = Path("artifacts") / "sha256" / digest[:2] / f"{digest}.xml"
-    destination = root / relative
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    if not destination.exists():
-        destination.write_bytes(content)
+    stored = _store_content_addressed_bytes(content, root=root, extension=".xml")
     return RegulationArtifact(
-        sha256="sha256:" + digest,
-        relative_path=relative.as_posix(),
-        byte_count=len(content),
+        sha256=stored.sha256,
+        relative_path=stored.relative_path,
+        byte_count=stored.byte_count,
     )

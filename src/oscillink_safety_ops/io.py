@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import stat
+import tempfile
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -38,6 +41,13 @@ class StoredOperationalArtifact:
 
 
 @dataclass(frozen=True)
+class _StoredContentAddressedBytes:
+    sha256: str
+    relative_path: str
+    byte_count: int
+
+
+@dataclass(frozen=True)
 class _SequenceState:
     sequence_number: int
     record_id: str
@@ -65,6 +75,31 @@ def _json_object(path: Path) -> dict[str, Any]:
     return data
 
 
+def _verified_envelope_payload_object(
+    envelope: PhysicalIntelligenceEvidenceEnvelope,
+    *,
+    root: Path,
+    requested_path: Path,
+    input_name: str,
+) -> dict[str, Any]:
+    resolved_root = root.resolve()
+    payload = (resolved_root / envelope.payload_ref).resolve()
+    if not payload.is_relative_to(resolved_root) or not payload.is_file():
+        raise FixtureIntegrityError(f"invalid envelope payload_ref: {envelope.payload_ref}")
+    if requested_path.resolve() != payload:
+        raise FixtureIntegrityError(f"{input_name} path does not match envelope payload")
+    if payload.stat().st_size > MAX_JSON_BYTES:
+        raise ValueError(f"input exceeds {MAX_JSON_BYTES} bytes")
+    raw = payload.read_bytes()
+    actual = "sha256:" + hashlib.sha256(raw).hexdigest()
+    if actual != envelope.content_sha256:
+        raise FixtureIntegrityError("envelope payload hash mismatch")
+    data: Any = json.loads(raw.decode("utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"expected JSON object: {payload}")
+    return data
+
+
 def load_packet(path: Path) -> SafetyMemoryPacket:
     return SafetyMemoryPacket.model_validate(_json_object(path))
 
@@ -73,12 +108,46 @@ def load_plan(path: Path) -> ProposedPlan:
     return ProposedPlan.model_validate(_json_object(path))
 
 
+def load_verified_envelope_plan(
+    envelope: PhysicalIntelligenceEvidenceEnvelope,
+    *,
+    root: Path,
+    requested_path: Path,
+) -> ProposedPlan:
+    """Load the exact plan bytes named and hashed by an evidence envelope."""
+    return ProposedPlan.model_validate(
+        _verified_envelope_payload_object(
+            envelope,
+            root=root,
+            requested_path=requested_path,
+            input_name="plan",
+        )
+    )
+
+
 def load_safety_evidence_packet(path: Path) -> SafetyEvidencePacket:
     return SafetyEvidencePacket.model_validate(_json_object(path))
 
 
 def load_recorded_episode(path: Path) -> RecordedEpisodeEvidence:
     return RecordedEpisodeEvidence.model_validate(_json_object(path))
+
+
+def load_verified_envelope_episode(
+    envelope: PhysicalIntelligenceEvidenceEnvelope,
+    *,
+    root: Path,
+    requested_path: Path,
+) -> RecordedEpisodeEvidence:
+    """Load the exact episode bytes named and hashed by an evidence envelope."""
+    return RecordedEpisodeEvidence.model_validate(
+        _verified_envelope_payload_object(
+            envelope,
+            root=root,
+            requested_path=requested_path,
+            input_name="episode",
+        )
+    )
 
 
 def load_envelope(path: Path) -> PhysicalIntelligenceEvidenceEnvelope:
@@ -183,21 +252,83 @@ def load_operational_jsonl(
     )
 
 
+def _verify_content_addressed_destination(
+    destination: Path,
+    *,
+    digest: str,
+    byte_count: int,
+) -> None:
+    try:
+        metadata = destination.lstat()
+    except FileNotFoundError as error:
+        raise FixtureIntegrityError("content-addressed destination is missing") from error
+    if not stat.S_ISREG(metadata.st_mode):
+        raise FixtureIntegrityError("content-addressed destination is not a regular file")
+    if metadata.st_size != byte_count or _sha256(destination) != digest:
+        raise FixtureIntegrityError("content-addressed destination hash mismatch")
+
+
+def _store_content_addressed_bytes(
+    content: bytes,
+    *,
+    root: Path,
+    extension: str,
+) -> _StoredContentAddressedBytes:
+    digest = hashlib.sha256(content).hexdigest()
+    relative = Path("artifacts") / "sha256" / digest[:2] / f"{digest}{extension}"
+    destination = root / relative
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists() or destination.is_symlink():
+        _verify_content_addressed_destination(
+            destination,
+            digest=digest,
+            byte_count=len(content),
+        )
+    else:
+        temporary_path: Path | None = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                dir=destination.parent,
+                prefix=f".{destination.name}.",
+                suffix=".tmp",
+                delete=False,
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+                temporary.write(content)
+                temporary.flush()
+                os.fsync(temporary.fileno())
+            try:
+                destination.hardlink_to(temporary_path)
+            except FileExistsError:
+                pass
+        finally:
+            if temporary_path is not None:
+                temporary_path.unlink(missing_ok=True)
+        _verify_content_addressed_destination(
+            destination,
+            digest=digest,
+            byte_count=len(content),
+        )
+    return _StoredContentAddressedBytes(
+        sha256="sha256:" + digest,
+        relative_path=relative.as_posix(),
+        byte_count=len(content),
+    )
+
+
 def store_operational_export(source: Path, *, root: Path) -> StoredOperationalArtifact:
     """Store exact export bytes by hash under a caller-controlled local evidence root."""
     if source.stat().st_size > MAX_JSON_BYTES:
         raise ValueError(f"input exceeds {MAX_JSON_BYTES} bytes")
-    content = source.read_bytes()
-    digest = hashlib.sha256(content).hexdigest()
-    relative = Path("artifacts") / "sha256" / digest[:2] / f"{digest}.jsonl"
-    destination = root / relative
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    if not destination.exists():
-        destination.write_bytes(content)
+    stored = _store_content_addressed_bytes(
+        source.read_bytes(),
+        root=root,
+        extension=".jsonl",
+    )
     return StoredOperationalArtifact(
-        sha256="sha256:" + digest,
-        relative_path=relative.as_posix(),
-        byte_count=len(content),
+        sha256=stored.sha256,
+        relative_path=stored.relative_path,
+        byte_count=stored.byte_count,
     )
 
 
