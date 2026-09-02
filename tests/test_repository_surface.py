@@ -48,6 +48,16 @@ def test_repository_surface_requires_prerelease_notes(tmp_path: Path) -> None:
     assert "missing required repository file: docs/releases/v0.1.0-alpha.1.md" in validate(tmp_path)
 
 
+def test_repository_surface_requires_private_pilot_gates(tmp_path: Path) -> None:
+    validate = importlib.import_module(
+        "scripts.verify_repository_surface"
+    ).validate_repository_surface
+
+    assert "missing required repository file: docs/milestones/private-pilot-gates.md" in validate(
+        tmp_path
+    )
+
+
 def test_current_repository_has_complete_required_surface() -> None:
     validate = importlib.import_module(
         "scripts.verify_repository_surface"

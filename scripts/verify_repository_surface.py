@@ -22,6 +22,7 @@ REQUIRED_FILES = (
     "docs/publication-checklist.md",
     "docs/releases/v0.1.0-alpha.1.md",
     "docs/release-process.md",
+    "docs/milestones/private-pilot-gates.md",
 )
 
 REQUIRED_TEXT = {

@@ -9,6 +9,17 @@ The first candidate artifact is a Safety Evidence Packet for one identified asse
 preserves exact source revisions, extraction regions, typed candidates, applicability, conflicts,
 human review, corrections, and lineage.
 
+## Active private-pilot workflow
+
+The active product experiment is deliberately limited to one identified industrial asset or robot
+cell, one bounded maintenance or integration task, one rights-cleared manual/SOP/asset/task evidence
+bundle, and one externally authorized reviewer. The product output remains a reviewable packet and
+offline evidence findings only.
+
+New OCR providers, jurisdictions, regulatory parser breadth, facility connectors, robot-runtime
+adapters, hosted services, and user-interface work remain deferred until the private-pilot workflow
+passes its technical, practitioner, and commercial gates.
+
 ## Source boundary
 
 Supported source classes may include:

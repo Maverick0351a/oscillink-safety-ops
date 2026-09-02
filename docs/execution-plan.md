@@ -174,9 +174,24 @@ Run with at least three organizations/users on their own local evidence. Measure
 **Gate:** at least two users receive an actionable mismatch and review cost is lower than avoided
 manual reconciliation burden.
 
+## Private-pilot scope freeze
+
+The only active product workflow is one identified industrial asset or robot cell, one bounded
+maintenance or integration task, one rights-cleared manual/SOP/asset/task evidence bundle, and one
+externally authorized reviewer. Safety Ops may produce reviewable packets and offline findings only.
+
+Until the private-pilot gates pass, preserve but do not expand the existing OCR research, regulatory
+publication parsers, licensed-standard metadata, facility evidence adapters, robot-runtime seams,
+hosted-service concepts, or user-interface concepts. The current milestone evidence and kill gates
+are recorded in [`docs/milestones/private-pilot-gates.md`](milestones/private-pilot-gates.md).
+
 ## Deferred
 
 - public launch;
+- new jurisdictions or broader regulatory-publication parsers;
+- additional OCR providers or generic document extraction;
+- new facility, historian, CMMS, robotics-runtime, or near-real-time connectors;
+- hosted services or production user interfaces;
 - generic CMMS/checklists;
 - work-instruction authoring;
 - legal/compliance certification;
