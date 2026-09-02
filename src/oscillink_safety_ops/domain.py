@@ -67,6 +67,8 @@ class FindingState(StrEnum):
     UNREADABLE = "unreadable"
     UNSUPPORTED_INTERPRETATION = "unsupported_interpretation"
     REQUIRES_AUTHORIZED_REVIEW = "requires_authorized_review"
+    PROHIBITED_CONDITION_EVIDENCE_PRESENT = "prohibited_condition_evidence_present"
+    PROHIBITED_CONDITION_EVIDENCE_NOT_DECLARED = "prohibited_condition_evidence_not_declared"
 
 
 class OperationalSourceType(StrEnum):
@@ -332,6 +334,17 @@ class OperationalReviewLedger(ContractModel):
                     raise ValueError(f"review {review.review_id} cannot supersede itself")
                 if prior.candidate_id != review.candidate_id:
                     raise ValueError("a review can supersede only a review of the same candidate")
+                if review.reviewed_at < prior.reviewed_at:
+                    raise ValueError("superseding review cannot predate the prior review")
+        supersession = {review.review_id: review.supersedes_review_id for review in self.reviews}
+        for start in reviews:
+            visited: set[str] = set()
+            current: str | None = start
+            while current is not None:
+                if current in visited:
+                    raise ValueError("review supersession cycle")
+                visited.add(current)
+                current = supersession[current]
         return self
 
 
@@ -823,6 +836,15 @@ class SafetyMemoryPacket(ContractModel):
                 raise ValueError(f"source {source.source_id} has unknown superseded_by target")
             if source.superseded_by == source.source_id:
                 raise ValueError(f"source {source.source_id} cannot supersede itself")
+        supersession = {source.source_id: source.superseded_by for source in self.sources}
+        for start in source_ids:
+            visited: set[str] = set()
+            current: str | None = start
+            while current is not None:
+                if current in visited:
+                    raise ValueError("source supersession cycle")
+                visited.add(current)
+                current = supersession[current]
         for constraint in self.constraints:
             if constraint.approval.state is not ApprovalState.APPROVED:
                 raise ValueError("packet constraints must be externally approved")
@@ -926,6 +948,7 @@ class PhysicalIntelligenceEvidenceEnvelope(ContractModel):
     source_ref: NonEmptyStr
     source_revision: NonEmptyStr
     content_sha256: Sha256
+    content_byte_count: Annotated[StrictInt, Field(gt=0)]
     observed_at: AwareDatetime
     asset_ids: tuple[NonEmptyStr, ...] = ()
     task_id: NonEmptyStr | None = None
@@ -967,6 +990,7 @@ class AuditFinding(ContractModel):
     constraint_id: str
     evidence_key: str
     state: FindingState
+    contributing_states: tuple[FindingState, ...] = ()
     citation: Citation
     related_ids: tuple[str, ...] = ()
 
@@ -981,6 +1005,7 @@ class EvidenceEnvelopeBinding(ContractModel):
     source_ref: NonEmptyStr
     source_revision: NonEmptyStr
     content_sha256: Sha256
+    content_byte_count: Annotated[StrictInt, Field(gt=0)]
     observed_at: AwareDatetime
     task_id: NonEmptyStr
 

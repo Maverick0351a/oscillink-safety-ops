@@ -9,6 +9,7 @@
   "source_ref": "plan.json",
   "source_revision": "synthetic-plan-v1",
   "content_sha256": "sha256:551b03d141e51dfb73b193282509b7a94d9c7d39ce89dc1bb882bde7dc5852fe",
+  "content_byte_count": 201,
   "observed_at": "2026-08-31T00:00:00Z",
   "asset_ids": ["asset:SYN-PRESS-7:SP7-0042"],
   "task_id": "plan-synthetic-maintenance-001",

@@ -12,7 +12,7 @@ The provider-neutral [`PhysicalIntelligenceEvidenceEnvelope`](../schemas/physica
 
 - exact platform, adapter, version, and adapter-configuration identities;
 - portable source and payload references;
-- immutable source revision, byte count, and SHA-256;
+- immutable source revision, strictly positive `content_byte_count`, and SHA-256;
 - observation time and optional asset, task, run, episode, or simulation identity;
 - explicit missing and unsupported fields; and
 - fixed `read_only` access and `untrusted_data` treatment.
@@ -73,17 +73,24 @@ There is no reverse command channel. The adapter cannot acknowledge alarms, rese
 
 The offline episode evaluator verifies exact local episode bytes, task and asset identity, packet revision, and packet hash. Its output is always `evidence_findings_only`, with `compliance_state = no_conclusion` and `operational_authority = none`.
 
-The plan auditor emits deterministic, cited finding states:
+The plan auditor treats `declared_evidence_keys` only as caller-supplied evidence assertions. A key
+does not mean that a requirement is satisfied, an action is proposed, or a condition is safe. Each
+finding has one deterministic primary state and an ordered `contributing_states` tuple so stale,
+conflicting, unreadable, unsupported, asset-mismatched, and missing conditions can coexist without
+being suppressed. Primary-state precedence is: ambiguous, unreadable, source conflict, unsupported
+interpretation, stale revision, asset mismatch, then the constraint-kind-specific evidence state.
 
-- `matched`;
-- `missing_evidence`;
-- `asset_mismatch`;
-- `revision_stale`;
-- `source_conflict`;
-- `ambiguous`;
-- `unreadable`;
-- `unsupported_interpretation`; and
-- `requires_authorized_review`.
+Constraint-kind-specific states include:
+
+- `matched` and `missing_evidence` for required evidence;
+- `prohibited_condition_evidence_present` and
+  `prohibited_condition_evidence_not_declared` for prohibited-condition evidence assertions; and
+- `requires_authorized_review` for review gates.
+
+A prohibited-condition state reports only whether its evidence key was declared. Presence does not
+issue a stop command or safety conclusion; non-declaration does not prove that the condition is
+absent. Source and review supersession graphs must be acyclic, and a superseding review cannot
+predate the review it supersedes.
 
 These are evidence states for review. They are not instructions, conclusions, or physical actions.
 

@@ -139,6 +139,33 @@ def test_packet_rejects_self_supersession() -> None:
         )
 
 
+def test_packet_rejects_source_supersession_cycle() -> None:
+    packet = packet_with(approved_constraint())
+    source_a = packet.sources[0].model_copy(
+        update={"source_id": "manual-a", "superseded_by": "manual-b"}
+    )
+    source_b = packet.sources[0].model_copy(
+        update={"source_id": "manual-b", "superseded_by": "manual-a"}
+    )
+    constraint = approved_constraint().model_copy(
+        update={
+            "citation": Citation(
+                source_id="manual-a",
+                locator="page:2#lines:4-6",
+                quote_sha256=SHA_B,
+            )
+        }
+    )
+
+    with pytest.raises(ValidationError, match="source supersession cycle"):
+        SafetyMemoryPacket(
+            packet_id=packet.packet_id,
+            policy_sha256=packet.policy_sha256,
+            sources=(source_a, source_b),
+            constraints=(constraint,),
+        )
+
+
 def test_packet_rejects_unknown_conflict_target() -> None:
     constraint = approved_constraint().model_copy(update={"conflict_with": ("absent-constraint",)})
 
@@ -186,6 +213,27 @@ def test_plan_rejects_duplicate_declared_evidence_keys() -> None:
         )
 
 
+def test_physical_intelligence_envelope_requires_positive_content_byte_count() -> None:
+    values = {
+        "platform_id": "example-physical-intelligence-platform",
+        "platform_version": "2026.08",
+        "adapter_id": "example-json-export-reader",
+        "adapter_version": "1.0.0",
+        "adapter_config_sha256": SHA_A,
+        "artifact_type": "recorded_episode_manifest",
+        "source_ref": "exports/run-0042/manifest.json",
+        "source_revision": "revision-17",
+        "content_sha256": SHA_B,
+        "observed_at": NOW,
+        "payload_ref": "payloads/episode-0003.json",
+    }
+
+    with pytest.raises(ValidationError, match="content_byte_count"):
+        PhysicalIntelligenceEvidenceEnvelope.model_validate(values)
+    with pytest.raises(ValidationError, match="greater than 0"):
+        PhysicalIntelligenceEvidenceEnvelope.model_validate({**values, "content_byte_count": 0})
+
+
 def test_physical_intelligence_envelope_preserves_provider_neutral_evidence_identity() -> None:
     envelope = PhysicalIntelligenceEvidenceEnvelope(
         platform_id="example-physical-intelligence-platform",
@@ -197,6 +245,7 @@ def test_physical_intelligence_envelope_preserves_provider_neutral_evidence_iden
         source_ref="exports/run-0042/manifest.json",
         source_revision="revision-17",
         content_sha256=SHA_B,
+        content_byte_count=1,
         observed_at=NOW,
         asset_ids=("robot-cell:synthetic-7",),
         task_id="task-maintenance-001",
@@ -235,6 +284,7 @@ def test_physical_intelligence_envelope_rejects_blank_required_identity() -> Non
             source_ref="exports/run-0042/manifest.json",
             source_revision="revision-17",
             content_sha256=SHA_B,
+            content_byte_count=1,
             observed_at=NOW,
             payload_ref="payloads/episode-0003.json",
         )
@@ -252,6 +302,7 @@ def test_physical_intelligence_envelope_rejects_conflicting_field_accounting() -
             source_ref="exports/run-0042/manifest.json",
             source_revision="revision-17",
             content_sha256=SHA_B,
+            content_byte_count=1,
             observed_at=NOW,
             payload_ref="payloads/episode-0003.json",
             missing_fields=("simulation_id",),
@@ -271,6 +322,7 @@ def test_physical_intelligence_envelope_rejects_duplicate_provenance_references(
             source_ref="exports/run-0042/manifest.json",
             source_revision="revision-17",
             content_sha256=SHA_B,
+            content_byte_count=1,
             observed_at=NOW,
             payload_ref="payloads/episode-0003.json",
             provenance_refs=("manifest:revision-17", "manifest:revision-17"),
@@ -297,6 +349,7 @@ def test_physical_intelligence_envelope_requires_an_unambiguous_observation_time
             source_ref="exports/run-0042/manifest.json",
             source_revision="revision-17",
             content_sha256=SHA_B,
+            content_byte_count=1,
             observed_at=datetime(2026, 8, 31),
             payload_ref="payloads/episode-0003.json",
         )

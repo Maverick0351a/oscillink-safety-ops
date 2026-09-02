@@ -237,7 +237,9 @@
         "ambiguous",
         "unreadable",
         "unsupported_interpretation",
-        "requires_authorized_review"
+        "requires_authorized_review",
+        "prohibited_condition_evidence_present",
+        "prohibited_condition_evidence_not_declared"
       ],
       "title": "FindingState",
       "type": "string"

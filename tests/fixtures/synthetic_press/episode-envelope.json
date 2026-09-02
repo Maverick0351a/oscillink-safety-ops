@@ -9,6 +9,7 @@
   "source_ref": "episode.json",
   "source_revision": "episode-revision-1",
   "content_sha256": "sha256:351e8a6f9c30bc23c77930dffec6edcfc05a84fd6cd27ce79082d389ae50298c",
+  "content_byte_count": 351,
   "observed_at": "2026-09-01T00:00:00Z",
   "asset_ids": [
     "asset:SYN-PRESS-7:SP7-0042"

@@ -91,6 +91,8 @@ def _verified_envelope_payload_object(
     if payload.stat().st_size > MAX_JSON_BYTES:
         raise ValueError(f"input exceeds {MAX_JSON_BYTES} bytes")
     raw = payload.read_bytes()
+    if len(raw) != envelope.content_byte_count:
+        raise FixtureIntegrityError("envelope payload byte count mismatch")
     actual = "sha256:" + hashlib.sha256(raw).hexdigest()
     if actual != envelope.content_sha256:
         raise FixtureIntegrityError("envelope payload hash mismatch")
@@ -341,6 +343,8 @@ def verify_envelope_payload(
     payload = (resolved_root / envelope.payload_ref).resolve()
     if not payload.is_relative_to(resolved_root) or not payload.is_file():
         raise FixtureIntegrityError(f"invalid envelope payload_ref: {envelope.payload_ref}")
+    if payload.stat().st_size != envelope.content_byte_count:
+        raise FixtureIntegrityError("envelope payload byte count mismatch")
     actual = "sha256:" + _sha256(payload)
     if actual != envelope.content_sha256:
         raise FixtureIntegrityError("envelope payload hash mismatch")

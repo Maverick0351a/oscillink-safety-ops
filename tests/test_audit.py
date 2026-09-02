@@ -82,6 +82,7 @@ def plan_envelope(plan: ProposedPlan) -> PhysicalIntelligenceEvidenceEnvelope:
         source_ref="plan.json",
         source_revision="synthetic-plan-v1",
         content_sha256=HASHES[4],
+        content_byte_count=1,
         observed_at=NOW,
         task_id=plan.plan_id,
         payload_ref="plan.json",
@@ -134,6 +135,149 @@ def test_offline_audit_emits_closed_evidence_findings_with_exact_citations() -> 
     assert report.packet_id == packet.packet_id
     assert report.plan_id == plan.plan_id
     assert report.policy_sha256 == packet.policy_sha256
+
+
+def test_audit_preserves_stale_and_conflicting_conditions() -> None:
+    packet = SafetyMemoryPacket(
+        packet_id="packet-compound-findings",
+        policy_sha256=HASHES[2],
+        sources=(
+            source("manual-current"),
+            source("manual-old", superseded_by="manual-current"),
+        ),
+        constraints=(
+            constraint(
+                "stale-conflict",
+                "energy.type",
+                source_id="manual-old",
+                conflict_with=("supporting",),
+            ),
+            constraint("supporting", "energy.supporting"),
+        ),
+    )
+    plan = ProposedPlan(
+        plan_id="plan-maintenance-001",
+        asset_model="SYN-PRESS-7",
+        asset_serial="SP7-0042",
+        declared_evidence_keys=("energy.type", "energy.supporting"),
+    )
+
+    report = audit_plan(packet, plan, envelope=plan_envelope(plan))
+    finding = next(item for item in report.findings if item.constraint_id == "stale-conflict")
+
+    assert finding.state is FindingState.SOURCE_CONFLICT
+    assert finding.contributing_states == (
+        FindingState.REVISION_STALE,
+        FindingState.MATCHED,
+    )
+
+
+def test_audit_preserves_unreadable_and_asset_mismatch_conditions() -> None:
+    packet = SafetyMemoryPacket(
+        packet_id="packet-unreadable-asset",
+        policy_sha256=HASHES[2],
+        sources=(source("manual-current"),),
+        constraints=(
+            constraint(
+                "unreadable-asset",
+                "asset.label",
+                content_state=ContentState.UNREADABLE,
+                applicability=Applicability(asset_model="OTHER-MODEL"),
+            ),
+        ),
+    )
+    plan = ProposedPlan(
+        plan_id="plan-maintenance-001",
+        asset_model="SYN-PRESS-7",
+        asset_serial="SP7-0042",
+        declared_evidence_keys=(),
+    )
+
+    finding = audit_plan(packet, plan, envelope=plan_envelope(plan)).findings[0]
+
+    assert finding.state is FindingState.UNREADABLE
+    assert finding.contributing_states == (
+        FindingState.ASSET_MISMATCH,
+        FindingState.MISSING_EVIDENCE,
+    )
+
+
+def test_audit_preserves_unsupported_and_missing_conditions() -> None:
+    packet = SafetyMemoryPacket(
+        packet_id="packet-unsupported-missing",
+        policy_sha256=HASHES[2],
+        sources=(source("manual-current"),),
+        constraints=(
+            constraint(
+                "unsupported-missing",
+                "inferred.limit",
+                interpretation_supported=False,
+            ),
+        ),
+    )
+    plan = ProposedPlan(
+        plan_id="plan-maintenance-001",
+        asset_model="SYN-PRESS-7",
+        asset_serial="SP7-0042",
+        declared_evidence_keys=(),
+    )
+
+    finding = audit_plan(packet, plan, envelope=plan_envelope(plan)).findings[0]
+
+    assert finding.state is FindingState.UNSUPPORTED_INTERPRETATION
+    assert finding.contributing_states == (FindingState.MISSING_EVIDENCE,)
+
+
+def test_prohibited_condition_evidence_is_not_treated_as_required_evidence_match() -> None:
+    packet = SafetyMemoryPacket(
+        packet_id="packet-prohibited-condition",
+        policy_sha256=HASHES[2],
+        sources=(source("manual-current"),),
+        constraints=(
+            constraint(
+                "prohibited-energized",
+                "condition.energized",
+                kind=ConstraintKind.PROHIBITED_CONDITION,
+            ),
+        ),
+    )
+    plan = ProposedPlan(
+        plan_id="plan-maintenance-001",
+        asset_model="SYN-PRESS-7",
+        asset_serial="SP7-0042",
+        declared_evidence_keys=("condition.energized",),
+    )
+
+    finding = audit_plan(packet, plan, envelope=plan_envelope(plan)).findings[0]
+
+    assert finding.state is FindingState.PROHIBITED_CONDITION_EVIDENCE_PRESENT
+    assert finding.contributing_states == ()
+
+
+def test_prohibited_condition_not_declared_remains_non_authoritative_evidence_state() -> None:
+    packet = SafetyMemoryPacket(
+        packet_id="packet-prohibited-condition-not-declared",
+        policy_sha256=HASHES[2],
+        sources=(source("manual-current"),),
+        constraints=(
+            constraint(
+                "prohibited-energized",
+                "condition.energized",
+                kind=ConstraintKind.PROHIBITED_CONDITION,
+            ),
+        ),
+    )
+    plan = ProposedPlan(
+        plan_id="plan-maintenance-001",
+        asset_model="SYN-PRESS-7",
+        asset_serial="SP7-0042",
+        declared_evidence_keys=(),
+    )
+
+    finding = audit_plan(packet, plan, envelope=plan_envelope(plan)).findings[0]
+
+    assert finding.state is FindingState.PROHIBITED_CONDITION_EVIDENCE_NOT_DECLARED
+    assert finding.contributing_states == ()
 
 
 def test_audit_is_deterministic_and_does_not_mutate_inputs() -> None:
@@ -211,6 +355,7 @@ def test_audit_report_binds_the_exact_read_only_evidence_envelope() -> None:
         source_ref="plan.json",
         source_revision="synthetic-plan-v1",
         content_sha256=HASHES[4],
+        content_byte_count=1,
         observed_at=NOW,
         task_id=plan.plan_id,
         payload_ref="plan.json",

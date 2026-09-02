@@ -10,6 +10,14 @@
           "title": "Constraint Id",
           "type": "string"
         },
+        "contributing_states": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FindingState"
+          },
+          "title": "Contributing States",
+          "type": "array"
+        },
         "evidence_key": {
           "title": "Evidence Key",
           "type": "string"
@@ -83,6 +91,11 @@
           "title": "Artifact Type",
           "type": "string"
         },
+        "content_byte_count": {
+          "exclusiveMinimum": 0,
+          "title": "Content Byte Count",
+          "type": "integer"
+        },
         "content_sha256": {
           "pattern": "^sha256:[0-9a-f]{64}$",
           "title": "Content Sha256",
@@ -129,6 +142,7 @@
         "source_ref",
         "source_revision",
         "content_sha256",
+        "content_byte_count",
         "observed_at",
         "task_id"
       ],
@@ -145,7 +159,9 @@
         "ambiguous",
         "unreadable",
         "unsupported_interpretation",
-        "requires_authorized_review"
+        "requires_authorized_review",
+        "prohibited_condition_evidence_present",
+        "prohibited_condition_evidence_not_declared"
       ],
       "title": "FindingState",
       "type": "string"

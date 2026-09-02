@@ -32,7 +32,8 @@ PYTHONPATH= uv run safety-ops envelope validate \
   --root tests/fixtures/synthetic_press
 ```
 
-The command verifies that the declared payload remains inside the supplied root and matches its exact declared bytes and SHA-256.
+The command verifies that the declared payload remains inside the supplied root and matches its
+strictly positive `content_byte_count` and exact SHA-256.
 
 ## 4. Audit a synthetic proposed plan
 
@@ -45,7 +46,13 @@ PYTHONPATH= uv run safety-ops audit \
   --root tests/fixtures/synthetic_press
 ```
 
-The JSON report binds the packet, plan, policy, platform, adapter configuration, source revision, and payload hash. Findings retain exact citations and closed evidence states.
+The JSON report binds the packet, plan, policy, platform, adapter configuration, source revision,
+payload byte count, and payload hash. A plan's `declared_evidence_keys` are evidence assertions only:
+they are not requirement satisfaction, proposed actions, or permission. Findings retain exact
+citations, one deterministic primary state, and ordered `contributing_states` so simultaneous stale,
+conflicting, unreadable, unsupported, asset-mismatched, and missing conditions remain visible.
+Prohibited-condition evidence uses distinct `prohibited_condition_evidence_present` or
+`prohibited_condition_evidence_not_declared` states; neither is a command or safety conclusion.
 
 ## 5. Evaluate a synthetic recorded episode
 

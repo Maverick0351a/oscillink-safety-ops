@@ -48,6 +48,7 @@ def _envelope() -> PhysicalIntelligenceEvidenceEnvelope:
         source_ref="episode.json",
         source_revision="episode-revision-1",
         content_sha256=SHA,
+        content_byte_count=1,
         observed_at=datetime(2026, 9, 1, tzinfo=UTC),
         asset_ids=("asset:SYN-PRESS-7:SP7-0042",),
         task_id="task-maintenance-001",
@@ -64,6 +65,11 @@ def test_offline_episode_evaluation_emits_cited_evidence_states_only() -> None:
     assert by_id["m2-verification-evidence"] is FindingState.MISSING_EVIDENCE
     assert by_id["s1-unreadable-role"] is FindingState.UNREADABLE
     assert by_id["s2-source-conflict"] is FindingState.SOURCE_CONFLICT
+    conflict = next(item for item in report.findings if item.constraint_id == "s2-source-conflict")
+    assert conflict.contributing_states == (
+        FindingState.REVISION_STALE,
+        FindingState.MISSING_EVIDENCE,
+    )
     assert by_id["s3-stale-revision"] is FindingState.REVISION_STALE
     assert report.evaluation_state == "evidence_findings_only"
     assert report.compliance_state == "no_conclusion"

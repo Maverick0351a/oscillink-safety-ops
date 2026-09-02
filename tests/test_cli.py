@@ -135,6 +135,7 @@ def test_envelope_loader_uses_the_same_bounded_strict_json_boundary(tmp_path: Pa
                 "source_ref": "exports/run-0042/manifest.json",
                 "source_revision": "revision-17",
                 "content_sha256": "sha256:" + "b" * 64,
+                "content_byte_count": 1,
                 "observed_at": "2026-08-31T00:00:00Z",
                 "payload_ref": "payloads/episode-0003.json",
             }
@@ -164,6 +165,7 @@ def test_envelope_payload_verification_binds_the_declared_content_hash(tmp_path:
                 "source_ref": "episode.json",
                 "source_revision": "revision-17",
                 "content_sha256": "sha256:" + hashlib.sha256(payload.read_bytes()).hexdigest(),
+                "content_byte_count": len(payload.read_bytes()),
                 "observed_at": "2026-08-31T00:00:00Z",
                 "payload_ref": "episode.json",
             }
@@ -175,7 +177,11 @@ def test_envelope_payload_verification_binds_the_declared_content_hash(tmp_path:
 
     assert verify_envelope_payload(envelope, root=tmp_path) == envelope.content_sha256
 
-    payload.write_bytes(b'{"episode_id":"changed"}\n')
+    wrong_size = envelope.model_copy(update={"content_byte_count": envelope.content_byte_count + 1})
+    with pytest.raises(FixtureIntegrityError, match="payload byte count mismatch"):
+        verify_envelope_payload(wrong_size, root=tmp_path)
+
+    payload.write_bytes(b'{"episode_id":"synthetic-004"}\n')
     with pytest.raises(FixtureIntegrityError, match="payload hash mismatch"):
         verify_envelope_payload(envelope, root=tmp_path)
 
@@ -199,6 +205,7 @@ def test_cli_validates_an_envelope_and_emits_deterministic_json(
                 "source_ref": "episode.json",
                 "source_revision": "revision-17",
                 "content_sha256": "sha256:" + hashlib.sha256(payload.read_bytes()).hexdigest(),
+                "content_byte_count": len(payload.read_bytes()),
                 "observed_at": "2026-08-31T00:00:00Z",
                 "payload_ref": "episode.json",
             }
@@ -279,6 +286,7 @@ def test_envelope_payload_cannot_escape_the_declared_read_only_root(tmp_path: Pa
         source_ref="../outside.json",
         source_revision="revision-17",
         content_sha256="sha256:" + hashlib.sha256(outside.read_bytes()).hexdigest(),
+        content_byte_count=len(outside.read_bytes()),
         observed_at=datetime(2026, 8, 31, tzinfo=UTC),
         payload_ref="../outside.json",
     )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from pydantic import ValidationError
@@ -121,6 +121,34 @@ def test_review_ledger_rejects_a_review_bound_to_different_candidate_bytes() -> 
 
     with pytest.raises(ValidationError, match="candidate_sha256 does not match"):
         OperationalReviewLedger(candidates=(item,), reviews=(review(candidate_sha256=SHA_D),))
+
+
+def test_review_ledger_rejects_supersession_cycle() -> None:
+    item = candidate()
+    review_a = review().model_copy(
+        update={"review_id": "review:a", "supersedes_review_id": "review:b"}
+    )
+    review_b = review().model_copy(
+        update={"review_id": "review:b", "supersedes_review_id": "review:a"}
+    )
+
+    with pytest.raises(ValidationError, match="review supersession cycle"):
+        OperationalReviewLedger(candidates=(item,), reviews=(review_a, review_b))
+
+
+def test_review_ledger_rejects_superseding_review_before_prior_review() -> None:
+    item = candidate()
+    prior = review()
+    superseding = review().model_copy(
+        update={
+            "review_id": "review:earlier-superseding",
+            "reviewed_at": NOW - timedelta(seconds=1),
+            "supersedes_review_id": prior.review_id,
+        }
+    )
+
+    with pytest.raises(ValidationError, match="superseding review cannot predate"):
+        OperationalReviewLedger(candidates=(item,), reviews=(prior, superseding))
 
 
 def test_retracted_review_requires_and_preserves_same_candidate_lineage() -> None:

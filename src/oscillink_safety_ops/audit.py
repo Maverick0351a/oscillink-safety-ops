@@ -20,31 +20,55 @@ from .domain import (
 )
 
 
-def _finding_state(
+def _finding_states(
     constraint: EvidenceConstraint,
     source: SourceRevision,
     plan: ProposedPlan,
-) -> FindingState:
+) -> tuple[FindingState, ...]:
+    states: list[FindingState] = []
     if constraint.content_state is ContentState.AMBIGUOUS:
-        return FindingState.AMBIGUOUS
+        states.append(FindingState.AMBIGUOUS)
     if constraint.content_state is ContentState.UNREADABLE:
-        return FindingState.UNREADABLE
+        states.append(FindingState.UNREADABLE)
     if constraint.conflict_with:
-        return FindingState.SOURCE_CONFLICT
+        states.append(FindingState.SOURCE_CONFLICT)
     if not constraint.interpretation_supported:
-        return FindingState.UNSUPPORTED_INTERPRETATION
+        states.append(FindingState.UNSUPPORTED_INTERPRETATION)
     if source.superseded_by is not None:
-        return FindingState.REVISION_STALE
+        states.append(FindingState.REVISION_STALE)
     applies = constraint.applicability
-    if applies.asset_model is not None and applies.asset_model != plan.asset_model:
-        return FindingState.ASSET_MISMATCH
-    if applies.asset_serial is not None and applies.asset_serial != plan.asset_serial:
-        return FindingState.ASSET_MISMATCH
+    if (applies.asset_model is not None and applies.asset_model != plan.asset_model) or (
+        applies.asset_serial is not None and applies.asset_serial != plan.asset_serial
+    ):
+        states.append(FindingState.ASSET_MISMATCH)
     if constraint.kind is ConstraintKind.REVIEW_GATE:
-        return FindingState.REQUIRES_AUTHORIZED_REVIEW
-    if constraint.evidence_key in plan.declared_evidence_keys:
-        return FindingState.MATCHED
-    return FindingState.MISSING_EVIDENCE
+        states.append(FindingState.REQUIRES_AUTHORIZED_REVIEW)
+    elif constraint.kind is ConstraintKind.PROHIBITED_CONDITION:
+        if constraint.evidence_key in plan.declared_evidence_keys:
+            states.append(FindingState.PROHIBITED_CONDITION_EVIDENCE_PRESENT)
+        else:
+            states.append(FindingState.PROHIBITED_CONDITION_EVIDENCE_NOT_DECLARED)
+    elif constraint.evidence_key in plan.declared_evidence_keys:
+        states.append(FindingState.MATCHED)
+    else:
+        states.append(FindingState.MISSING_EVIDENCE)
+    return tuple(states)
+
+
+def _audit_finding(
+    constraint: EvidenceConstraint,
+    source: SourceRevision,
+    plan: ProposedPlan,
+) -> AuditFinding:
+    states = _finding_states(constraint, source, plan)
+    return AuditFinding(
+        constraint_id=constraint.constraint_id,
+        evidence_key=constraint.evidence_key,
+        state=states[0],
+        contributing_states=states[1:],
+        citation=constraint.citation,
+        related_ids=constraint.conflict_with,
+    )
 
 
 def audit_plan(
@@ -58,16 +82,10 @@ def audit_plan(
         raise ValueError("envelope must identify the audited proposed plan")
     sources = {source.source_id: source for source in packet.sources}
     findings = tuple(
-        AuditFinding(
-            constraint_id=constraint.constraint_id,
-            evidence_key=constraint.evidence_key,
-            state=_finding_state(
-                constraint,
-                sources[constraint.citation.source_id],
-                plan,
-            ),
-            citation=constraint.citation,
-            related_ids=constraint.conflict_with,
+        _audit_finding(
+            constraint,
+            sources[constraint.citation.source_id],
+            plan,
         )
         for constraint in sorted(packet.constraints, key=lambda item: item.constraint_id)
     )
@@ -85,6 +103,7 @@ def audit_plan(
             source_ref=envelope.source_ref,
             source_revision=envelope.source_revision,
             content_sha256=envelope.content_sha256,
+            content_byte_count=envelope.content_byte_count,
             observed_at=envelope.observed_at,
             task_id=envelope.task_id,
         ),
@@ -120,12 +139,10 @@ def evaluate_recorded_episode(
     )
     sources = {source.source_id: source for source in packet.memory.sources}
     findings = tuple(
-        AuditFinding(
-            constraint_id=constraint.constraint_id,
-            evidence_key=constraint.evidence_key,
-            state=_finding_state(constraint, sources[constraint.citation.source_id], plan_view),
-            citation=constraint.citation,
-            related_ids=constraint.conflict_with,
+        _audit_finding(
+            constraint,
+            sources[constraint.citation.source_id],
+            plan_view,
         )
         for constraint in sorted(packet.memory.constraints, key=lambda item: item.constraint_id)
     )
@@ -145,6 +162,7 @@ def evaluate_recorded_episode(
             source_ref=envelope.source_ref,
             source_revision=envelope.source_revision,
             content_sha256=envelope.content_sha256,
+            content_byte_count=envelope.content_byte_count,
             observed_at=envelope.observed_at,
             task_id=episode.task_id,
         ),

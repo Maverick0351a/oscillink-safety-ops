@@ -28,9 +28,9 @@ contracts without presenting them as validated workflows.
 | Gate | Entry criterion | Exit criterion | Evidence location | Owner | State |
 |---|---|---|---|---|---|
 | M0 scope freeze | Current alpha baseline identified | One workflow active; expansion deferred | This document; `docs/execution-plan.md`; `docs/product-boundary.md` | Project owner | complete |
-| M1 exact-byte integrity | Reproduced envelope substitution and poisoned-store defects | Adversarial tests pass; evaluated and persisted bytes match reported identities | Tests and exact-SHA verification record | Engineering | active |
-| M2 evidence semantics | M1 complete | Compound states, prohibited conditions, byte counts, and lineage are explicit | Tests, schemas, technical overview | Engineering + authorized reviewer | blocked by M1 |
-| M3 reviewer trust | M2 complete | Review metadata, authentication, and scope are distinct and fail closed | Trust-contract tests and security documentation | Engineering + authority owner | blocked by M2 |
+| M1 exact-byte integrity | Reproduced envelope substitution and poisoned-store defects | Adversarial tests pass; evaluated and persisted bytes match reported identities | Tests and exact-SHA verification record | Engineering | complete |
+| M2 evidence semantics | M1 complete | Compound states, prohibited conditions, byte counts, and lineage are explicit | Tests, schemas, technical overview | Engineering + authorized reviewer | complete |
+| M3 reviewer trust | M2 complete | Review metadata, authentication, and scope are distinct and fail closed | Trust-contract tests and security documentation | Engineering + authority owner | next |
 | M4 private-alpha verification | M1–M3 complete | One exact SHA passes Windows, detached Buildbox, and authorized hosted CI | `docs/audits/` | Engineering | blocked by M3 |
 | M5 Stage 0 validation | M4 candidate available | Practitioner recognition, local examples, authority owner, and budget gate pass | Sanitized validation summary | Product owner | blocked by M4 |
 | M6 concierge pilots | Stage 0 passes | Three local runs; two confirmed actionable mismatches; lower review burden | Private pilot records and sanitized aggregate | Product owner + pilot reviewers | blocked by M5 |
@@ -41,11 +41,16 @@ contracts without presenting them as validated workflows.
 
 The active milestone ends only when:
 
-1. a plan or episode cannot be evaluated from bytes different from the bound envelope payload;
-2. an existing content-addressed destination is re-verified and a mismatch fails closed;
-3. the regression tests demonstrate RED before implementation and GREEN afterward;
-4. the canonical verifier passes at the exact candidate state; and
-5. the worktree contains only reviewed, intentional changes.
+1. every applicable finding condition remains visible through a primary state plus ordered
+   `contributing_states`;
+2. prohibited-condition evidence is distinct from ordinary required evidence without creating a
+   command or safety conclusion;
+3. every envelope declares and verifies a strictly positive content byte count against the same
+   bytes used for hashing and parsing;
+4. source and review supersession graphs are acyclic and superseding reviews cannot predate prior
+   reviews;
+5. generated schemas, fixtures, documentation, and runtime behavior agree; and
+6. the canonical verifier passes at the exact candidate state on Windows and Buildbox.
 
 ## Kill criteria
 
