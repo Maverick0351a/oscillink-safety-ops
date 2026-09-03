@@ -98,6 +98,37 @@ def test_canonical_verifier_checks_repository_surface(
     assert "repository surface: ok" in capsys.readouterr().out
 
 
+def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
+    license_review = ROOT / "docs" / "audits" / "transitive-license-review-2026-09-03.md"
+    assert license_review.is_file()
+    review_text = license_review.read_text(encoding="utf-8")
+    assert "23 locked third-party packages" in review_text
+    assert "No license incompatibility identified" in review_text
+    assert "mypy-extensions 1.1.0" in review_text
+
+    checklist = (ROOT / "docs" / "publication-checklist.md").read_text(encoding="utf-8")
+    assert "[x] Transitive dependency licenses receive independent review" in checklist
+
+    launch_surfaces = (
+        ROOT / "benchmark" / "robot_cell_v1" / "DATASET_CARD.md",
+        ROOT / "spaces" / "oscillink-safety-ops-demo" / "README.md",
+        ROOT / "docs" / "release-process.md",
+    )
+    stale_phrases = (
+        "future Hugging Face Dataset",
+        "has not been published",
+        "neither artifact has been uploaded",
+        "staging metadata for a future Hugging Face static Space",
+        "Before any future publication",
+        "There is no published Oscillink Safety Ops release",
+        "license inventory is currently incomplete",
+    )
+    for path in launch_surfaces:
+        text = path.read_text(encoding="utf-8")
+        for phrase in stale_phrases:
+            assert phrase not in text, f"stale pre-publication copy in {path}: {phrase}"
+
+
 def test_pytest_dev_dependency_excludes_vulnerable_versions() -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
 

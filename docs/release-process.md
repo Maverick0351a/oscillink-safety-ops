@@ -1,7 +1,7 @@
 # Release process
 
-There is no published Oscillink Safety Ops release. This is a fail-closed candidate procedure; it
-does not authorize a commit, push, tag, release, visibility change, deployment, or announcement.
+This fail-closed procedure governs candidate preparation, publication, verification, withdrawal, and
+correction. Following it does not by itself authorize an external action.
 
 ## Identity and implemented boundary
 
@@ -50,7 +50,9 @@ uvx --from pip-audit==2.10.1 pip-audit --strict \
 
 A nonzero advisory result blocks promotion. Record only tool version, command, counts, and resolution;
 do not paste advisory prose into tracked evidence. Generate the CycloneDX inventory from `uv.lock`.
-The alpha's transitive license inventory is currently incomplete and blocks publication until reviewed.
+The 23-package locked transitive inventory was independently reviewed against exact-version PyPI
+metadata and checksum-bound distribution evidence; see
+`docs/audits/transitive-license-review-2026-09-03.md`. Any lockfile change invalidates that review.
 
 ### 4. Run local gates
 

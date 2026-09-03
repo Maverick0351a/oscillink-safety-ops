@@ -42,6 +42,6 @@ assessment.
 ## License and rights
 
 Apache-2.0 for project-authored records and documentation. No private keys, customer data,
-copyrighted standards text, or third-party equipment data are included. This card is prepared for a
-future Hugging Face Dataset and has not been published. A separate staged static Space card exists
-under `spaces/oscillink-safety-ops-demo/`; neither artifact has been uploaded.
+copyrighted standards text, or third-party equipment data are included. The canonical public Dataset
+is `Maverick03511/safetyops-bench-v1`; its companion static monitor is
+`Maverick03511/oscillink-safety-ops-demo`.

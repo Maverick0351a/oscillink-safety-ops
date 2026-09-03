@@ -19,7 +19,8 @@ authorize a commit, push, tag, release, visibility change, deployment, or announ
 - [x] No credential, customer/employee record, facility layout, production export, private prompt,
       protected label, incident data, or licensed standards text is intentionally tracked.
 - [x] Licensed standards remain metadata-only.
-- [ ] Transitive dependency licenses receive independent review; current inventory is incomplete.
+- [x] Transitive dependency licenses receive independent review across all 23 locked third-party
+      packages; see `docs/audits/transitive-license-review-2026-09-03.md`.
 
 ## Reachable-history and dependency audit
 

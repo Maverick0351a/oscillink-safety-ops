@@ -14,9 +14,8 @@ short_description: Read-only inspection of 36 synthetic supervisor scenarios
 
 **SYNTHETIC EVIDENCE — SOFTWARE BEHAVIOR ONLY**
 
-This is staging metadata for a future Hugging Face static Space. It has not been published. The Space
-content is generated from `demo/` and mechanically binds all 36 expected results and derived metrics
-from `benchmark/robot_cell_v1/`.
+This static Space is generated from `demo/` and mechanically binds all 36 expected results and derived
+metrics from `benchmark/robot_cell_v1/`.
 
 The interface is Monitor-primary and Inspect-secondary. It permits scenario selection and evidence
 inspection only. It has no command, reset, rearm, acknowledgment, stop, form-submit, external-resource,
@@ -32,10 +31,10 @@ certification, or operational authority. PLr, SIL, total stopping time, diagnost
 application validation, and common-cause target values remain TBD pending qualified assessment of an
 exact machine, architecture, installation, and operating environment.
 
-## Staging and verification
+## Reproduction and verification
 
-Before any future publication, copy the exact generated `demo/index.html` and `demo/assets/` into the
-Space root, retain this metadata, and run locally:
+Copy the exact generated `demo/index.html` and `demo/assets/` into the Space root, retain this
+metadata, and run locally:
 
 ```bash
 PYTHONPATH= uv run safety-ops benchmark verify --root benchmark/robot_cell_v1
@@ -43,5 +42,5 @@ PYTHONPATH= uv run python scripts/verify_demo.py demo
 PYTHONPATH= uv run python scripts/verify.py
 ```
 
-Publication, hosted execution, cross-browser review, and qualified safety review remain separate,
-currently incomplete gates.
+Hosted execution and cross-browser inspection are software checks only and do not replace qualified
+safety review or application-specific validation.
