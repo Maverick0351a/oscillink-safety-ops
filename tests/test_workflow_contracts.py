@@ -107,6 +107,7 @@ def test_nightly_replays_formal_property_fuzz_and_benchmark_gates() -> None:
     ):
         assert marker in text
     assert "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88" in text
+    assert '"$GITHUB_WORKSPACE/tla2tools.jar"' in text
 
 
 def test_release_is_manual_or_tag_gated_and_checks_artifacts_in_isolation() -> None:
