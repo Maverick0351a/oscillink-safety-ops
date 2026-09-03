@@ -94,6 +94,7 @@ def test_security_has_codeql_and_checksum_verified_gitleaks_history_scan() -> No
     assert "gitleaks git" in text
     assert "--redact" in text
     assert "upload: never" in text
+    assert "permissions:\n      actions: read\n      contents: read\n      packages: read" in text
 
 
 def test_nightly_replays_formal_property_fuzz_and_benchmark_gates() -> None:
