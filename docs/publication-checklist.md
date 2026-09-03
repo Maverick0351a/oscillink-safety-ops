@@ -39,7 +39,8 @@ authorize a commit, push, tag, release, visibility change, deployment, or announ
       changelog, citation, Dependabot, release notes, and release process are structurally tested.
 - [x] Workflow actions are immutable-SHA pinned with minimal permissions, no secrets, safe events,
       concurrency controls, and no publish/deploy step.
-- [ ] GitHub private vulnerability reporting is enabled and read back before public visibility.
+- [ ] GitHub private vulnerability reporting is enabled and read back immediately after public
+      visibility (GitHub exposes this feature only for public repositories).
 - [ ] Branch protection and security settings are configured and read back in Batch 8.
 
 ## Exact candidate and artifacts

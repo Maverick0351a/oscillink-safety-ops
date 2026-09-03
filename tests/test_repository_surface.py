@@ -108,6 +108,11 @@ def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
 
     checklist = (ROOT / "docs" / "publication-checklist.md").read_text(encoding="utf-8")
     assert "[x] Transitive dependency licenses receive independent review" in checklist
+    pvr_gate = (
+        "[ ] GitHub private vulnerability reporting is enabled and read back immediately "
+        "after public visibility"
+    )
+    assert pvr_gate in checklist.replace("\n      ", " ")
 
     launch_surfaces = (
         ROOT / "benchmark" / "robot_cell_v1" / "DATASET_CARD.md",
