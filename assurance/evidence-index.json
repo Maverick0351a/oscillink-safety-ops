@@ -122,6 +122,56 @@
       "requirement_ids": ["SR-012"],
       "test_ids": ["TEST-012"],
       "change_impact_id": "CI-012"
+    },
+    {
+      "evidence_id": "EVID-013",
+      "evidence_type": "implemented_runtime_contract_tests",
+      "path": "tests/runtime/test_contracts.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-007"],
+      "test_ids": ["TEST-007"],
+      "change_impact_id": "CI-007"
+    },
+    {
+      "evidence_id": "EVID-014",
+      "evidence_type": "implemented_configuration_authority_tests",
+      "path": "tests/runtime/test_configuration.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-008"],
+      "test_ids": ["TEST-008"],
+      "change_impact_id": "CI-008"
+    },
+    {
+      "evidence_id": "EVID-015",
+      "evidence_type": "implemented_freshness_state_tests",
+      "path": "tests/runtime/test_freshness.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-005"],
+      "test_ids": ["TEST-005"],
+      "change_impact_id": "CI-005"
+    },
+    {
+      "evidence_id": "EVID-016",
+      "evidence_type": "implemented_time_order_tests",
+      "path": "tests/runtime/test_freshness.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-006"],
+      "test_ids": ["TEST-006"],
+      "change_impact_id": "CI-006"
+    },
+    {
+      "evidence_id": "EVID-017",
+      "evidence_type": "implemented_production_authority_boundary_tests",
+      "path": "tests/runtime/test_contracts.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-011"],
+      "test_ids": ["TEST-011"],
+      "change_impact_id": "CI-011"
     }
   ],
   "open_target_system_values": {

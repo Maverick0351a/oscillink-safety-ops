@@ -1,0 +1,126 @@
+{
+  "additionalProperties": false,
+  "description": "Signed configuration values; file-byte authority is established by the loader.",
+  "properties": {
+    "authority_state": {
+      "const": "externally_signed_configuration",
+      "default": "externally_signed_configuration",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "configuration_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Configuration Id",
+      "type": "string"
+    },
+    "max_acceleration_mps2": {
+      "exclusiveMinimum": 0.0,
+      "title": "Max Acceleration Mps2",
+      "type": "number"
+    },
+    "max_future_skew_seconds": {
+      "minimum": 0.0,
+      "title": "Max Future Skew Seconds",
+      "type": "number"
+    },
+    "max_observation_age_seconds": {
+      "exclusiveMinimum": 0.0,
+      "title": "Max Observation Age Seconds",
+      "type": "number"
+    },
+    "max_receive_delay_seconds": {
+      "minimum": 0.0,
+      "title": "Max Receive Delay Seconds",
+      "type": "number"
+    },
+    "max_speed_mps": {
+      "exclusiveMinimum": 0.0,
+      "title": "Max Speed Mps",
+      "type": "number"
+    },
+    "operational_authority": {
+      "const": "simulated_evaluation_only",
+      "default": "simulated_evaluation_only",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "required_source_ids": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Required Source Ids",
+      "type": "array"
+    },
+    "revision": {
+      "maximum": 9007199254740991,
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "scope_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Scope Id",
+      "type": "string"
+    },
+    "signature": {
+      "pattern": "^ed25519:[0-9a-f]{128}$",
+      "title": "Signature",
+      "type": "string"
+    },
+    "signature_algorithm": {
+      "const": "ed25519",
+      "default": "ed25519",
+      "title": "Signature Algorithm",
+      "type": "string"
+    },
+    "signer_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Signer Id",
+      "type": "string"
+    },
+    "valid_from": {
+      "format": "date-time",
+      "title": "Valid From",
+      "type": "string"
+    },
+    "valid_until": {
+      "format": "date-time",
+      "title": "Valid Until",
+      "type": "string"
+    }
+  },
+  "required": [
+    "configuration_id",
+    "revision",
+    "scope_id",
+    "valid_from",
+    "valid_until",
+    "required_source_ids",
+    "max_observation_age_seconds",
+    "max_receive_delay_seconds",
+    "max_future_skew_seconds",
+    "max_speed_mps",
+    "max_acceleration_mps2",
+    "signer_id",
+    "signature"
+  ],
+  "title": "SupervisorConfiguration",
+  "type": "object"
+}

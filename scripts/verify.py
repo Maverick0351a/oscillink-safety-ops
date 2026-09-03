@@ -80,6 +80,26 @@ def check_schemas() -> None:
     print("schemas: ok")
 
 
+def check_runtime_schemas() -> None:
+    from scripts.export_runtime_schemas import RUNTIME_SCHEMAS, render
+
+    schema_root = ROOT / "schemas" / "runtime"
+    actual_names = (
+        {path.name for path in schema_root.glob("*.schema.json")} if schema_root.is_dir() else set()
+    )
+    expected_names = set(RUNTIME_SCHEMAS)
+    if actual_names != expected_names:
+        missing = sorted(expected_names - actual_names)
+        extra = sorted(actual_names - expected_names)
+        raise SystemExit(f"runtime schema set drift: missing={missing}; extra={extra}")
+    for name, schema in RUNTIME_SCHEMAS.items():
+        expected = render(schema)
+        actual = (schema_root / name).read_bytes()
+        if actual != expected:
+            raise SystemExit(f"schema is stale: schemas/runtime/{name}")
+    print("runtime schemas: ok")
+
+
 def check_repository_surface() -> None:
     from scripts.verify_repository_surface import validate_repository_surface
 
@@ -149,6 +169,7 @@ def main() -> None:
     check_text_hygiene()
     check_repository_surface()
     check_schemas()
+    check_runtime_schemas()
     check_osha_catalog()
     check_fixture()
     run("uv", "run", "python", "scripts/verify_traceability.py", pythonpath="")

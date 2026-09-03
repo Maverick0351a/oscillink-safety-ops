@@ -1,0 +1,88 @@
+{
+  "additionalProperties": false,
+  "description": "One-way local simulated request artifact; never a machine command.",
+  "properties": {
+    "action": {
+      "enum": [
+        "inhibit_request",
+        "protective_stop_request"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "simulated_request_artifact",
+      "default": "simulated_request_artifact",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "configuration_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Configuration Sha256",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "decision_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Decision Sha256",
+      "type": "string"
+    },
+    "delivery_mode": {
+      "const": "local_closed_file_simulation",
+      "default": "local_closed_file_simulation",
+      "title": "Delivery Mode",
+      "type": "string"
+    },
+    "input_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Input Sha256",
+      "type": "array"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "request_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "request_id",
+    "run_id",
+    "created_at",
+    "action",
+    "decision_sha256",
+    "configuration_sha256",
+    "input_sha256"
+  ],
+  "title": "ActionRequest",
+  "type": "object"
+}

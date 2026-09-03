@@ -3,11 +3,12 @@
 ## Scope and status
 
 This assurance set applies only to `SCOPE-ROBOT-CELL-001`: a planned closed-file replay of one
-simulated fenced industrial robot cell. It defines lifecycle controls and planned behavior before
-runtime implementation. The repository does not currently emit a runtime intervention request.
-When later implemented and separately verified, the only output in this scope will be a local,
-one-way **simulated request** to an external safety-controller fixture. It will not be a machine
-command and will not establish that motion stopped.
+simulated fenced industrial robot cell. The repository now implements strict runtime records,
+exact-byte Ed25519 configuration verification, immutable run binding, and pure freshness/order
+evaluation. It does not yet implement policy evaluation, latching, persistence, request creation,
+or any intervention path. A later output in this scope may only be a local, one-way **simulated
+request** to an external safety-controller fixture. It will not be a machine command and will not
+establish that motion stopped.
 
 ## Controlled claims
 
@@ -18,8 +19,9 @@ present in, enters, or cannot be excluded from a configured protected zone. The 
 `HAZ-001` through `HAZ-012` cover the mandatory families and trace to planned requirements,
 controls, allocations, tests, and evidence records.
 
-**Current status:** supported as documentation and traceability only. No runtime behavior is
-implemented by this batch.
+**Current status:** the lifecycle concept is documented and Batch 3 contract/configuration/time
+boundaries are implemented. Supervisory policy, recovery, output, and target-system behavior remain
+unimplemented.
 
 ### CLM-002 — Independent decision boundary
 
@@ -28,8 +30,9 @@ it with independently modeled occupancy, motion, source-health, timebase, and co
 observations. Production AI is not allocated configuration, reset, acknowledgment, evidence
 suppression, clock, identity, credential, or policy authority.
 
-**Current status:** design claim. Independence and common-cause behavior of any target system remain
-unvalidated.
+**Current status:** the production-input schemas enforce an untrusted-observation-only boundary and
+reject administrative fields. Physical independence and common-cause behavior of any target system
+remain unvalidated.
 
 ### CLM-003 — Conservative simulated response
 
@@ -38,7 +41,9 @@ local simulated inhibit or protective-stop request. Missing acknowledgment or un
 must remain an explicit fault; neither a request nor an acknowledgment is evidence of successful
 physical stopping.
 
-**Current status:** planned and not implemented.
+**Current status:** provenance-bearing decision, request, acknowledgment, and incident record
+contracts exist, but no logic creates or delivers a request. Latching and output behavior remain
+planned and unimplemented.
 
 ### CLM-004 — Recovery separation
 

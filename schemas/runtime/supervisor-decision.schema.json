@@ -1,0 +1,104 @@
+{
+  "additionalProperties": false,
+  "description": "Deterministic decision record bound to exact configuration and input hashes.",
+  "properties": {
+    "action": {
+      "enum": [
+        "none",
+        "advisory_warning",
+        "inhibit_request",
+        "protective_stop_request"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "deterministic_supervisor_record",
+      "default": "deterministic_supervisor_record",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "configuration_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Configuration Sha256",
+      "type": "string"
+    },
+    "decision_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "evaluated_at": {
+      "format": "date-time",
+      "title": "Evaluated At",
+      "type": "string"
+    },
+    "input_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Input Sha256",
+      "type": "array"
+    },
+    "operational_authority": {
+      "const": "simulated_request_only",
+      "default": "simulated_request_only",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "supervisor_state": {
+      "enum": [
+        "initializing",
+        "monitoring_normal",
+        "monitoring_degraded",
+        "intervention_requested",
+        "intervention_latched",
+        "stopped_unverified"
+      ],
+      "title": "Supervisor State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "decision_id",
+    "run_id",
+    "evaluated_at",
+    "supervisor_state",
+    "action",
+    "reason_codes",
+    "configuration_sha256",
+    "input_sha256"
+  ],
+  "title": "SupervisorDecision",
+  "type": "object"
+}

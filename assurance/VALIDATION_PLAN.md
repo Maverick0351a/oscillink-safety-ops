@@ -2,11 +2,13 @@
 
 ## Status and interpretation
 
-All tests below are planned for `SCOPE-ROBOT-CELL-001`; Batch 2 contains no runtime implementation or
-runtime test result. Each will use frozen synthetic closed-file inputs and exact expected outcomes.
-A passing result will demonstrate only deterministic behavior for the exact software,
-configuration, inputs, and platform. It will not validate a real robot cell or prove stopping,
-risk reduction, compliance, or certification.
+All tests below apply to `SCOPE-ROBOT-CELL-001`. Batch 3 implements adversarial unit-test portions of
+`TEST-005`, `TEST-006`, `TEST-007`, `TEST-008`, and `TEST-011` for runtime contracts, configuration,
+provenance, freshness, ordering, and authority denial. Scenario policy, latching, persistence,
+request creation/delivery, recovery, and common-cause campaigns remain planned. A passing result
+demonstrates only deterministic software behavior for the exact tested bytes, configuration, inputs,
+and platform. It does not validate a real robot cell or prove stopping, risk reduction, compliance,
+or certification.
 
 ## Common evidence protocol
 
@@ -50,6 +52,9 @@ currently index these planned specifications rather than completed results.
 
 ### TEST-005 — Missing/stale/frozen/malformed/contradictory sensing
 
+- **Batch 3 status:** freshness/source-state rejection cases implemented in
+  `tests/runtime/test_freshness.py`; policy and latch outcomes remain planned.
+
 - **Requirement:** `SR-005`; hazard/control: `HAZ-005` / `CTRL-005`.
 - **Stimuli:** remove each required source; freeze a value; exceed freshness; inject sequence gap,
   impossible transition, malformed record, contradictory occupancy, and calibration/config mismatch.
@@ -57,6 +62,9 @@ currently index these planned specifications rather than completed results.
   latches a simulated request and preserves contributing conditions. Verify `EVID-005`.
 
 ### TEST-006 — Timebase and order faults
+
+- **Batch 3 status:** explicit-time future/rollback/freshness and sequence rejection cases
+  implemented in `tests/runtime/test_freshness.py`; watchdog/restart behavior remains planned.
 
 - **Requirement:** `SR-006`; hazard/control: `HAZ-006` / `CTRL-006`.
 - **Stimuli:** source/receive clock rollback and jump, future timestamp, skew at/either side of the
@@ -66,6 +74,10 @@ currently index these planned specifications rather than completed results.
 
 ### TEST-007 — Output request and acknowledgment faults
 
+- **Batch 3 status:** provenance-bearing non-authoritative output record contracts implemented in
+  `tests/runtime/test_contracts.py`; output creation, preservation, and timeout behavior remain
+  planned.
+
 - **Requirement:** `SR-007`; hazard/control: `HAZ-007` / `CTRL-007`.
 - **Stimuli:** local write failure, partial/corrupt request, reused identity with changed bytes,
   duplicate delivery, wrong/stale/false acknowledgment, timeout, and recovery.
@@ -74,6 +86,10 @@ currently index these planned specifications rather than completed results.
   Verify `EVID-007`.
 
 ### TEST-008 — Configuration integrity
+
+- **Batch 3 status:** exact-byte loading, Ed25519 verification, authority/revision/ceiling checks,
+  path confinement, and immutable run binding implemented in `tests/runtime/test_configuration.py`.
+  Runtime policy latching on detected configuration faults remains planned.
 
 - **Requirement:** `SR-008`; hazard/control: `HAZ-008` / `CTRL-008`.
 - **Stimuli:** changed bytes under reused identity, unauthorized/revoked signer, rollback, path escape,
@@ -98,6 +114,10 @@ currently index these planned specifications rather than completed results.
   advances recovery and never commands motion. Verify `EVID-010`.
 
 ### TEST-011 — Production-AI compromise and authority probes
+
+- **Batch 3 status:** strict observation contracts reject producer-supplied administrative fields
+  and fix no configuration/reset/evidence-suppression authority in
+  `tests/runtime/test_contracts.py`; end-to-end compromise scenarios remain planned.
 
 - **Requirement:** `SR-011`; hazard/control: `HAZ-011` / `CTRL-011`.
 - **Stimuli:** inject disable, policy, threshold, identity, clock, watchdog, credential, output-route,

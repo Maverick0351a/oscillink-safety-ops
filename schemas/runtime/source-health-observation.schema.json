@@ -1,0 +1,153 @@
+{
+  "additionalProperties": false,
+  "description": "Independent monitor observation of one source and its clock.",
+  "properties": {
+    "authority_state": {
+      "const": "untrusted_observation",
+      "default": "untrusted_observation",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "clock_state": {
+      "enum": [
+        "healthy",
+        "degraded",
+        "failed",
+        "unknown",
+        "contradictory"
+      ],
+      "title": "Clock State",
+      "type": "string"
+    },
+    "configuration_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Configuration Authority",
+      "type": "string"
+    },
+    "content_treatment": {
+      "const": "untrusted_data",
+      "default": "untrusted_data",
+      "title": "Content Treatment",
+      "type": "string"
+    },
+    "evidence_suppression_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Evidence Suppression Authority",
+      "type": "string"
+    },
+    "input_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Sha256",
+      "type": "string"
+    },
+    "last_source_sequence": {
+      "anyOf": [
+        {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Last Source Sequence"
+    },
+    "monitored_source_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Monitored Source Id",
+      "type": "string"
+    },
+    "observation_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "received_at": {
+      "format": "date-time",
+      "title": "Received At",
+      "type": "string"
+    },
+    "reset_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Reset Authority",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "sequence_number": {
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "title": "Sequence Number",
+      "type": "integer"
+    },
+    "source_domain": {
+      "const": "independent_source_health",
+      "default": "independent_source_health",
+      "title": "Source Domain",
+      "type": "string"
+    },
+    "source_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_state": {
+      "enum": [
+        "healthy",
+        "degraded",
+        "failed",
+        "missing",
+        "contradictory"
+      ],
+      "title": "Source State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "observation_id",
+    "run_id",
+    "source_id",
+    "sequence_number",
+    "observed_at",
+    "received_at",
+    "input_sha256",
+    "monitored_source_id",
+    "source_state",
+    "clock_state",
+    "last_source_sequence"
+  ],
+  "title": "SourceHealthObservation",
+  "type": "object"
+}

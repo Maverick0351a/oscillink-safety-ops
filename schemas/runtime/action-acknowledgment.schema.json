@@ -1,0 +1,95 @@
+{
+  "additionalProperties": false,
+  "description": "Untrusted fixture acknowledgment; it proves neither stopping nor reset authority.",
+  "properties": {
+    "acknowledgment_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Acknowledgment Id",
+      "type": "string"
+    },
+    "authority_state": {
+      "const": "untrusted_observation",
+      "default": "untrusted_observation",
+      "title": "Authority State",
+      "type": "string"
+    },
+    "configuration_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Configuration Sha256",
+      "type": "string"
+    },
+    "input_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Input Sha256",
+      "type": "array"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "request_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Request Sha256",
+      "type": "string"
+    },
+    "reset_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Reset Authority",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "received_by_simulated_fixture",
+        "rejected_by_simulated_fixture",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "stopping_claim": {
+      "const": "not_established",
+      "default": "not_established",
+      "title": "Stopping Claim",
+      "type": "string"
+    }
+  },
+  "required": [
+    "acknowledgment_id",
+    "run_id",
+    "observed_at",
+    "request_sha256",
+    "configuration_sha256",
+    "input_sha256",
+    "status"
+  ],
+  "title": "ActionAcknowledgment",
+  "type": "object"
+}
