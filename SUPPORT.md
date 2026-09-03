@@ -1,42 +1,32 @@
 # Support
 
-Oscillink Safety Ops is experimental private product software. There is no production service,
-support SLA, operational-response commitment, or approved equipment integration.
+Oscillink Safety Ops is experimental alpha software. There is no support SLA, operational-response
+commitment, approved equipment integration, or production deployment.
 
-## Questions and usage help
+## Usage help
 
 Before opening an issue:
 
 1. Read the [README](README.md), [technical overview](docs/technical-overview.md), and
-   [synthetic demonstration](docs/synthetic-demo.md).
-2. Run `PYTHONPATH= uv run python scripts/verify.py` from a clean checkout.
-3. Confirm Python 3.11 and the locked `uv` environment are in use.
-4. Reduce the question to project-authored synthetic data.
+   [assurance status](docs/assurance-status.md).
+2. Use Python 3.11 and run `uv sync --locked --dev`.
+3. Run `PYTHONPATH= uv run python scripts/verify.py` from a clean checkout.
+4. Reduce the question to project-authored synthetic inputs and an exact commit SHA.
 
-Use a repository issue for reproducible questions about the public contracts, schemas, fixtures, or
-offline CLI. Community support is best effort.
+Use the bug form for reproducible contract failures, the integration form for bounded public-core
+proposals, and the external-reproduction form for independent reruns. Community support is best
+effort.
 
-## Sensitive information
+## Sensitive and security reports
 
-Do not put any of the following in an issue, discussion, pull request, log, screenshot, or attached
-file:
+Never put credentials, private keys, internal URLs, customer procedures, employee information,
+facility layouts, production exports, incident records, private prompts, hidden evaluation content,
+or licensed standards text in an issue, discussion, pull request, log, screenshot, or attachment.
+Use synthetic or permissively licensed reproductions. Vulnerabilities must follow
+[SECURITY.md](SECURITY.md), not a public issue.
 
-- credentials, tokens, private keys, or internal URLs;
-- customer procedures, permits, incident records, or employee information;
-- facility layouts, equipment secrets, or production-system exports;
-- licensed standards text or unlawfully reproduced manuals;
-- private prompts, hidden evaluation tasks, expected answers, or protected labels; or
-- information that identifies a vulnerability before coordinated disclosure.
+## Authority limit
 
-Use synthetic or permissively licensed reproductions instead.
-
-## Security reports
-
-Do not report vulnerabilities in a public issue. Follow [SECURITY.md](SECURITY.md). A public launch
-is blocked until a tested private vulnerability-reporting route exists.
-
-## Product and authority limits
-
-Support cannot provide legal interpretation, regulatory-applicability decisions, compliance
-certification, work authorization, safe-operation approval, or equipment-control assistance. Those
-decisions remain with appropriately authorized people and organizations.
+Support cannot provide legal interpretation, regulatory applicability, certification, PL/SIL
+assessment, work authorization, safe-operation approval, or assistance connecting the alpha to real
+equipment. Those decisions remain with appropriately authorized organizations and qualified people.

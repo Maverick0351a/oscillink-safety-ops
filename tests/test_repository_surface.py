@@ -82,7 +82,7 @@ def test_repository_surface_rejects_required_file_without_boundary_text(tmp_path
 
     errors = module.validate_repository_surface(tmp_path)
 
-    assert "missing required text in SECURITY.md: must not become public" in errors
+    assert "missing required text in SECURITY.md: Publication remains blocked" in errors
     assert (
         "missing required text in .github/ISSUE_TEMPLATE/config.yml: blank_issues_enabled: false"
     ) in errors
@@ -116,7 +116,7 @@ def test_public_positioning_uses_approved_headline_and_dedicated_assurance_statu
     assert project["project"]["description"] == APPROVED_HEADLINE
     assert assurance_path.is_file()
     assurance = assurance_path.read_text(encoding="utf-8")
-    assert "Current runtime-supervisor status: planned, not implemented" in assurance
+    assert "## Current implemented status" in assurance
     assert "No real machine control" in assurance
     assert "[Assurance status and limitations](docs/assurance-status.md)" in readme
 
@@ -127,16 +127,22 @@ def test_public_docs_distinguish_current_evidence_from_planned_supervision() -> 
             "simulated, replay, and shadow supervision",
             "Real machinery control remains forbidden",
         ),
-        "SECURITY.md": ("planned runtime supervisor", "No real machine control"),
-        "docs/product-boundary.md": ("## Current implementation", "## Planned supervisor"),
-        "docs/technical-overview.md": ("## Current evidence plane", "## Planned runtime plane"),
+        "SECURITY.md": ("current package implements", "Assurance and deployment boundary"),
+        "docs/product-boundary.md": (
+            "## Current implementation",
+            "## Implemented simulated supervisor",
+        ),
+        "docs/technical-overview.md": (
+            "## Current evidence plane",
+            "## Implemented simulated runtime plane",
+        ),
         "docs/execution-plan.md": (
             "## Approved public direction",
-            "Runtime code is not implemented",
+            "Batches 1-6 implemented",
         ),
-        "docs/publication-checklist.md": ("Runtime supervision is marked planned",),
-        "docs/release-process.md": ("runtime supervisor is planned, not implemented",),
-        "docs/releases/v0.1.0-alpha.1.md": ("runtime supervisor is not included",),
+        "docs/publication-checklist.md": ("Implemented runtime status",),
+        "docs/release-process.md": ("current runtime is implemented",),
+        "docs/releases/v0.1.0-alpha.1.md": ("## Implemented in this candidate",),
     }
 
     for relative, markers in required_markers.items():

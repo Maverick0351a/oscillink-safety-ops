@@ -129,7 +129,9 @@ def test_verify_release_directory_rejects_declared_size_drift(tmp_path: Path) ->
     manifest_path = isolated / "release-verification.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest["artifacts"][0]["size_bytes"] += 1
-    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    manifest_path.write_bytes(
+        (json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+    )
 
     with pytest.raises(ValueError, match="artifact size does not match"):
         module.verify_release_directory(isolated)

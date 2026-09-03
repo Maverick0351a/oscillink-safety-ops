@@ -1,108 +1,61 @@
 # Publication checklist
 
-This checklist is deliberately fail-closed. An unchecked item blocks the corresponding external
-action. Completing the checklist does not itself authorize a push, release, visibility change,
-deployment, DNS edit, or announcement.
+This checklist is fail-closed. An unchecked item blocks its external action. Completion does not
+authorize a commit, push, tag, release, visibility change, deployment, or announcement.
 
-## Public scope and claims
+## Claims and product boundary
 
-- [ ] The approved safety and risk-mitigation supervisor headline is the first README description and
-      matches package and release metadata.
-- [ ] Category, hero, supporting statement, and audience order remain owner-approved.
-- [ ] Runtime supervision is marked planned until release-bound runtime code and tests exist.
-- [ ] Current evidence-plane capability is not presented as runtime intervention behavior.
-- [ ] Assurance status is linked from the first public screen and detailed in the dedicated
-      assurance document rather than used as the headline.
-- [ ] Directions outside the approved public category are absent from repository files, metadata,
-      visuals, navigation, social cards, release notes, website routes, and outreach.
-- [ ] Implemented, in-validation, and not-claimed states match executable evidence.
-- [ ] Compliance evidence is not described as a compliance determination.
-- [ ] Tests and synthetic demonstrations are not described as practitioner, legal, operational,
-      customer, safety, or production validation.
-- [ ] Synthetic, simulation, replay, shadow, and maintainer-run results are not described as field
-      results or incident-prevention evidence.
-- [ ] No certification seal, approval mark, generic robot imagery, or misleading dashboard is used.
+- [x] Approved headline is used in README, package metadata, and release notes.
+- [x] Implemented runtime status says closed-file simulation/replay and local simulated one-way
+      request records only.
+- [x] Synthetic benchmark, TLA+ abstraction, property/fuzz tests, and CI are labeled software evidence.
+- [x] No real machine/control/network output, certification, PL/SIL achievement, safe-operation,
+      field-validation, or production-readiness claim is made.
+- [x] Apache-2.0 public core, separate commercial layers, and retained trademark boundary are stated.
 
 ## Source, data, privacy, and rights
 
-- [ ] Every public fixture is project-authored or permissively licensed and hash-pinned.
-- [ ] No customer SOP, permit, incident record, employee data, facility layout, equipment secret,
-      production export, runtime database, credential, or private prompt is tracked.
-- [ ] Hidden evaluation prompts, expected answers, and protected labels are absent.
-- [ ] Licensed standards remain metadata-only unless lawful access and processing rights are recorded.
-- [ ] Runtime-supervisor research reports and citation ledgers contain no credentials, absolute user
-      paths, private data, or licensed normative standards text.
-- [ ] Third-party notices and license metadata have been reviewed.
-- [ ] No analytics, form, or contact-data collection exists without approved privacy, retention,
-      access, deletion, and incident-response terms.
+- [x] Public fixtures are project-authored synthetic or explicitly permissively licensed and pinned.
+- [x] No credential, customer/employee record, facility layout, production export, private prompt,
+      protected label, incident data, or licensed standards text is intentionally tracked.
+- [x] Licensed standards remain metadata-only.
+- [ ] Transitive dependency licenses receive independent review; current inventory is incomplete.
 
-## Full-history audit
+## Reachable-history and dependency audit
 
-- [ ] A pinned scanner from its canonical publisher has been checksum-verified.
-- [ ] Every reachable commit has been scanned for high-confidence credentials.
-- [ ] Historical risky filenames, large blobs, binary artifacts, dumps, databases, keys, and local
-      runtime paths have been reviewed.
-- [ ] Findings are recorded in redacted form and every finding is classified.
-- [ ] Personal absolute paths and environment identifiers have been reviewed.
-- [ ] Locked dependencies and known advisories have been reviewed.
-- [ ] Audit limitations and the exact scanned Git object scope are recorded.
+- [x] Gitleaks 8.30.1 archive checksum is pinned and verified.
+- [x] Baseline `2943db23ceb075e8955867903069cd5e043fee45` audit records 28 commits, 657 objects,
+      423 blob revisions, zero findings, zero risky filenames, and zero blobs over 10 MiB.
+- [x] Public-key, negative private-key-marker, deterministic test signing-seed, and URL-path indicators
+      are explicitly classified without treating indicators as secrets.
+- [x] `cryptography` was updated from vulnerable 46.0.7 to 50.0.1 and pip-audit 2.10.1 reports zero
+      known vulnerabilities for the resolved runtime requirements.
+- [ ] Final exact-candidate reachable history is scanned externally after the candidate commit exists.
 
 ## Repository trust surface
 
-- [ ] README, license, contribution, conduct, security, support, trademark, citation, issue, and pull
-      request files render correctly.
-- [ ] Architecture and packet visuals are deterministic, accessible, visually inspected, and free of
-      private, customer, and licensed content.
-- [ ] Every quickstart command has been exercised from committed synthetic fixtures.
-- [ ] No public package, demonstration, or documentation contains a real machine-control path,
-      controller credential/address, live ROS graph, remote reset, or reverse command callback.
-- [ ] Repository description, topics, homepage, Issues, and Discussions settings are owner-approved.
-- [ ] A tested private vulnerability-reporting route exists.
-- [ ] Dependency alerts, security updates, secret scanning, and push protection are enabled where
-      supported.
-- [ ] Branch protection uses exact observed hosted-CI check names and preserves a safe owner path.
+- [x] Issue forms, pull-request template, contribution, conduct, security, support, trademark,
+      changelog, citation, Dependabot, release notes, and release process are structurally tested.
+- [x] Workflow actions are immutable-SHA pinned with minimal permissions, no secrets, safe events,
+      concurrency controls, and no publish/deploy step.
+- [ ] GitHub private vulnerability reporting is enabled and read back before public visibility.
+- [ ] Branch protection and security settings are configured and read back in Batch 8.
 
-## Exact candidate verification
+## Exact candidate and artifacts
 
-- [ ] Worktree is clean and the exact candidate SHA is recorded.
-- [ ] `PYTHONPATH= uv run python scripts/verify.py` passes on the committed SHA.
-- [ ] `git diff --check` passes.
-- [ ] Built source and wheel contents contain no excluded paths or data.
-- [ ] Independent Linux Buildbox verification passes on the exact SHA.
-- [ ] Source-distribution and wheel-payload comparisons are recorded accurately.
-- [ ] The candidate is pushed while the repository remains private.
-- [ ] Hosted Windows and Linux CI pass on the exact pushed SHA.
+- [ ] Batch 7 changes are committed and exact candidate SHA recorded.
+- [ ] Clean exact-SHA Windows canonical verifier and both direct pytest forms pass.
+- [ ] Detached independent Linux Buildbox verification passes on the exact candidate.
+- [ ] Hosted Windows/Linux verification, CodeQL, dependency audit, and Gitleaks pass on that SHA.
+- [x] Release tooling requires wheel, source distribution, CycloneDX SBOM, unsigned provenance,
+      benchmark metrics, formal result, basename-only checksums, and isolated verification.
+- [ ] Exact candidate artifacts are built and verified after the candidate commit exists.
+- [ ] Published assets, if separately authorized, are downloaded and verified in isolation.
 
-## Release identity and round-trip
+## Promotion
 
-- [ ] Package, citation, changelog, tag, release-note, and runtime versions agree.
-- [ ] Annotated tag points to the exact verified commit.
-- [ ] Release artifacts were built from a clean tag checkout.
-- [ ] `SHA256SUMS.txt` contains basenames only.
-- [ ] Published assets were downloaded into an isolated directory.
-- [ ] Downloaded checksums verify without access to original artifacts.
-
-## Visibility and external verification
-
-- [ ] Owner explicitly approves the visibility change after reviewing this checklist.
-- [ ] Public repository API reports the intended visibility and default-branch SHA.
-- [ ] Unauthenticated clone succeeds without credentials.
-- [ ] README, community files, issue forms, social preview, and release render correctly.
-- [ ] Fresh-clone quickstart succeeds from an untrusted temporary directory.
-- [ ] External smoke tests are labeled maintainer-run evidence, not external-user validation.
-
-## Website and DNS
-
-- [ ] A private, unindexed HTTPS preview has passed claims, accessibility, responsive, and link review.
-- [ ] Current Porkbun DNS records have been exported without exposing credentials.
-- [ ] MX, TXT, verification, and mail-related records are identified and preserved.
-- [ ] Apex, `www`, TLS, canonical redirect, and rollback values are documented.
-- [ ] Owner explicitly approves DNS cutover immediately before the change.
-- [ ] Apex HTTPS, `www` redirect, certificate SAN coverage, and rollback path are verified after cutover.
-
-## Final decision
-
-- [ ] All blockers and residual limitations are recorded.
-- [ ] Owner gives a separate explicit authorization for the exact external action.
-- [ ] The action is performed without bundling any additional visibility, hosting, release, or DNS
-      change.
+- [ ] No unresolved blocker remains.
+- [ ] Owner gives separate explicit authorization for the exact push, tag, release, visibility, or
+      external action.
+- [ ] Batch 8 verifies public API visibility, anonymous clone, community rendering, release download,
+      and fresh-clone quickstart without credentials.

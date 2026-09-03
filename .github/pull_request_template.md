@@ -1,37 +1,40 @@
 ## Scope
 
-Describe the narrow evidence contract or documentation problem this pull request addresses.
+Describe the narrow safety-supervision, evidence, or release-contract change.
 
-## Evidence and authority boundary
+## Boundary and data
 
-- [ ] The change preserves source class, identity, revision, exact hash, applicability metadata, and correction or supersession lineage where relevant.
-- [ ] Extraction and interpretation remain candidates until externally authorized review.
-- [ ] Unknown, stale, missing, conflicting, ambiguous, unreadable, and unsupported evidence remains explicit.
-- [ ] The change adds no equipment command, permit, certification, compliance-conclusion, or operational-authorization surface.
-- [ ] The pull request contains no credentials, customer or employee records, facility details, incident evidence, private prompts, hidden labels, or licensed standards text.
+- [ ] The change adds no real equipment, controller, PLC, robot, actuator, remote-reset, or reverse command path.
+- [ ] Runtime outputs remain local simulated one-way request records.
+- [ ] Production AI cannot change configuration, suppress evidence, acknowledge its own request, or reset a latch.
+- [ ] Missing, stale, contradictory, invalid, or unverifiable inputs remain explicit and fail closed.
+- [ ] The pull request contains no credential, customer or employee data, facility detail, production export, private prompt, hidden label, or licensed standards text.
+- [ ] New fixtures are synthetic or permissively licensed and hash-pinned.
 
-## Test evidence
-
-Describe the RED failure that established the requested behavior, then the GREEN result.
+## RED → GREEN evidence
 
 ```text
-failing test:
-passing test:
+RED command and expected failure:
+GREEN command and result:
 ```
 
-- [ ] `uv run ruff format .`
+## Verification
+
+- [ ] `uv sync --locked --dev`
+- [ ] `uv run ruff format --check .`
 - [ ] `uv run ruff check .`
 - [ ] `uv run mypy`
 - [ ] `PYTHONPATH= uv run python scripts/verify.py`
+- [ ] `PYTHONPATH= uv run python -m pytest -q`
+- [ ] `PYTHONPATH= uv run pytest -q`
 - [ ] `git diff --check`
 
-## Schemas and fixtures
+## Claims and release impact
 
-- [ ] Domain-contract changes include regenerated JSON Schemas.
-- [ ] New fixtures are deterministic, project-authored or permissively licensed, and hash-pinned.
-- [ ] Expected answers and protected evaluation labels remain outside agent-readable fixture inputs.
-- [ ] Documentation and changelog entries match the implemented boundary.
+- [ ] Documentation distinguishes implemented closed-file simulation/replay, synthetic benchmarks, TLA+ abstraction, and CI from field evidence.
+- [ ] No certification, PL/SIL achievement, safe-operation, field-validation, or production-readiness claim was added.
+- [ ] Schema, generated evidence, changelog, SBOM, and release-manifest impacts are addressed.
 
-## Review limitations
+## Residual limitations
 
-List any platform, hosted-CI, legal, practitioner, rights, privacy, or operational review that has not occurred.
+List hosted-CI, platform, legal, practitioner, rights, privacy, integration, or operational review not performed.

@@ -1,0 +1,43 @@
+name: External reproduction
+description: Record a bounded external rerun of published synthetic software evidence.
+title: "reproduction: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report only synthetic or permissively licensed evidence. Do not include a credential, customer
+        data, site identity, or production-system details. Vulnerabilities must use SECURITY.md.
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Evidence boundary
+      options:
+        - label: This was a synthetic software reproduction, not field, safety, compliance, or certification evidence.
+          required: true
+        - label: I used a clean checkout and did not include any credential or confidential path.
+          required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Exact 40-character commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and locked-install command
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Commands and complete result summary
+    validations:
+      required: true
+  - type: textarea
+    id: differences
+    attributes:
+      label: Differences from published synthetic results
+    validations:
+      required: true

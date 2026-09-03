@@ -9,7 +9,7 @@ description = "Oscillink Safety Ops is an independent safety and risk-mitigation
 license = "Apache-2.0"
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "cryptography>=45,<47",
+    "cryptography>=50.0.0,<51",
     "defusedxml>=0.7.1,<1",
     "pydantic>=2.11,<3",
 ]

@@ -12,10 +12,10 @@ The production AI runs the machine. Oscillink independently monitors whether com
 behavior remain within the approved operating envelope and requests a protective response when they
 do not.
 
-Batch 1 changes public scope, research, and claims only. Runtime code is not implemented in this
-batch. The current package remains exact-byte evidence, review lineage, and offline evaluation. Later
-batches may add only deterministic replay, simulation, shadow-mode supervision, and local one-way
-simulated requests before any separate real-integration decision.
+Batches 1-6 implemented exact-byte evidence, review lineage, offline evaluation, deterministic
+closed-file replay/simulation, a persistent supervisor latch, local one-way simulated requests, a
+synthetic benchmark, and a static monitor. Batch 7 prepares the private release candidate. Any real
+integration remains a separate future decision and is not authorized by this plan.
 
 Execution order is fail-closed:
 

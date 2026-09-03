@@ -1,0 +1,42 @@
+name: Integration proposal
+description: Propose a bounded adapter or offline integration using synthetic data.
+title: "integration: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not attach credentials, internal addresses, customer exports, production logs, facility
+        details, or licensed content. Security concerns belong in the private route in SECURITY.md.
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Required boundary
+      options:
+        - label: The public-core proposal uses synthetic evidence and has no machine, controller, PLC, robot, or network output.
+          required: true
+        - label: Source bytes, parsing, review, configuration authority, and evaluation remain separate.
+          required: true
+        - label: Missing, stale, contradictory, invalid, or unverifiable data fails closed.
+          required: true
+        - label: No credential or confidential path is required to reproduce the proposal.
+          required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source or integration class
+      placeholder: Closed file, offline snapshot, or simulated adapter
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract and trust boundary
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Synthetic reproduction fixture
+    validations:
+      required: true

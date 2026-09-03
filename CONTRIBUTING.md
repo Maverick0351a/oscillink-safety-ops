@@ -1,40 +1,45 @@
 # Contributing
 
-This repository is private during product maturation. Contributions must preserve the evidence and
-no-control boundaries in `AGENTS.md`, the [product boundary](docs/product-boundary.md), and the
-[Code of Conduct](CODE_OF_CONDUCT.md).
+Oscillink Safety Ops uses an open-core model. The project-authored public core in this repository is
+licensed under Apache-2.0. Commercial connectors, configurations, deployment, fleet, and
+certification-support layers are separate offerings and are not represented as open source by this
+repository. The Oscillink marks remain governed by [TRADEMARKS.md](TRADEMARKS.md).
 
-Unless explicitly designated otherwise, contributions intentionally submitted for inclusion are
-accepted under the repository's Apache License 2.0 terms.
+## Before contributing
 
-Before proposing runtime behavior:
+Read [AGENTS.md](AGENTS.md), the [product boundary](docs/product-boundary.md), the
+[assurance status](docs/assurance-status.md), and the [Code of Conduct](CODE_OF_CONDUCT.md).
+Contributions must preserve these boundaries:
 
-1. Link the user or authority problem to direct evidence.
-2. State source rights, applicability, and privacy constraints.
-3. Write a failing contract/behavior test first.
-4. Keep OCR/model/provider implementations behind replaceable adapters.
-5. Preserve candidate-only extraction and external review.
-6. Include deterministic failure, ambiguity, stale-revision, and rollback behavior.
-7. Run the complete verification gate.
+- closed-file simulation/replay and local simulated one-way request records only;
+- no machine, controller, PLC, robot, actuator, live-network, remote-reset, or reverse command path;
+- production AI has no configuration, acknowledgment, suppression, or recovery authority;
+- no certification, PL/SIL achievement, safe-operation, work-authorization, or field-validation claim;
+- synthetic or permissively licensed fixtures with exact hashes; and
+- no credentials, customer or employee data, facility details, private prompts, hidden labels, or
+  licensed standards text.
 
-The required local gate is:
+## Development method
+
+Use a narrow vertical RED → GREEN cycle:
+
+1. add one behavior test and run it to capture the expected failure;
+2. implement only that behavior;
+3. rerun the focused test, then the complete gate;
+4. update schemas, generated artifacts, claims, and changelog where affected; and
+5. record remaining platform or review limitations.
 
 ```bash
 uv sync --locked --dev
-uv run ruff format .
+uv run ruff format --check .
 uv run ruff check .
 uv run mypy
 PYTHONPATH= uv run python scripts/verify.py
+PYTHONPATH= uv run python -m pytest -q
+PYTHONPATH= uv run pytest -q
 git diff --check
 ```
 
-Never contribute real secrets, employee/customer data, private SOPs, facility layouts, incident
-records, permits, runtime databases, hidden labels, or licensed standards content.
-
-A contribution must not add or imply physical control, permit authority, compliance certification,
-or safety-rated behavior.
-
-Use the repository issue forms and pull request template. Report vulnerabilities privately under
-[SECURITY.md](SECURITY.md), and follow [SUPPORT.md](SUPPORT.md) for usage questions. External
-contributors must identify any generated content and remain responsible for its accuracy, rights,
-security, and tests.
+Use the issue forms and pull-request template. Usage questions follow [SUPPORT.md](SUPPORT.md).
+Vulnerabilities must follow [SECURITY.md](SECURITY.md), not a public issue. Contributors remain
+responsible for generated content, source rights, tests, and accurate claims.

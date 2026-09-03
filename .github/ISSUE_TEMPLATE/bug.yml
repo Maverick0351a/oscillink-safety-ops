@@ -1,0 +1,46 @@
+name: Bug report
+description: Report deterministic behavior with a synthetic reproduction.
+title: "bug: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic or permissively licensed inputs only. Do not include credentials, customer data,
+        facility details, production logs, private prompts, or licensed standards text. Report a
+        vulnerability through SECURITY.md, never in a public issue.
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Submission boundary
+      options:
+        - label: I used only synthetic or permissively licensed inputs and removed every credential.
+          required: true
+        - label: This report does not request real equipment control, certification, compliance, or work authorization.
+          required: true
+  - type: input
+    id: identity
+    attributes:
+      label: Version or exact commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include exact commands and synthetic input references.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected contract behavior
+    validations:
+      required: true

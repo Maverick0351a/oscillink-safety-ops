@@ -12,24 +12,24 @@ protective response when they do not.
 ## Current implementation
 
 The current package implements exact-byte governed evidence, external-review lineage, explicit
-unknown and stale states, and offline plan and recorded-episode evaluation. It emits evidence findings
-only. It does not correlate live machine intent and observations, latch intervention state, or emit a
-runtime protective request.
+unknown and stale states, offline plan/episode evaluation, and a deterministic closed-file runtime
+supervisor. The runtime correlates recorded command intent and independently modeled observations,
+applies immutable signed configuration, preserves a latch, and writes local simulated one-way
+protective-stop or inhibit request records.
 
 The current primary artifact is a Safety Evidence Packet for one identified asset and task. It
 preserves exact source revisions, extraction regions, typed candidates, applicability, conflicts,
 human review, corrections, and lineage.
 
-## Planned supervisor
+## Implemented simulated supervisor
 
-Later batches plan an isolated deterministic runtime-supervision plane for one simulated fenced robot
-cell. It will use closed replay or simulation inputs to compare untrusted command intent,
-independently modeled occupancy and motion observations, and immutable configuration. Planned outputs
-are local simulated advisory, inhibit, or protective-stop requests plus a latched incident and
-recovery timeline.
+The isolated runtime-supervision plane covers one simulated fenced robot cell. It uses closed replay
+or simulation inputs to compare untrusted command intent, independently modeled occupancy and motion
+observations, and immutable configuration. Outputs are local simulated advisory, inhibit, or
+protective-stop request records plus a latched incident and recovery timeline.
 
-Planned behavior is not current behavior. The public demonstrator remains simulation, replay, and
-shadow evaluation; it does not connect to or control real machinery.
+This is current simulation/replay behavior, not a live integration. The public demonstrator does not
+connect to or control real machinery.
 
 ## Active private-pilot workflow
 

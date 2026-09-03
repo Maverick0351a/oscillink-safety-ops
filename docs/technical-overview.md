@@ -110,9 +110,9 @@ Safety Ops keeps source bytes, candidate extraction, normalization, review decis
 
 The package currently exposes Python contracts and an offline CLI. It has no hosted service, control interface, permit workflow, or equipment integration.
 
-## Planned runtime plane
+## Implemented simulated runtime plane
 
-The planned runtime plane is a separate package and state boundary. Its first target is a closed-file
+The runtime plane is a separate package and state boundary. Its current target is a closed-file
 replay of a simulated fenced robot cell:
 
 ```text
@@ -122,17 +122,17 @@ independent machine observation -----/             |
 immutable reviewed configuration -----------------+---> incident/recovery evidence
 ```
 
-The planned supervisor will correlate command intent with observed occupancy and machine state,
-represent missing/stale/contradictory inputs explicitly, and latch a simulated inhibit or
-protective-stop request. Production AI will have no configuration, policy, reset, evidence, clock,
+The supervisor correlates command intent with observed occupancy and machine state, represents
+missing/stale/contradictory inputs explicitly, and latches a simulated inhibit or protective-stop
+request record. Production AI has no configuration, policy, reset, evidence, clock,
 identity, credential, or administration path.
 
 The initial request boundary is one-way and local: an in-memory fixture or closed output file only.
 There is no live ROS graph, network controller, PLC writer, machine credential, remote reset, reverse
 callback, or real final element. External established safety controls remain authoritative.
 
-Current evidence-plane schemas remain evidence contracts. They do not gain runtime authority merely
-because the runtime plane is planned alongside them.
+Evidence-plane schemas remain evidence contracts. They do not gain runtime authority from the
+separate simulated runtime plane.
 
 ## Schemas and reproducibility
 

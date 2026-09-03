@@ -1,7 +1,6 @@
 cff-version: 1.2.0
 message: >-
-  If you use this software in research, cite the repository and the exact release or commit SHA you
-  evaluated.
+  If you use this software in research, cite the exact release or full commit SHA evaluated.
 title: Oscillink Safety Ops
 type: software
 authors:
@@ -11,10 +10,11 @@ url: https://oscillink.com
 license: Apache-2.0
 version: 0.1.0a1
 abstract: >-
-  Read-only governed compliance-evidence contracts and offline evaluation for physical intelligence.
+  Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled
+  industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight.
 keywords:
-  - compliance evidence
-  - physical intelligence
-  - provenance
-  - offline evaluation
+  - industrial safety supervision
+  - runtime assurance
   - safety evidence
+  - deterministic replay
+  - provenance

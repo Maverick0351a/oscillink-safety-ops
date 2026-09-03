@@ -1,0 +1,83 @@
+name: Release candidate artifacts
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-candidate:
+    name: Build and verify v0.1.0-alpha.1 candidate
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/tags/v0.1.0-alpha.1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: ""
+      PACKAGE_VERSION: 0.1.0a1
+      RELEASE_TAG: v0.1.0-alpha.1
+      CANDIDATE_SHA: ${{ github.sha }}
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Install pinned uv and Python
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: "0.12.0"
+          python-version: "3.11"
+          enable-cache: true
+      - name: Install locked development environment
+        run: uv sync --locked --dev
+      - name: Verify release identity and repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${#CANDIDATE_SHA}" -eq 40
+          uv run pytest tests/test_version_identity.py tests/test_release_manifest.py -q
+          uv run python scripts/verify.py
+      - name: Build wheel and source distribution
+        run: uv build --out-dir build-artifacts
+      - name: Inspect package archives
+        run: uv run python scripts/verify_package_archives.py --directory build-artifacts --version "$PACKAGE_VERSION"
+      - name: Create CycloneDX and provenance evidence
+        run: uv run python scripts/create_release_evidence.py --output-dir build-artifacts --package-version "$PACKAGE_VERSION" --candidate-commit "$CANDIDATE_SHA"
+      - name: Create release manifest and basename-only checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir release-directory
+          uv run python scripts/create_release_manifest.py create \
+            --artifact build-artifacts/oscillink_safety_ops-0.1.0a1.tar.gz \
+            --artifact build-artifacts/oscillink_safety_ops-0.1.0a1-py3-none-any.whl \
+            --artifact build-artifacts/cyclonedx-sbom.json \
+            --artifact build-artifacts/provenance.json \
+            --artifact build-artifacts/benchmark-metrics.json \
+            --artifact build-artifacts/formal-result.json \
+            --output-dir release-directory \
+            --package-version "$PACKAGE_VERSION" \
+            --candidate-commit "$CANDIDATE_SHA" \
+            --require-complete
+          cp build-artifacts/* release-directory/
+          rm -rf build-artifacts
+      - name: Verify isolated artifact directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f release-directory/SHA256SUMS.txt
+          uv run python scripts/create_release_manifest.py verify --release-dir release-directory --expected-version "$PACKAGE_VERSION" --expected-commit "$CANDIDATE_SHA" --require-complete
+      - name: Upload verified candidate artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: oscillink-safety-ops-${{ github.sha }}
+          path: release-directory/
+          if-no-files-found: error
+          retention-days: 14
