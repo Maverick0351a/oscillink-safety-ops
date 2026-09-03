@@ -16,7 +16,7 @@ build/
 *.db-wal
 *.sqlite
 *.sqlite3
-runtime/
+/runtime/
 artifacts/
 knowledge/osha/cache/
 private/

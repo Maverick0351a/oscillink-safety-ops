@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "scope_id": "SCOPE-ROBOT-CELL-001",
+  "boundary": "Planned closed-file simulated request only; no machine control, stopping proof, application validation, or certification claim.",
+  "records": [
+    {
+      "evidence_id": "EVID-001",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-001--occupiedunknown-zone-during-motion",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-001"],
+      "test_ids": ["TEST-001"],
+      "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-002",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-002--no-unexpected-start-after-recovery-events",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-002"],
+      "test_ids": ["TEST-002"],
+      "change_impact_id": "CI-002"
+    },
+    {
+      "evidence_id": "EVID-003",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-003--commandactual-mismatch-matrix",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-003"],
+      "test_ids": ["TEST-003"],
+      "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-004",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-004--excessive-motion-boundary-cases",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-004"],
+      "test_ids": ["TEST-004"],
+      "change_impact_id": "CI-004"
+    },
+    {
+      "evidence_id": "EVID-005",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-005--missingstalefrozenmalformedcontradictory-sensing",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-005"],
+      "test_ids": ["TEST-005"],
+      "change_impact_id": "CI-005"
+    },
+    {
+      "evidence_id": "EVID-006",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-006--timebase-and-order-faults",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-006"],
+      "test_ids": ["TEST-006"],
+      "change_impact_id": "CI-006"
+    },
+    {
+      "evidence_id": "EVID-007",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-007--output-request-and-acknowledgment-faults",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-007"],
+      "test_ids": ["TEST-007"],
+      "change_impact_id": "CI-007"
+    },
+    {
+      "evidence_id": "EVID-008",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-008--configuration-integrity",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-008"],
+      "test_ids": ["TEST-008"],
+      "change_impact_id": "CI-008"
+    },
+    {
+      "evidence_id": "EVID-009",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-009--restart-persistence",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-009"],
+      "test_ids": ["TEST-009"],
+      "change_impact_id": "CI-009"
+    },
+    {
+      "evidence_id": "EVID-010",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-010--reset-and-rearm-misuse",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-010"],
+      "test_ids": ["TEST-010"],
+      "change_impact_id": "CI-010"
+    },
+    {
+      "evidence_id": "EVID-011",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-011--production-ai-compromise-and-authority-probes",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-011"],
+      "test_ids": ["TEST-011"],
+      "change_impact_id": "CI-011"
+    },
+    {
+      "evidence_id": "EVID-012",
+      "evidence_type": "planned_test_specification",
+      "path": "assurance/VALIDATION_PLAN.md#test-012--shared-dependencycommon-cause-campaign",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-012"],
+      "test_ids": ["TEST-012"],
+      "change_impact_id": "CI-012"
+    }
+  ],
+  "open_target_system_values": {
+    "PLr": "TBD — qualified target-system assessment",
+    "SIL": "TBD — qualified target-system assessment",
+    "total_stopping_time": "TBD — qualified target-system assessment",
+    "diagnostic_coverage": "TBD — qualified target-system assessment",
+    "application_validation": "TBD — qualified target-system assessment",
+    "unresolved_common_cause_assumptions": "TBD — qualified target-system assessment"
+  }
+}

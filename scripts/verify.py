@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -22,10 +23,15 @@ def executable(name: str) -> str:
     return resolved
 
 
-def run(*command: str) -> None:
-    print("+", " ".join(command), flush=True)
+def run(*command: str, pythonpath: str | None = None) -> None:
+    prefix = "PYTHONPATH= " if pythonpath == "" else ""
+    print("+", prefix + " ".join(command), flush=True)
     resolved = (executable(command[0]), *command[1:])
-    subprocess.run(resolved, cwd=ROOT, check=True)  # noqa: S603
+    environment = None
+    if pythonpath is not None:
+        environment = os.environ.copy()
+        environment["PYTHONPATH"] = pythonpath
+    subprocess.run(resolved, cwd=ROOT, check=True, env=environment)  # noqa: S603
 
 
 def repository_files() -> list[Path]:
@@ -145,6 +151,7 @@ def main() -> None:
     check_schemas()
     check_osha_catalog()
     check_fixture()
+    run("uv", "run", "python", "scripts/verify_traceability.py", pythonpath="")
     run("uv", "run", "ruff", "check", ".")
     run("uv", "run", "ruff", "format", "--check", ".")
     run("uv", "run", "mypy")
