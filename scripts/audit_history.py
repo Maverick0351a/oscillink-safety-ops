@@ -73,6 +73,19 @@ def _blob(root: Path, object_id: str) -> bytes:
     return result.stdout
 
 
+def commit_is_available(root: Path, commit: str) -> bool:
+    """Return whether a full commit SHA is available in the local object database."""
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError("commit must be a full lowercase SHA")
+    result = subprocess.run(  # noqa: S603
+        [_git_executable(), "cat-file", "-e", f"{commit}^{{commit}}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    return result.returncode == 0
+
+
 def _validate_commit(root: Path, baseline: str) -> str:
     if not re.fullmatch(r"[0-9a-f]{40}", baseline):
         raise ValueError("baseline must be a full lowercase commit SHA")

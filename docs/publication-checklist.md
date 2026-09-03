@@ -1,7 +1,7 @@
 # Publication checklist
 
-This checklist is fail-closed. An unchecked item blocks its external action. Completion does not
-authorize a commit, push, tag, release, visibility change, deployment, or announcement.
+This checklist records the completed public-alpha promotion gates. It does not authorize a future
+release, deployment, announcement, or other external-system mutation.
 
 ## Claims and product boundary
 
@@ -31,7 +31,8 @@ authorize a commit, push, tag, release, visibility change, deployment, or announ
       are explicitly classified without treating indicators as secrets.
 - [x] `cryptography` was updated from vulnerable 46.0.7 to 50.0.1 and pip-audit 2.10.1 reports zero
       known vulnerabilities for the resolved runtime requirements.
-- [ ] Final exact-candidate reachable history is scanned externally after the candidate commit exists.
+- [x] Final exact-candidate reachable history was scanned externally with Gitleaks 8.30.1 after the
+      candidate commit existed; zero findings were reported across all reachable commits.
 
 ## Repository trust surface
 
@@ -39,25 +40,29 @@ authorize a commit, push, tag, release, visibility change, deployment, or announ
       changelog, citation, Dependabot, release notes, and release process are structurally tested.
 - [x] Workflow actions are immutable-SHA pinned with minimal permissions, no secrets, safe events,
       concurrency controls, and no publish/deploy step.
-- [ ] GitHub private vulnerability reporting is enabled and read back immediately after public
+- [x] GitHub private vulnerability reporting is enabled and read back immediately after public
       visibility (GitHub exposes this feature only for public repositories).
-- [ ] Branch protection and security settings are configured and read back in Batch 8.
+- [x] Branch protection, Dependabot alerts/updates, secret scanning, push protection, Issues, and
+      Discussions were configured and read back in Batch 8.
 
 ## Exact candidate and artifacts
 
-- [ ] Batch 7 changes are committed and exact candidate SHA recorded.
-- [ ] Clean exact-SHA Windows canonical verifier and both direct pytest forms pass.
-- [ ] Detached independent Linux Buildbox verification passes on the exact candidate.
-- [ ] Hosted Windows/Linux verification, CodeQL, dependency audit, and Gitleaks pass on that SHA.
+- [x] Release tag `v0.1.0-alpha.1` resolves to exact candidate
+      `fd560f8290d4f503aadd03f42c2e572d64921d2b`.
+- [x] Clean exact-SHA Windows canonical verifier and both direct pytest forms passed.
+- [x] Detached independent Linux Buildbox verification passed on the exact candidate.
+- [x] Hosted Windows/Linux verification, CodeQL, dependency audit, and Gitleaks passed on that SHA.
 - [x] Release tooling requires wheel, source distribution, CycloneDX SBOM, unsigned provenance,
       benchmark metrics, formal result, basename-only checksums, and isolated verification.
-- [ ] Exact candidate artifacts are built and verified after the candidate commit exists.
-- [ ] Published assets, if separately authorized, are downloaded and verified in isolation.
+- [x] Exact-candidate artifacts were built by the tag-triggered workflow and verified after the
+      candidate commit existed.
+- [x] All eight published release assets were downloaded without credentials and verified in an
+      isolated directory against the manifest and basename-only checksums.
 
 ## Promotion
 
-- [ ] No unresolved blocker remains.
-- [ ] Owner gives separate explicit authorization for the exact push, tag, release, visibility, or
+- [x] No unresolved publication blocker remains.
+- [x] Owner gave separate explicit authorization for the exact push, tag, release, visibility, and
       external action.
-- [ ] Batch 8 verifies public API visibility, anonymous clone, community rendering, release download,
+- [x] Batch 8 verified public API visibility, anonymous clone, community rendering, release download,
       and fresh-clone quickstart without credentials.

@@ -109,15 +109,18 @@ def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
     checklist = (ROOT / "docs" / "publication-checklist.md").read_text(encoding="utf-8")
     assert "[x] Transitive dependency licenses receive independent review" in checklist
     pvr_gate = (
-        "[ ] GitHub private vulnerability reporting is enabled and read back immediately "
+        "[x] GitHub private vulnerability reporting is enabled and read back immediately "
         "after public visibility"
     )
     assert pvr_gate in checklist.replace("\n      ", " ")
+    assert "- [ ]" not in checklist
 
     launch_surfaces = (
         ROOT / "benchmark" / "robot_cell_v1" / "DATASET_CARD.md",
         ROOT / "spaces" / "oscillink-safety-ops-demo" / "README.md",
         ROOT / "docs" / "release-process.md",
+        ROOT / "docs" / "releases" / "v0.1.0-alpha.1.md",
+        ROOT / "docs" / "execution-plan.md",
     )
     stale_phrases = (
         "future Hugging Face Dataset",
@@ -127,6 +130,11 @@ def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
         "Before any future publication",
         "There is no published Oscillink Safety Ops release",
         "license inventory is currently incomplete",
+        "local release-candidate preparation; not published",
+        "Published release: none",
+        "Intended tag:",
+        "not run because no push is authorized",
+        "must be rerun after all changes",
     )
     for path in launch_surfaces:
         text = path.read_text(encoding="utf-8")
@@ -181,13 +189,10 @@ def test_public_docs_distinguish_current_evidence_from_planned_supervision() -> 
             "## Current evidence plane",
             "## Implemented simulated runtime plane",
         ),
-        "docs/execution-plan.md": (
-            "## Approved public direction",
-            "Batches 1-6 implemented",
-        ),
+        "docs/execution-plan.md": ("## Approved public direction", "Public alpha 0.1.0 alpha 1"),
         "docs/publication-checklist.md": ("Implemented runtime status",),
         "docs/release-process.md": ("current runtime is implemented",),
-        "docs/releases/v0.1.0-alpha.1.md": ("## Implemented in this candidate",),
+        "docs/releases/v0.1.0-alpha.1.md": ("## Included in this release",),
     }
 
     for relative, markers in required_markers.items():

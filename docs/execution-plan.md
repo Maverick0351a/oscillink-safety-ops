@@ -12,10 +12,11 @@ The production AI runs the machine. Oscillink independently monitors whether com
 behavior remain within the approved operating envelope and requests a protective response when they
 do not.
 
-Batches 1-6 implemented exact-byte evidence, review lineage, offline evaluation, deterministic
+Batches 1-8 implemented exact-byte evidence, review lineage, offline evaluation, deterministic
 closed-file replay/simulation, a persistent supervisor latch, local one-way simulated requests, a
-synthetic benchmark, and a static monitor. Batch 7 prepares the private release candidate. Any real
-integration remains a separate future decision and is not authorized by this plan.
+synthetic benchmark, and a static monitor. Public alpha 0.1.0 alpha 1 was released from the exact
+verified candidate. Any real integration remains a separate future decision and is not authorized by
+this plan.
 
 Execution order is fail-closed:
 

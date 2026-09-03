@@ -4,10 +4,26 @@ import importlib
 import json
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = "2943db23ceb075e8955867903069cd5e043fee45"
+HISTORY_AVAILABLE = importlib.import_module("scripts.audit_history").commit_is_available(
+    ROOT, BASELINE
+)
+requires_reachable_history = pytest.mark.skipif(
+    not HISTORY_AVAILABLE,
+    reason="reachable-history audit requires the baseline object omitted by shallow clones",
+)
 
 
+def test_history_audit_reports_unavailable_commit_without_raising() -> None:
+    module = importlib.import_module("scripts.audit_history")
+
+    assert module.commit_is_available(ROOT, "0" * 40) is False
+
+
+@requires_reachable_history
 def test_history_audit_derives_exact_reachable_baseline_without_values() -> None:
     module = importlib.import_module("scripts.audit_history")
 
@@ -44,6 +60,7 @@ def test_history_audit_derives_exact_reachable_baseline_without_values() -> None
     assert b"C:/Users/" not in serialized and b"C:\\Users\\" not in serialized
 
 
+@requires_reachable_history
 def test_history_audit_classifies_public_and_test_key_indicators_without_calling_them_secrets() -> (
     None
 ):
@@ -64,6 +81,7 @@ def test_history_audit_classifies_public_and_test_key_indicators_without_calling
     assert "secret finding" not in json.dumps(report["personal_absolute_path_indicators"]).lower()
 
 
+@requires_reachable_history
 def test_history_audit_output_is_canonical_and_deterministic(tmp_path: Path) -> None:
     module = importlib.import_module("scripts.audit_history")
     first = tmp_path / "first.json"

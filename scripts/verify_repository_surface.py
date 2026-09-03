@@ -68,8 +68,9 @@ REQUIRED_TEXT = {
     ),
     "docs/publication-checklist.md": ("separate explicit authorization",),
     "docs/releases/v0.1.0-alpha.1.md": (
-        "local release-candidate preparation; not published",
+        "published public prerelease",
         "Package version: `0.1.0a1`",
+        "Release tag: [`v0.1.0-alpha.1`]",
         "Operational authority: none",
     ),
     "docs/release-process.md": ("exact candidate commit exists",),
