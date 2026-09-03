@@ -15,6 +15,17 @@ ASSET_NAMES = (
     "safety-evidence-packet-synthetic.svg",
 )
 
+HEADLINE = (
+    "Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for "
+    "AI-controlled industrial equipment, connecting machine intent, observed behavior, and "
+    "safety-manager oversight."
+)
+SOCIAL_PREVIEW_LINES = (
+    "INDEPENDENT SAFETY SUPERVISOR",
+    "AI CONTROLLED INDUSTRIAL EQUIPMENT",
+    "RISK MITIGATION / OVERSIGHT",
+)
+
 ARCHITECTURE_SVG = (
     dedent(
         """\
@@ -283,10 +294,10 @@ def social_preview() -> bytes:
         canvas.line(0, y, 1279, y, grid)
     canvas.rectangle(56, 58, 8, 524, (56, 217, 245))
     canvas.text(100, 94, "OSCILLINK", 9, (245, 248, 255))
-    canvas.text(100, 202, "GOVERNED COMPLIANCE EVIDENCE", 5, (56, 217, 245))
-    canvas.text(100, 258, "FOR PHYSICAL INTELLIGENCE", 5, (56, 217, 245))
-    canvas.rectangle(100, 358, 936, 2, (54, 78, 106))
-    canvas.text(100, 406, "READ-ONLY / HASH-BOUND / REVIEWABLE", 3, (255, 191, 71))
+    canvas.text(100, 202, SOCIAL_PREVIEW_LINES[0], 5, (56, 217, 245))
+    canvas.text(100, 258, SOCIAL_PREVIEW_LINES[1], 4, (56, 217, 245))
+    canvas.rectangle(100, 350, 936, 2, (54, 78, 106))
+    canvas.text(100, 396, SOCIAL_PREVIEW_LINES[2], 3, (255, 191, 71))
     canvas.text(100, 520, "SAFETY OPS", 4, (142, 162, 189))
     return png_bytes(canvas)
 

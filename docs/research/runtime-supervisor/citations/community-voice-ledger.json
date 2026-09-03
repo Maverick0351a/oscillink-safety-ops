@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://www.plctalk.net/forums/threads/implementing-an-override-on-safety-plc.125501",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "I was wondering if it would be possible to connect the switch to the nearest PLC which would transmit the status to the Safety PLC along with a watchdog bit and so on.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://www.plctalk.net/forums/threads/machine-safety-and-maintenance-bypass.108977",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Turns out that the position feedback of the machine was screwed and they did not know what to do to move the machine. A couple of bits forced in the CPU and the machine was where it was needed safely. And yes... until I figured that one out (a short cable at a gland) I'd be called day or night to move it and keep production.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://www.plctalk.net/forums/threads/question-disable-button-after-emergency-stop.135718",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "My problem is when the emergency stop is activated and the operator toggle button, if is reset safety, the action executes.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://www.plctalk.net/forums/threads/question-about-sick-safety-laser-scanner-for-robot-arm.139817",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "it was the amber beacon on the forkloift causing the trip, a quick fix was to place a screen (in my case a flattened cardboard box tied to the cell cage so the beacon would not interfere with the barrier), I informed them that my heath robinson fix should be replaced with something more appropriate, two years later it was still there.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://www.robot-forum.com/robotforum/thread/13027-bypassing-saftey-features",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "I'm trying to avoid picking up the TP and creating more downtime and work than what is needed.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://www.robot-forum.com/robotforum/thread/39918-disable-safety-gate-error-under-certain-conditions",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "I still want the robot to be stopped by the controller to ensure the safety but I'm looking for a way to not have to reset the whole system in each entry.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "url": "https://www.robot-forum.com/robotforum/thread/34991-kuka-error-at-safe-input-safety-swithes",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "With some of them I get dual channel safety error quite often, resetting the safety removes error.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://www.robot-forum.com/robotforum/thread/33763-emergency-stop-inoperative",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "I am trying to use a SICK Safety SCANNER with CIP Safety to connect with the KRC4 but that is proving to be a challenge after SICK stated it was an easy thing to do, no documentation on either side of someone connecting one of these before.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "url": "https://control.com/forums/threads/why-only-tmr-for-esd-applications.17278",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "If you want to avoid unnecessary shut downs caused by possible faulty detections of failure, then you need to provide redundancy in the detection mechanism, and this is where TMR is used.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "url": "https://control.com/forums/threads/alarms-management.14430",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Using a single alarm acknowledge bit pulsed by the SCADA host is the wrong way to do it.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "url": "https://www.eng-tips.com/threads/emergency-stop-button-not-working.363988/page-2",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "They had been crossed out in the PLC program, but left for anyone to see and press in the plant.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "url": "https://www.eng-tips.com/threads/asme-csd-1-and-probe-style-lwco.418723",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Brief power outages knocking out steam plant is causing major grief.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "url": "https://www.eng-tips.com/threads/click-restart.361328",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Currently certain places can't be recovered from short of a power-cycle.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "url": "https://eng-tips.com/threads/overland-conveyor-e-stop-oull-cords-wired-through-plcs.209200",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "You do not require a safety PLC for aux contact input in to the PLC. What is being assumed above is that you were running your e-stop string in to the plc, and in that scenariio yes it would require safety PLC.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "url": "https://discourse.ros.org/t/reliability-safety-security-maintenance-and-support-in-ros/7146",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Right now it’s very difficult to integrate ROS safely in an industrial grade robot, having either to encapsulate the cell in a parallel, isolated safety system or making ROS act as a kind of supervisor, encapsulating more low level and safety critical systems.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "url": "https://discourse.ros.org/t/nav2-collision-monitor-for-emergency-stopping/26554",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "bypassing the trajectory planner to enact a safety-like system based on raw sensor data for low-latency.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "url": "https://discourse.ros.org/t/guidelines-for-testing-ros-based-robots-in-the-real-world/37577",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "it stops the robot and says what it is doing so that the operator is not confused.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "url": "https://github.com/ros-industrial/abb/issues/136",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "When an eStop is activated, for whatever reason, it is required to 'Acknowledge' the error on the FlexPendant and turn the motors back by pressing the blinking motors on switch to continue. I need to do this with software.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "url": "https://github.com/ros-navigation/navigation2/issues/4132",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Controller server will not start again.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "url": "https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver/issues/1672",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "If I now start sending movement commands, it will not move until I restart the robot-driver (not the robot or the motors).",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "url": "https://github.com/ros-navigation/navigation2/issues/6216",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "This is a denial-of-service issue affecting the availability of the collision monitoring / speed control path.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "url": "https://reddit.com/r/PLC/comments/1ehjkav/safety_devices",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Switching from a safety relay to a safety plc doesn't and can't stop someone from wiring around things.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "url": "https://reddit.com/r/PLC/comments/1ke8m1k/whats_your_horror_story_of_being_strongarmed",
+      "title": "",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Boss says raise the trip limit.",
+          "added": "2026-09-02"
+        }
+      ]
+    }
+  ]
+}

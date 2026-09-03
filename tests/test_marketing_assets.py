@@ -4,6 +4,12 @@ import importlib
 import struct
 from pathlib import Path
 
+APPROVED_HEADLINE = (
+    "Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for "
+    "AI-controlled industrial equipment, connecting machine intent, observed behavior, and "
+    "safety-manager oversight."
+)
+
 
 def test_render_assets_creates_expected_files(tmp_path: Path) -> None:
     render_assets = importlib.import_module("scripts.render_marketing_assets").render_assets
@@ -58,3 +64,13 @@ def test_rendered_assets_are_deterministic(tmp_path: Path) -> None:
     assert [path.read_bytes() for path in first_paths] == [
         path.read_bytes() for path in second_paths
     ]
+
+
+def test_social_preview_copy_uses_approved_product_positioning() -> None:
+    module = importlib.import_module("scripts.render_marketing_assets")
+
+    assert hasattr(module, "HEADLINE")
+    assert hasattr(module, "SOCIAL_PREVIEW_LINES")
+    assert module.HEADLINE == APPROVED_HEADLINE
+    assert "INDEPENDENT SAFETY SUPERVISOR" in module.SOCIAL_PREVIEW_LINES
+    assert "AI CONTROLLED INDUSTRIAL EQUIPMENT" in module.SOCIAL_PREVIEW_LINES

@@ -1,16 +1,14 @@
 # Oscillink Safety Ops
 
-## Compliance evidence for the physical-intelligence era
+Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight.
 
-**Oscillink builds governed compliance-evidence infrastructure for physical intelligence.**
+> The production AI runs the machine. Oscillink independently monitors whether commanded and
+> observed behavior remain within the approved operating envelope and requests a protective response
+> when they do not.
 
-As physical intelligence moves from research and pilots toward real-world operations, Oscillink
-helps teams make the surrounding regulations, procedures, asset context, reviews, and operational
-evidence inspectable and traceable.
-
-Safety Ops is the first concrete product: a local, read-only evidence sidecar that binds exact
-sources, external review decisions, explicit unknowns, and offline evaluation findings into
-reviewable artifacts.
+The repository currently implements the governed evidence and offline-evaluation plane that will
+support that supervisor. The deterministic runtime-supervision plane, intervention latch, robot-cell
+replay, and simulated one-way protective requests are planned and are not implemented yet.
 
 > **Current status:** experimental private product with implemented deterministic contracts. The
 > code makes no legal, compliance, certification, safe-operation, work-authorization, deployment,
@@ -160,9 +158,13 @@ implemented feature baseline. Hosted CI has not evaluated local-only maturation 
 have not been pushed. This is reproducibility evidence, not release, safety, compliance,
 applicability, or practitioner-validation evidence.
 
+See [Assurance status and limitations](docs/assurance-status.md) for the current implementation,
+planned runtime-supervision boundary, deployment dependencies, and claims that remain unsupported.
+
 ## Documentation
 
 - [Technical overview](docs/technical-overview.md)
+- [Assurance status and limitations](docs/assurance-status.md)
 - [Synthetic local demonstration](docs/synthetic-demo.md)
 - [Product and authority boundary](docs/product-boundary.md)
 - [Execution plan and current gates](docs/execution-plan.md)

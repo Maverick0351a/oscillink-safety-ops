@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 REQUIRED_FILES = (
@@ -60,6 +61,45 @@ REQUIRED_TEXT = {
     "docs/release-process.md": ("requires explicit owner authorization",),
 }
 
+PUBLIC_CLAIM_FILES = (
+    "README.md",
+    "SECURITY.md",
+    "docs/assurance-status.md",
+    "docs/product-boundary.md",
+    "docs/technical-overview.md",
+    "docs/execution-plan.md",
+    "docs/publication-checklist.md",
+    "docs/release-process.md",
+    "docs/releases/v0.1.0-alpha.1.md",
+)
+
+
+def validate_public_claim_text(relative: str, text: str) -> tuple[str, ...]:
+    """Reject public language that presents planned intervention as implemented."""
+    errors: list[str] = []
+    current_intervention = re.compile(
+        r"\b(?:currently|now)\b[^.\n]{0,120}\b(?:emits?|issues?|requests?)\b"
+        r"[^.\n]{0,80}\b(?:protective[- ]stop|inhibit|intervention)",
+        re.IGNORECASE,
+    )
+    if current_intervention.search(text):
+        errors.append(f"unimplemented runtime intervention presented as current in {relative}")
+    unsupported_assurance = re.compile(
+        r"(?<!\bNo )\bOscillink(?: Safety Ops)?\b[^.\n]{0,80}"
+        r"(?:\bis certified\b|\bachieves?\s+(?:PL|SIL)\b)",
+        re.IGNORECASE,
+    )
+    if unsupported_assurance.search(text):
+        errors.append(f"unsupported certification or PL/SIL claim in {relative}")
+    synthetic_field_result = re.compile(
+        r"\b(?:synthetic|simulation)\b[^.\n]{0,100}\bfield results?\b"
+        r"[^.\n]{0,100}\b(?:demonstrates?|proves?|shows?)\b",
+        re.IGNORECASE,
+    )
+    if synthetic_field_result.search(text):
+        errors.append(f"synthetic or simulation result presented as field evidence in {relative}")
+    return tuple(errors)
+
 
 def validate_repository_surface(root: Path) -> tuple[str, ...]:
     """Return deterministic repository-surface validation errors."""
@@ -78,6 +118,10 @@ def validate_repository_surface(root: Path) -> tuple[str, ...]:
             for marker in markers
             if marker not in text
         )
+    for relative in PUBLIC_CLAIM_FILES:
+        path = root / relative
+        if path.is_file():
+            errors.extend(validate_public_claim_text(relative, path.read_text(encoding="utf-8")))
     return tuple(errors)
 
 

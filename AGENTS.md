@@ -2,13 +2,19 @@
 
 ## Product boundary
 
-Build a governed safety-evidence and offline-evaluation layer for physical intelligence. Do not
-claim that fluent models, OCR output, retrieved documents, or heuristic checks establish safety,
-compliance, certification, or authorization to operate.
+Build an independent safety and risk-mitigation supervisor for AI-controlled industrial equipment,
+connecting machine intent, independently observed behavior, and safety-manager oversight. Preserve
+the governed evidence plane as configuration-control and assurance support. The current build stage
+is limited to simulated, replay, and shadow supervision plus local one-way intervention request
+fixtures. Real machinery control remains forbidden in the current build stage.
 
 ## Hard authority limits
 
-- No robot, machine, vehicle, equipment, PLC, interlock, emergency-stop, or actuator control.
+- No real robot, machine, vehicle, equipment, PLC, interlock, emergency-stop, or actuator control in
+  the current build stage.
+- Simulated protective-stop and inhibit requests must remain local, one-way test artifacts.
+- Production AI cannot configure, disable, reset, acknowledge, suppress, or become a dependency of
+  the supervisor.
 - No work-permit issuance, lockout/tagout authorization, legal conclusion, or compliance
   certification.
 - No model-generated constraint may become approved without external authorized review.
@@ -16,6 +22,8 @@ compliance, certification, or authorization to operate.
 - Preserve source class, jurisdiction, site, asset/model/serial, role, edition, effective date,
   applicability, corrections, retractions, and supersession.
 - Unreadable, ambiguous, unsupported, stale, or missing evidence must remain explicit.
+- Do not claim certification, a completed PL/SIL assessment, field validation, or operational
+  authority without configuration-specific independent evidence.
 
 ## Development discipline
 

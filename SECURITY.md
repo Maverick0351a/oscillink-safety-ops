@@ -1,6 +1,8 @@
 # Security Policy
 
-Oscillink Safety Ops is private discovery software. It does not currently provide an operational
+Oscillink Safety Ops is being developed as an independent safety and risk-mitigation supervisor for
+AI-controlled industrial equipment. The current package is an evidence and offline-evaluation plane;
+the planned runtime supervisor is not implemented. It does not currently provide an operational
 service and must not be connected to production equipment or safety systems.
 
 ## Reporting
@@ -34,8 +36,17 @@ Do not expose a service to an untrusted network. Do not ingest real customer saf
 until authentication, workspace isolation, retention, deletion, export, audit, and incident
 response are reviewed and tested.
 
-Safety Ops is not a safety-rated system, penetration-test report, regulatory approval, warranty,
-or substitute for qualified safety engineering.
+### No real machine control
+
+No real machine control is implemented or authorized. Simulation, replay, and shadow-mode work must
+use closed local inputs and outputs with no controller address, controller credential, live ROS graph,
+PLC write, remote reset, or reverse command path. A simulated intervention request is not evidence
+that real equipment stopped or that a protective function is effective.
+
+Safety Ops is not a safety-rated system, penetration-test report, regulatory approval, warranty, or
+substitute for qualified safety engineering. Certification and deployment authority depend on the
+exact configured safety function, hardware, integration, validation, jurisdiction, and independent
+assessment.
 
 ## Supported versions
 

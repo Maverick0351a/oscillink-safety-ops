@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "oscillink-safety-ops"
 dynamic = ["version"]
-description = "Read-only governed safety-memory auditing for physical intelligence"
+description = "Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight."
 license = "Apache-2.0"
 requires-python = ">=3.11,<3.12"
 dependencies = ["defusedxml>=0.7.1,<1", "pydantic>=2.11,<3"]

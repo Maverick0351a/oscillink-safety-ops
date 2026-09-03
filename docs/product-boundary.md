@@ -2,12 +2,34 @@
 
 ## Product outcome
 
-Oscillink Safety Ops creates governed, reviewable evidence connecting safety documents to physical-
-intelligence tasks, plans, datasets, simulations, and evaluations.
+Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled
+industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight.
 
-The first candidate artifact is a Safety Evidence Packet for one identified asset and task. It
+The production AI runs the machine. The intended Oscillink architecture independently monitors
+whether commanded and observed behavior remain within an approved operating envelope and requests a
+protective response when they do not.
+
+## Current implementation
+
+The current package implements exact-byte governed evidence, external-review lineage, explicit
+unknown and stale states, and offline plan and recorded-episode evaluation. It emits evidence findings
+only. It does not correlate live machine intent and observations, latch intervention state, or emit a
+runtime protective request.
+
+The current primary artifact is a Safety Evidence Packet for one identified asset and task. It
 preserves exact source revisions, extraction regions, typed candidates, applicability, conflicts,
 human review, corrections, and lineage.
+
+## Planned supervisor
+
+Later batches plan an isolated deterministic runtime-supervision plane for one simulated fenced robot
+cell. It will use closed replay or simulation inputs to compare untrusted command intent,
+independently modeled occupancy and motion observations, and immutable configuration. Planned outputs
+are local simulated advisory, inhibit, or protective-stop requests plus a latched incident and
+recovery timeline.
+
+Planned behavior is not current behavior. The public demonstrator remains simulation, replay, and
+shadow evaluation; it does not connect to or control real machinery.
 
 ## Active private-pilot workflow
 
@@ -16,9 +38,10 @@ cell, one bounded maintenance or integration task, one rights-cleared manual/SOP
 bundle, and one externally authorized reviewer. The product output remains a reviewable packet and
 offline evidence findings only.
 
-New OCR providers, jurisdictions, regulatory parser breadth, facility connectors, robot-runtime
-adapters, hosted services, and user-interface work remain deferred until the private-pilot workflow
-passes its technical, practitioner, and commercial gates.
+New OCR providers, jurisdictions, regulatory parser breadth, live facility connectors, live robot
+runtime adapters, hosted services, and real-machine interfaces remain deferred. The separately
+approved synthetic runtime-supervisor batches do not change the private-pilot gate for real evidence
+workflows.
 
 ## Source boundary
 
@@ -54,11 +77,13 @@ Automated extraction can create candidates and evidence-oriented findings only. 
 
 ## Physical boundary
 
-No operational path may command a robot, PLC, safety PLC, interlock, emergency stop, machine,
-vehicle, tool, or actuator. Offline task/plan/episode comparison is the maximum initial physical-
-intelligence integration.
+No operational path may command a real robot, PLC, safety PLC, interlock, emergency stop, machine,
+vehicle, tool, drive, or actuator. Simulation, replay, and shadow evaluation may write a one-way
+request only to an in-memory fixture or closed local output. It may not acknowledge, reset, rearm,
+start, or report successful physical stopping.
 
-A future actuator-connected system would require a separate product, formal hazard analysis,
+A future real-machine integration would require a separate authorization and configuration-specific
+program with formal hazard analysis,
 safety engineering, legal/insurance review, simulation and hardware-in-loop evidence, bounded
 deterministic control, independent safety-rated mechanisms, incident response, and explicit human
 approval. Restoring software state cannot reverse a physical action.
@@ -75,8 +100,12 @@ approval. Restoring software state cannot reverse a physical action.
 
 Allowed early claim:
 
-> Safety Ops helps an authorized reviewer trace, compare, and govern safety evidence for offline
-> physical-intelligence work.
+> Safety Ops is being developed as an independent safety and risk-mitigation supervisor. The current
+> release implements its governed evidence and offline-evaluation plane; runtime supervision remains
+> planned.
 
-Forbidden early claims include “ensures safety,” “guarantees compliance,” “certifies procedures,”
-“prevents accidents,” or “authorizes operation.”
+Do not describe current behavior as “ensures safety,” “guarantees compliance,” “certifies
+procedures,” “prevents incidents,” “validated in the field,” “achieves PL/SIL,” or “authorizes
+operation.”
+
+See [Assurance status and limitations](assurance-status.md) for the dedicated current status.

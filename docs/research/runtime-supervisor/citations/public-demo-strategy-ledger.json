@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://gazebosim.org/docs/latest/ros_installation",
+      "title": "Gazebo: Installing Gazebo with ROS",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 2,
+      "url": "https://github.com/gazebosim/gz-sim",
+      "title": "gazebosim/gz-sim",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 3,
+      "url": "https://www.openrobotics.org/blog/2024/5/ros-jazzy-jalisco-released",
+      "title": "ROS 2 Jazzy Jalisco released",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 4,
+      "url": "https://github.com/ros2/rosbag2",
+      "title": "ros2/rosbag2",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 5,
+      "url": "http://docs.ros.org/en/rolling/Tutorials/Intermediate/Testing/Integration.html",
+      "title": "ROS 2 launch_testing integration tests",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 6,
+      "url": "https://pages.nist.gov/ARIAC_docs/en/latest/pages/scenario.html",
+      "title": "NIST ARIAC scenario",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 7,
+      "url": "https://github.com/usnistgov/ARIAC",
+      "title": "usnistgov/ARIAC",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 8,
+      "url": "https://docs.isaacsim.omniverse.nvidia.com/6.0.0/common/license-faq.html",
+      "title": "Isaac Sim 6.0 license FAQ",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 9,
+      "url": "https://docs.isaacsim.omniverse.nvidia.com/latest/installation/requirements.html",
+      "title": "Isaac Sim system requirements",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 10,
+      "url": "https://github.com/Autonomy-Logic/openplc-runtime",
+      "title": "OpenPLC Runtime v4",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 11,
+      "url": "https://github.com/Autonomy-Logic/openplc-editor",
+      "title": "OpenPLC Editor v4",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 12,
+      "url": "https://github.com/eclipse-4diac/4diac-forte",
+      "title": "Eclipse 4diac FORTE",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 13,
+      "url": "https://codesys.com/the-system/licensing.html",
+      "title": "CODESYS licensing",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 14,
+      "url": "https://github.com/renode/renode",
+      "title": "Renode",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 15,
+      "url": "https://github.com/Shopify/toxiproxy",
+      "title": "Toxiproxy",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 16,
+      "url": "https://github.com/boschresearch/rosbag-fault-injection",
+      "title": "Bosch ROS 2 rosbag fault injection",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 17,
+      "url": "https://github.com/PKU-Alignment/safety-gymnasium",
+      "title": "Safety Gymnasium",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 18,
+      "url": "https://github.com/tlaplus/tlaplus",
+      "title": "TLA+ tools and TLC",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 19,
+      "url": "https://github.com/apalache-mc/apalache",
+      "title": "Apalache model checker",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 20,
+      "url": "https://github.com/diffblue/cbmc",
+      "title": "CBMC",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 21,
+      "url": "https://github.com/HypothesisWorks/hypothesis",
+      "title": "Hypothesis",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 22,
+      "url": "https://github.com/google/atheris",
+      "title": "Atheris",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 23,
+      "url": "https://www.iso.org/es/contents/data/standard/07/74/77490.html",
+      "title": "ISO 21448:2022 catalogue",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 24,
+      "url": "https://psas.scripts.mit.edu/home/books-and-handbooks",
+      "title": "MIT STPA handbook",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 25,
+      "url": "https://scsc.uk/gsn",
+      "title": "SCSC Goal Structuring Notation",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 26,
+      "url": "https://www.omg.org/spec/SACM",
+      "title": "OMG SACM 2.3",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 27,
+      "url": "https://zenodo.org/api/records/4578539",
+      "title": "Successful and failed placement robot dataset",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 28,
+      "url": "https://zenodo.org/api/records/12665499",
+      "title": "IMAD-DS",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 29,
+      "url": "https://zenodo.org/api/records/14142968",
+      "title": "RoHuCAD",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 30,
+      "url": "https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset",
+      "title": "RoboFAC dataset card",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 31,
+      "url": "https://droid-dataset.github.io/droid/the-droid-dataset",
+      "title": "DROID dataset docs",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 32,
+      "url": "https://rh20t.github.io",
+      "title": "RH20T dataset",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 33,
+      "url": "https://rail-berkeley.github.io/bridgedata",
+      "title": "BridgeData V2",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 34,
+      "url": "https://github.com/google-deepmind/open_x_embodiment",
+      "title": "Open X-Embodiment",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 35,
+      "url": "https://huggingface.co/docs/hub/main/en/spaces-overview",
+      "title": "Hugging Face Spaces overview",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 36,
+      "url": "https://huggingface.co/docs/hub/main/datasets-cards",
+      "title": "Hugging Face dataset cards",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 37,
+      "url": "https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations",
+      "title": "GitHub artifact attestations",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 38,
+      "url": "https://slsa.dev/spec/v1.1/levels",
+      "title": "SLSA v1.1 levels",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 39,
+      "url": "https://reproducible-builds.org",
+      "title": "Reproducible Builds",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 40,
+      "url": "https://cyclonedx.org/specification/overview",
+      "title": "CycloneDX specification",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 41,
+      "url": "https://github.com/ossf/scorecard",
+      "title": "OpenSSF Scorecard",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 42,
+      "url": "https://github.com/huggingface/lerobot",
+      "title": "Hugging Face LeRobot",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 43,
+      "url": "https://github.com/foxglove/mcap",
+      "title": "MCAP",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 44,
+      "url": "https://github.com/Hebbian-Robotics/hflow",
+      "title": "HFlow",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 45,
+      "url": "https://github.com/schemathesis/schemathesis",
+      "title": "Schemathesis",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 46,
+      "url": "https://github.com/isaac-sim/IsaacLab",
+      "title": "Isaac Lab",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 47,
+      "url": "https://github.com/polymathrobotics/replay_testing",
+      "title": "Polymath ROS replay testing",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 48,
+      "url": "https://github.com/google-deepmind/mujoco",
+      "title": "MuJoCo",
+      "accessed": "2026-09-02"
+    },
+    {
+      "id": 49,
+      "url": "https://github.com/cyberbotics/webots",
+      "title": "Webots",
+      "accessed": "2026-09-02"
+    }
+  ]
+}

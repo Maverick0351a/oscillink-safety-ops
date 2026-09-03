@@ -6,13 +6,21 @@ deployment, DNS edit, or announcement.
 
 ## Public scope and claims
 
+- [ ] The approved safety and risk-mitigation supervisor headline is the first README description and
+      matches package and release metadata.
 - [ ] Category, hero, supporting statement, and audience order remain owner-approved.
+- [ ] Runtime supervision is marked planned until release-bound runtime code and tests exist.
+- [ ] Current evidence-plane capability is not presented as runtime intervention behavior.
+- [ ] Assurance status is linked from the first public screen and detailed in the dedicated
+      assurance document rather than used as the headline.
 - [ ] Directions outside the approved public category are absent from repository files, metadata,
       visuals, navigation, social cards, release notes, website routes, and outreach.
 - [ ] Implemented, in-validation, and not-claimed states match executable evidence.
 - [ ] Compliance evidence is not described as a compliance determination.
 - [ ] Tests and synthetic demonstrations are not described as practitioner, legal, operational,
       customer, safety, or production validation.
+- [ ] Synthetic, simulation, replay, shadow, and maintainer-run results are not described as field
+      results or incident-prevention evidence.
 - [ ] No certification seal, approval mark, generic robot imagery, or misleading dashboard is used.
 
 ## Source, data, privacy, and rights
@@ -22,6 +30,8 @@ deployment, DNS edit, or announcement.
       production export, runtime database, credential, or private prompt is tracked.
 - [ ] Hidden evaluation prompts, expected answers, and protected labels are absent.
 - [ ] Licensed standards remain metadata-only unless lawful access and processing rights are recorded.
+- [ ] Runtime-supervisor research reports and citation ledgers contain no credentials, absolute user
+      paths, private data, or licensed normative standards text.
 - [ ] Third-party notices and license metadata have been reviewed.
 - [ ] No analytics, form, or contact-data collection exists without approved privacy, retention,
       access, deletion, and incident-response terms.
@@ -44,6 +54,8 @@ deployment, DNS edit, or announcement.
 - [ ] Architecture and packet visuals are deterministic, accessible, visually inspected, and free of
       private, customer, and licensed content.
 - [ ] Every quickstart command has been exercised from committed synthetic fixtures.
+- [ ] No public package, demonstration, or documentation contains a real machine-control path,
+      controller credential/address, live ROS graph, remote reset, or reverse command callback.
 - [ ] Repository description, topics, homepage, Issues, and Discussions settings are owner-approved.
 - [ ] A tested private vulnerability-reporting route exists.
 - [ ] Dependency alerts, security updates, secret scanning, and push protection are enabled where

@@ -2,9 +2,31 @@
 
 ## Goal
 
-Validate and build the smallest governed safety-evidence product that physical-intelligence and
-industrial-operations teams will run on real local documents and tasks without granting it
-operational authority.
+Build and publicly demonstrate the first credible Oscillink Safety Ops alpha as an independent
+safety and risk-mitigation supervisor for AI-controlled industrial equipment while preserving the
+existing governed evidence plane and forbidding real machine control.
+
+## Approved public direction
+
+The production AI runs the machine. Oscillink independently monitors whether commanded and observed
+behavior remain within the approved operating envelope and requests a protective response when they
+do not.
+
+Batch 1 changes public scope, research, and claims only. Runtime code is not implemented in this
+batch. The current package remains exact-byte evidence, review lineage, and offline evaluation. Later
+batches may add only deterministic replay, simulation, shadow-mode supervision, and local one-way
+simulated requests before any separate real-integration decision.
+
+Execution order is fail-closed:
+
+1. normalize public scope, claims, assurance status, and runtime-safety research;
+2. establish the hazard, lifecycle, requirements, function allocation, and traceability;
+3. implement strict runtime contracts and immutable configuration;
+4. implement deterministic correlation, policy, latch, recovery, and persistence;
+5. add closed replay, adversarial tests, property/fuzz evidence, and formal analysis;
+6. freeze a synthetic benchmark and static safety-manager demo;
+7. verify the exact private candidate locally, on Buildbox, and in hosted CI; and
+8. publish only after the separate public-release gates and explicit approval.
 
 ## Stage 0 — Problem validation
 
@@ -187,7 +209,7 @@ are recorded in [`docs/milestones/private-pilot-gates.md`](milestones/private-pi
 
 ## Deferred
 
-- public launch;
+- public visibility until the complete release gates pass;
 - new jurisdictions or broader regulatory-publication parsers;
 - additional OCR providers or generic document extraction;
 - new facility, historian, CMMS, robotics-runtime, or near-real-time connectors;
@@ -196,12 +218,16 @@ are recorded in [`docs/milestones/private-pilot-gates.md`](milestones/private-pi
 - work-instruction authoring;
 - legal/compliance certification;
 - employee authorization decisions;
-- direct field-device, fire-panel, safety-controller, or robot-runtime integration;
+- live field-device, fire-panel, safety-controller, or robot-runtime integration;
 - replacement or duplication of listed/certified alarms and protective functions;
 - alarm acknowledgement, reset, silence, inhibit, bypass, setpoint, or calibration writes;
 - policy training/promotion;
 - permits, lockout control, PLC/interlock/E-stop integration; and
 - any actuator command.
+
+Closed-file robot-cell replay, deterministic simulated intervention requests, and a static public
+demonstrator are approved for later batches. They remain future work and must not be represented as
+field, production, certification, or incident-prevention evidence.
 
 ## Current maturation state
 

@@ -1,12 +1,19 @@
 from __future__ import annotations
 
 import importlib
+import json
+import re
 import tomllib
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+APPROVED_HEADLINE = (
+    "Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for "
+    "AI-controlled industrial equipment, connecting machine intent, observed behavior, and "
+    "safety-manager oversight."
+)
 
 
 def test_repository_surface_reports_missing_required_file(tmp_path: Path) -> None:
@@ -95,3 +102,161 @@ def test_pytest_dev_dependency_excludes_vulnerable_versions() -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
 
     assert "pytest>=9.0.3,<10" in project["dependency-groups"]["dev"]
+
+
+def test_public_positioning_uses_approved_headline_and_dedicated_assurance_status() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    assurance_path = ROOT / "docs" / "assurance-status.md"
+
+    first_prose_line = next(
+        line for line in readme.splitlines() if line and not line.startswith("#")
+    )
+    assert first_prose_line == APPROVED_HEADLINE
+    assert project["project"]["description"] == APPROVED_HEADLINE
+    assert assurance_path.is_file()
+    assurance = assurance_path.read_text(encoding="utf-8")
+    assert "Current runtime-supervisor status: planned, not implemented" in assurance
+    assert "No real machine control" in assurance
+    assert "[Assurance status and limitations](docs/assurance-status.md)" in readme
+
+
+def test_public_docs_distinguish_current_evidence_from_planned_supervision() -> None:
+    required_markers = {
+        "AGENTS.md": (
+            "simulated, replay, and shadow supervision",
+            "Real machinery control remains forbidden",
+        ),
+        "SECURITY.md": ("planned runtime supervisor", "No real machine control"),
+        "docs/product-boundary.md": ("## Current implementation", "## Planned supervisor"),
+        "docs/technical-overview.md": ("## Current evidence plane", "## Planned runtime plane"),
+        "docs/execution-plan.md": (
+            "## Approved public direction",
+            "Runtime code is not implemented",
+        ),
+        "docs/publication-checklist.md": ("Runtime supervision is marked planned",),
+        "docs/release-process.md": ("runtime supervisor is planned, not implemented",),
+        "docs/releases/v0.1.0-alpha.1.md": ("runtime supervisor is not included",),
+    }
+
+    for relative, markers in required_markers.items():
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        for marker in markers:
+            assert marker in text, f"missing public-boundary marker in {relative}: {marker}"
+
+
+def test_public_claims_do_not_overstate_oscillink_assurance_or_results() -> None:
+    public_claim_files = (
+        "README.md",
+        "SECURITY.md",
+        "docs/assurance-status.md",
+        "docs/product-boundary.md",
+        "docs/technical-overview.md",
+        "docs/execution-plan.md",
+        "docs/publication-checklist.md",
+        "docs/release-process.md",
+        "docs/releases/v0.1.0-alpha.1.md",
+    )
+    forbidden_claims = (
+        "Oscillink is certified",
+        "Oscillink Safety Ops is safety-rated",
+        "Oscillink achieves PL",
+        "Oscillink achieves SIL",
+        "field-proven",
+        "production-ready",
+        "controls real equipment",
+        "commands real machinery",
+    )
+
+    for relative in public_claim_files:
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        for claim in forbidden_claims:
+            assert claim not in text, f"unsupported public claim in {relative}: {claim}"
+
+
+def test_claim_validator_rejects_unimplemented_runtime_intervention_claim() -> None:
+    module = importlib.import_module("scripts.verify_repository_surface")
+
+    assert hasattr(module, "validate_public_claim_text")
+    errors = module.validate_public_claim_text(
+        "README.md",
+        APPROVED_HEADLINE
+        + "\n\nOscillink currently emits protective-stop requests for industrial equipment.\n",
+    )
+
+    assert errors == ("unimplemented runtime intervention presented as current in README.md",)
+
+
+def test_claim_validator_rejects_unsupported_certification_claim() -> None:
+    validate = importlib.import_module(
+        "scripts.verify_repository_surface"
+    ).validate_public_claim_text
+
+    errors = validate(
+        "README.md",
+        APPROVED_HEADLINE + "\n\nOscillink Safety Ops is certified to SIL 3.\n",
+    )
+
+    assert errors == ("unsupported certification or PL/SIL claim in README.md",)
+
+
+def test_claim_validator_rejects_synthetic_results_presented_as_field_results() -> None:
+    validate = importlib.import_module(
+        "scripts.verify_repository_surface"
+    ).validate_public_claim_text
+
+    errors = validate(
+        "README.md",
+        "The synthetic benchmark's field results demonstrate incident prevention.\n",
+    )
+
+    assert errors == ("synthetic or simulation result presented as field evidence in README.md",)
+
+
+def test_repository_surface_runs_public_claim_validation(tmp_path: Path) -> None:
+    validate = importlib.import_module(
+        "scripts.verify_repository_surface"
+    ).validate_repository_surface
+    (tmp_path / "README.md").write_text(
+        "Oscillink Safety Ops is certified to SIL 3.\n",
+        encoding="utf-8",
+    )
+
+    errors = validate(tmp_path)
+
+    assert "unsupported certification or PL/SIL claim in README.md" in errors
+
+
+def test_runtime_supervisor_research_corpus_is_complete_and_ledger_bound() -> None:
+    corpus = ROOT / "docs" / "research" / "runtime-supervisor"
+    expected_reports = {
+        "standards-path-2026-09-02.md": None,
+        "hazards-incidents-2026-09-02.md": None,
+        "community-voice-2026-09-02.md": "community-voice-ledger.json",
+        "competitor-map-2026-09-02.md": "competitor-map-ledger.json",
+        "public-demo-strategy-2026-09-02.md": "public-demo-strategy-ledger.json",
+    }
+
+    assert (corpus / "README.md").is_file()
+    assert {path.name for path in corpus.glob("*.md") if path.name != "README.md"} == set(
+        expected_reports
+    )
+    for report_name, ledger_name in expected_reports.items():
+        report = (corpus / report_name).read_text(encoding="utf-8")
+        assert "C:\\Users\\" not in report
+        assert "C:/Users/" not in report
+        assert "\r" not in report
+        assert "## Sources" in report
+        if ledger_name is None:
+            continue
+        ledger = json.loads((corpus / "citations" / ledger_name).read_text(encoding="utf-8"))
+        sources = {source["id"]: source["url"] for source in ledger["sources"]}
+        cited_ids = {int(value) for value in re.findall(r"\[(\d+)\]", report)}
+        listed_sources = {
+            int(source_id): url
+            for source_id, url in re.findall(
+                r"^\[(\d+)\]\s+(https?://\S+?)(?:\s+—|\s*$)", report, re.MULTILINE
+            )
+        }
+        assert cited_ids == set(sources)
+        assert listed_sources == sources

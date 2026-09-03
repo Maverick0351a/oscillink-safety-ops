@@ -1,0 +1,425 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://mall.industry.siemens.com/mall/en/WW/Catalog/Product/6ES7526-1BH00-0AB0",
+      "title": "Product Details - Industry Mall",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "SIMATIC S7-1500, F digital input module, F-DI 16x 24 V DC PROFIsafe; 35 mm width; up to PL E (ISO 13849-1)/ SIL 3 (IEC 61508)",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://www.pilz.com/en-US/company/news/articles/243516",
+      "title": "UL certification for the safe small controller PNOZmulti 2 from Pilz",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "the configurable safety controller PNOZmulti 2 has received UL listing in the “Programmable Safety Controllers” category.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/in/1756-in048_-en-p.pdf",
+      "title": "GuardLogix 5580 Controllers Installation Instructions",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Type-approved and certified for use in safety applications up to and including SIL 3 per IEC 61508.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://www.sick.com/media/pdf/8/78/478/dataSheet_FX3-CPU130002_1043784_en.pdf",
+      "title": "Flexi Soft FX3-CPU130002, Data sheet",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Safety integrity level SIL 3 (IEC 61508) Category Category 4 (EN ISO 13849) Performance level PL e (EN ISO 13849)",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://www.sick.com/ag/en/products/safety/safety-laser-scanners/microscan3/c/g295657",
+      "title": "SICK | Sensor Intelligence",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Safety levelType 3, PL d, SIL2, SILCL2",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://library.e.abb.com/public/123011dc75114efe94fdb93940bff4b3/Declaration_of_Conformity_Pluto_%28EN%29_2022_revB.pdf",
+      "title": "Declaration of Conformity",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Programmable electronic safety system, Safety PLC system Pluto version A20, B20, S20, D20, B22, D45, B46, S46, AS-i, B42 AS-i, O2",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "url": "https://www.abb.com/global/en/areas/robotics/products/controllers/safemove",
+      "title": "SafeMove | ABB",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "SafeMove safeguards operators by replacing physical barriers like fences with virtual barriers such as laser scanners that ensure that a moving robot will never collide with a human because the robot will stop before the collision happens.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://www.keyence.com/products/safety/safety-controller/gc/models/gc-1000",
+      "title": "Main controller Standard type - GC-1000",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "IEC 61508, EN 61508 SIL3 IEC62061 SIL CL3 ISO/EN13849-1:2015 Cat. 4, PL e, UL1998",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "url": "https://www.beckhoff.com/en-us/products/automation/twinsafe/twinsafe-hardware/el6930.html",
+      "title": "EtherCAT Terminal communication interface, TwinSAFE Logic",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "The EL6930 TwinSAFE component is a dedicated safety controller.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "url": "https://www.exida.com/2025/FRT_22-10-010_C002_V1R3_Certificate_EPC_SIL3.pdf",
+      "title": "61508 Cert Template",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "An EPC handles emergency stop requests - based on how it is configured by the customer (using FORT Manager), can act as a transmitter/controller (i.e., reads and transmits emergency stop requests) or as a receiver (i.e., receives and acts on emergency stop requests).",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "url": "https://inxpect.com/en/products/lbk-system",
+      "title": "LBK Sytem | Inxpect",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "providing a secure signal that can slow down or stop the machine.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "url": "https://ir.symbotic.com/news-releases/news-release-details/symbotic-acquires-veo-robotics-enhance-efficiency-and-safety",
+      "title": "Symbotic Acquires Veo Robotics to Enhance Efficiency and Safety Innovation | Symbotic Inc.",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "The FreeMove system’s patented sensors and software monitor collaborative robot workcells to dynamically anticipate the future position of humans and objects within the robot’s environment and autonomously restrict or resume motion",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "url": "https://qnx.software/en/industries/robotics",
+      "title": "Robotics Systems Software | QNX",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "The QNX OS for Safety and QNX Hypervisor for Safety are certified to IEC 61508 SIL 3.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "url": "https://www.apex.ai/apexgrace",
+      "title": "Apex.Grace",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Certified to ISO 26262 ASIL D, the highest automotive safety level.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "url": "https://www.trustmotion.com/newsroom/motionwise-completes-functional-safety-assessment",
+      "title": "MotionWise completes functional safety assessment",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "The latest functional safety assessment, according to ISO 26262 ASIL D, supports MotionWise and proves that the safety life cycle has been completed.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "url": "https://docs.nvidia.com/halos-outside-in/latest/release-notes.html",
+      "title": "NVIDIA Halos Outside-In Safety Blueprint",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "This early access (EA) release builds on 1.2.1 and includes major safety-path, perception-trust, event-ingestion, packaging, and deployment updates.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "url": "https://docs.nvidia.com/halos-outside-in/latest/integration/components/ai-monitor.html",
+      "title": "Safety AI Monitor (SAIM) — NVIDIA Halos Outside-In Safety Blueprint",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "It independently observes the same camera streams consumed by the perception pipeline (SIPP) and reports per-sensor trust verdicts to SEI",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "url": "https://docs.nvidia.com/halos-outside-in/latest/integration/components/decision-maker.html",
+      "title": "Safety Decision Maker (SDM) — NVIDIA Halos Outside-In Safety Blueprint",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "SDM receives safety events identified and fused by SEI, then produces actionable control signals.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "url": "https://www.ecr.ai/pwc-1-1-7",
+      "title": "Data-Driven Safety Tools & Operations | DevSafeOps | Edge Case",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Guardian serves as a real-time safety and operational intelligence layer within the Torc ecosystem.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "url": "https://foretellix.com/technology",
+      "title": "Technology - Foretellix",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Foretify provides a unified V&V flow that combines real-world test drives and virtual simulation in one platform.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "url": "https://resilienx.com",
+      "title": "Home - ResilienX",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "FRAIHMWORK monitors health, integrity, and performance, detects off nominal conditions, triggers mitigations, and manages maintenance workflows.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "url": "https://www.saphira.ai",
+      "title": "AI agents for engineering complex physical systems",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Investigate failures, reason across system evidence, and turn risks into traceable requirements and validation plans.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "url": "https://fennec-engineering.com/solutions/platform",
+      "title": "ASAP is the System of Record for Functional Safety",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Fennec's specified ASAP tools are qualified by TÜV Rheinland as Tool Class 2 (T2) offline support tools under IEC 61508-3:2010, Clause 7.4.4.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "url": "https://genauto.ai",
+      "title": "General Autonomy — AI-Powered Safety Engineering for Autonomous Systems",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Every output is structured, traceable, and reviewed by your engineers.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "url": "https://doi.org/10.1109/37.710880",
+      "title": "Dynamic control system upgrade using the Simplex architecture",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "The fundamental properties of the combined system are guaranteed by the \"simple\" components.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "url": "https://ntrs.nasa.gov/citations/20240007986",
+      "title": "A Verification Framework for Runtime Assurance of Autonomous UAS",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Runtime Assurance (RTA) is a design-time architecture for safety-critical systems where an internal monitor acts upon detecting a violation of a property.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "url": "https://store.astm.org/f3269-21.html",
+      "title": "Standard Practice for Methods to Safely Bound Behavior of Aircraft Systems Containing Complex Functions Using Run-Time Assurance",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "StandardActiveLast Updated: Nov 19, 2021",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "url": "https://arxiv.org/abs/1808.07921",
+      "title": "SOTER: A Runtime Assurance Framework for Programming Safe Robotics Systems",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "SOTER provides language primitives to declaratively construct a RTA module consisting of an advanced, high-performance controller (uncertified), a safe, lower-performance controller (certified), and the desired safety specification.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "url": "https://arxiv.org/abs/2102.09419",
+      "title": "ReSonAte: A Runtime Risk Assessment Framework for Autonomous Systems",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "We introduce the ReSonAte dynamic risk estimation framework for autonomous systems.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "url": "https://arxiv.org/abs/2209.14030",
+      "title": "Monitoring ROS2: from Requirements to Autonomous Robots",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "publish the results of any violations.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "url": "https://arxiv.org/abs/2501.18608",
+      "title": "RTAMT – Runtime Robustness Monitors with Application to CPS and Robotics",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "we present Real-Time Analog Monitoring Tool (RTAMT), a tool for quantitative monitoring of Signal Temporal Logic (STL) specifications.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "url": "https://arxiv.org/abs/2604.27728",
+      "title": "Connected Dependability Cage: Run-Time Function and Anomaly Monitoring for the Development and Operation of Safe Automated Vehicles",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "This framework integrates two complementary monitoring mechanisms: a Function Monitor that oversees multiple heterogeneous AI-based perception pipelines and detects inconsistencies through a voting mechanism, and an Anomaly Monitor that evaluates the reliability of AI perception by detecting unknown or novel objects in scenes that may be excluded from the training dataset.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "url": "https://arxiv.org/abs/2603.26997",
+      "title": "ROSClaw: An OpenClaw ROS 2 Framework for Agentic Robot Control and Interaction",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "pre-execution action validation within a configurable safety envelope",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "url": "https://arxiv.org/abs/2608.28300",
+      "title": "MaCoPlanner: LLM-Assisted Manual-Compiled Task Planning with Proactive Safety Verification for Robotic Industrial Panel Operation",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "Before actuation, candidate plans are symbolically rolled out and checked against procedural and state-transition constraints; detected violations are localized and returned for targeted repair, while unresolved plans are rejected.",
+          "added": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "url": "https://arxiv.org/abs/2607.23532",
+      "title": "Mission-Level Runtime Assurance for LLM-Assisted ISR Swarms over a Verification-Aware Fabric",
+      "accessed": "2026-09-02",
+      "quotes": [
+        {
+          "text": "unsupported negative verdicts are downgraded to an explicit unknown rather than reported as mission-wide all-clears.",
+          "added": "2026-09-02"
+        }
+      ]
+    }
+  ]
+}

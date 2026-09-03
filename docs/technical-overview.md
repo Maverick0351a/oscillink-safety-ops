@@ -1,8 +1,18 @@
 # Technical overview
 
-Oscillink Safety Ops is a local, read-only evidence sidecar for physical-intelligence work. It binds exact source identity, external review decisions, explicit unresolved states, and offline evaluation findings into inspectable artifacts. It does not make compliance decisions or control equipment.
+Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled
+industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight.
+
+The current package provides the governed evidence and offline-evaluation plane. The deterministic
+runtime supervisor is planned and is not implemented in this batch.
 
 ![Governed evidence architecture](assets/oscillink-safety-ops-architecture.svg)
+
+## Current evidence plane
+
+The implemented plane binds exact source identity, external review decisions, explicit unresolved
+states, and offline evaluation findings into inspectable artifacts. It does not make compliance
+decisions, emit intervention requests, or control equipment.
 
 ## Implemented contract surface
 
@@ -100,6 +110,30 @@ Safety Ops keeps source bytes, candidate extraction, normalization, review decis
 
 The package currently exposes Python contracts and an offline CLI. It has no hosted service, control interface, permit workflow, or equipment integration.
 
+## Planned runtime plane
+
+The planned runtime plane is a separate package and state boundary. Its first target is a closed-file
+replay of a simulated fenced robot cell:
+
+```text
+untrusted production-AI intent -----\
+independent occupancy observation ----> deterministic supervisor ---> local simulated request
+independent machine observation -----/             |
+immutable reviewed configuration -----------------+---> incident/recovery evidence
+```
+
+The planned supervisor will correlate command intent with observed occupancy and machine state,
+represent missing/stale/contradictory inputs explicitly, and latch a simulated inhibit or
+protective-stop request. Production AI will have no configuration, policy, reset, evidence, clock,
+identity, credential, or administration path.
+
+The initial request boundary is one-way and local: an in-memory fixture or closed output file only.
+There is no live ROS graph, network controller, PLC writer, machine credential, remote reset, reverse
+callback, or real final element. External established safety controls remain authoritative.
+
+Current evidence-plane schemas remain evidence contracts. They do not gain runtime authority merely
+because the runtime plane is planned alongside them.
+
 ## Schemas and reproducibility
 
 Generated JSON Schemas live in [`schemas/`](../schemas/). `scripts/verify.py` checks schema drift, fixtures, formatting, Ruff, strict mypy, package builds, and the full test suite.
@@ -109,6 +143,7 @@ The current local maturation commits have been verified on Windows and an indepe
 ## Further reading
 
 - [Product and authority boundary](product-boundary.md)
+- [Assurance status and limitations](assurance-status.md)
 - [Synthetic demonstration](synthetic-demo.md)
 - [Execution plan](execution-plan.md)
 - [Hidden evaluation protocol](hidden-evaluation-protocol.md)

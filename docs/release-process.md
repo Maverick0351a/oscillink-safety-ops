@@ -3,6 +3,11 @@
 Oscillink Safety Ops has no published release. This process is a fail-closed candidate procedure; it
 does not authorize a push, tag, release, visibility change, deployment, or announcement.
 
+The approved product direction is independent safety and risk-mitigation supervision for
+AI-controlled industrial equipment. For the current `0.1.0a1` candidate, the runtime supervisor is
+planned, not implemented; release artifacts must describe only the evidence and offline-evaluation
+behavior actually present.
+
 ## Release identity
 
 A release candidate must use one version across:
@@ -28,6 +33,10 @@ separate promotion approval.
 3. Confirm all included fixtures are synthetic or permissively licensed and reproducible.
 4. Confirm licensed standards remain metadata-only unless documented rights permit more.
 5. Confirm private evaluation prompts, expected answers, customer data, and local artifacts are absent.
+6. Confirm every runtime claim is marked implemented or planned and every synthetic/simulation result
+   is visibly distinguished from field evidence.
+7. Confirm no live controller, PLC, robot, machine, network-control, remote-reset, or reverse command
+   path exists in the candidate.
 
 ### 2. Audit the complete reachable history
 
@@ -120,12 +129,15 @@ Each release note must state:
 
 - exact tag and full commit SHA;
 - implemented evidence contracts;
+- implemented runtime behavior, or that the runtime supervisor is planned, not implemented;
+- synthetic, simulation, replay, shadow, and field-evidence status;
 - deterministic local, Buildbox, and hosted-CI results;
 - artifact checksums;
 - known unsupported inputs and parser shapes;
 - rights and privacy limits;
 - practitioner, legal, engineering, and OT-owner review that has not occurred; and
-- the fixed no-compliance-conclusion and no-operational-authority boundary.
+- the fixed no-compliance-conclusion and no-operational-authority boundary; and
+- the no-real-machine-control boundary and any local simulated request boundary.
 
 Do not translate tests, synthetic demonstrations, internal review, stars, downloads, or CI into claims
 of safe operation, compliance, customer outcomes, practitioner validation, or production readiness.
