@@ -2,7 +2,7 @@
 title: Oscillink Safety Ops Synthetic Monitor
 emoji: 🛡️
 colorFrom: indigo
-colorTo: cyan
+colorTo: blue
 sdk: static
 app_file: index.html
 pinned: false

@@ -134,6 +134,15 @@ def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
             assert phrase not in text, f"stale pre-publication copy in {path}: {phrase}"
 
 
+def test_space_metadata_is_hugging_face_static_compatible() -> None:
+    card = (ROOT / "spaces" / "oscillink-safety-ops-demo" / "README.md").read_text(encoding="utf-8")
+    assert card.startswith("---\n")
+    assert "sdk: static\n" in card
+    assert "app_file: index.html\n" in card
+    assert "colorFrom: indigo\n" in card
+    assert "colorTo: blue\n" in card
+
+
 def test_pytest_dev_dependency_excludes_vulnerable_versions() -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
 
