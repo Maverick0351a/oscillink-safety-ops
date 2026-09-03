@@ -76,6 +76,7 @@ def test_workflows_have_concurrency_and_no_secret_or_deploy_surface() -> None:
 def test_verify_has_locked_windows_and_ubuntu_lanes_and_both_test_gates() -> None:
     text = _text("verify.yml")
     assert "os: [ubuntu-latest, windows-latest]" in text
+    assert "fetch-depth: 0" in text
     assert "uv sync --locked --dev" in text
     assert "uv run python scripts/verify.py" in text
     assert "uv run python -m pytest -q" in text
@@ -92,6 +93,7 @@ def test_security_has_codeql_and_checksum_verified_gitleaks_history_scan() -> No
     assert "sha256sum -c" in text
     assert "gitleaks git" in text
     assert "--redact" in text
+    assert "upload: never" in text
 
 
 def test_nightly_replays_formal_property_fuzz_and_benchmark_gates() -> None:
