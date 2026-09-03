@@ -84,6 +84,12 @@
       "title": "Operational Authority",
       "type": "string"
     },
+    "output_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Output Authority",
+      "type": "string"
+    },
     "program_id": {
       "anyOf": [
         {

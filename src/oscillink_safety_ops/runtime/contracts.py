@@ -6,7 +6,7 @@ import hashlib
 import json
 import re
 from datetime import datetime
-from typing import Annotated, Any, Literal, Self, TypeVar
+from typing import Annotated, Any, Literal, Self, TypeAlias, TypeVar
 
 from pydantic import (
     AwareDatetime,
@@ -85,6 +85,7 @@ class RuntimeObservation(RuntimeContract):
     authority_state: Literal["untrusted_observation"] = "untrusted_observation"
     configuration_authority: Literal["none"] = "none"
     reset_authority: Literal["none"] = "none"
+    output_authority: Literal["none"] = "none"
     evidence_suppression_authority: Literal["none"] = "none"
     operational_authority: Literal["none"] = "none"
     content_treatment: Literal["untrusted_data"] = "untrusted_data"
@@ -180,9 +181,10 @@ class PhysicalObservation(RuntimeObservation):
 
     source_domain: Literal["independent_physical_observation"] = "independent_physical_observation"
     zone_id: Identifier
-    occupancy: Literal["clear", "present", "unknown", "contradictory"]
+    occupancy: Literal["clear", "present", "entering", "unknown", "contradictory"]
     motion_state: Literal["stopped", "moving", "unknown", "contradictory"]
     speed_mps: FiniteNonNegative | None
+    acceleration_mps2: FiniteNonNegative | None = None
     quality: Literal["good", "degraded", "invalid", "missing", "contradictory"]
     calibration_sha256: Sha256
 
@@ -197,8 +199,10 @@ class PhysicalObservation(RuntimeObservation):
             or self.motion_state in {"unknown", "contradictory"}
         ):
             raise ValueError("good quality contradicts unknown or contradictory physical state")
-        if self.quality in {"missing", "contradictory"} and self.speed_mps is not None:
-            raise ValueError("missing or contradictory quality cannot carry speed_mps")
+        if self.quality in {"missing", "contradictory"} and (
+            self.speed_mps is not None or self.acceleration_mps2 is not None
+        ):
+            raise ValueError("missing or contradictory quality cannot carry motion measurements")
         return self
 
 
@@ -274,6 +278,113 @@ def _validate_hash_tuple(values: tuple[str, ...], *, field_name: str) -> None:
         raise ValueError(f"{field_name} must be sorted")
 
 
+SupervisorStateName: TypeAlias = Literal[
+    "initializing",
+    "monitoring_normal",
+    "monitoring_degraded",
+    "intervention_requested",
+    "intervention_latched",
+    "stopped_unverified",
+    "reset_not_permitted",
+    "reset_ready",
+    "rearm_pending",
+    "recovery_pending",
+]
+
+
+class SupervisorStateRecord(RuntimeContract):
+    """Persistent deterministic intervention and recovery state; never a command."""
+
+    schema_version: Literal[1] = 1
+    state_id: Identifier
+    run_id: Identifier
+    evaluated_at: AwareDatetime
+    supervisor_state: SupervisorStateName
+    latched: StrictBool
+    first_out_reason: Identifier
+    reason_codes: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=64)]
+    configuration_sha256: Sha256
+    input_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1, max_length=256)]
+    active_request_sha256: Sha256 | None = None
+    output_state: Literal[
+        "not_requested",
+        "request_pending",
+        "acknowledged_unverified",
+        "unresolved",
+    ] = "not_requested"
+    reset_sequence: SequenceNumber = 0
+    fresh_start_required: StrictBool = False
+    authority_state: Literal["deterministic_supervisor_state"] = "deterministic_supervisor_state"
+    motion_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+    _parse_evaluated_at = field_validator("evaluated_at", mode="before")(_parse_wire_datetime)
+    _parse_reason_codes = field_validator("reason_codes", mode="before")(_json_array_to_tuple)
+    _parse_input_hashes = field_validator("input_sha256", mode="before")(_json_array_to_tuple)
+
+    @model_validator(mode="after")
+    def validate_state_record(self) -> Self:
+        _validate_hash_tuple(self.input_sha256, field_name="input_sha256")
+        if len(self.reason_codes) != len(set(self.reason_codes)):
+            raise ValueError("duplicate reason_codes")
+        if self.reason_codes != tuple(sorted(self.reason_codes)):
+            raise ValueError("reason_codes must be sorted")
+        if self.first_out_reason not in self.reason_codes:
+            raise ValueError("first_out_reason must be present in reason_codes")
+        nonlatched = {"initializing", "monitoring_normal", "monitoring_degraded"}
+        if (self.supervisor_state not in nonlatched) is not self.latched:
+            raise ValueError("latched flag contradicts supervisor_state")
+        if self.supervisor_state in nonlatched and (
+            self.active_request_sha256 is not None
+            or self.output_state != "not_requested"
+            or self.fresh_start_required
+        ):
+            raise ValueError("nonlatched state cannot retain intervention or recovery state")
+        if self.supervisor_state == "intervention_requested" and (
+            self.active_request_sha256 is not None or self.output_state != "not_requested"
+        ):
+            raise ValueError("intervention_requested cannot predate its action request")
+        if self.supervisor_state == "intervention_latched" and (
+            self.active_request_sha256 is None
+            or self.output_state not in {"request_pending", "unresolved"}
+        ):
+            raise ValueError("intervention_latched requires an unresolved action request")
+        if self.supervisor_state == "stopped_unverified" and (
+            self.active_request_sha256 is None or self.output_state != "acknowledged_unverified"
+        ):
+            raise ValueError("stopped_unverified requires an unverified acknowledgment")
+        if self.supervisor_state == "reset_not_permitted" and self.active_request_sha256 is None:
+            raise ValueError("reset_not_permitted requires an existing intervention request")
+        if self.supervisor_state in {"reset_ready", "rearm_pending", "recovery_pending"} and (
+            self.active_request_sha256 is None or self.output_state != "acknowledged_unverified"
+        ):
+            raise ValueError("recovery state requires an acknowledged intervention request")
+        if self.fresh_start_required and self.supervisor_state != "recovery_pending":
+            raise ValueError("fresh_start_required is only valid while recovery is pending")
+        return self
+
+
+class RecoveryEvent(RuntimeContract):
+    """Exact recovery event from a separate external safety authority."""
+
+    schema_version: Literal[1] = 1
+    event_id: Identifier
+    run_id: Identifier
+    observed_at: AwareDatetime
+    event_kind: Literal["reset", "rearm", "recovery_confirmed", "fresh_start"]
+    actor_domain: Literal["independent_safety_authority"]
+    authorization_state: Literal["externally_authorized"]
+    configuration_sha256: Sha256
+    input_sha256: Sha256
+    configuration_authority: Literal["none"] = "none"
+    output_authority: Literal["none"] = "none"
+    evidence_suppression_authority: Literal["none"] = "none"
+    motion_authority: Literal["none"] = "none"
+    operational_authority: Literal["none"] = "none"
+
+    _parse_observed_at = field_validator("observed_at", mode="before")(_parse_wire_datetime)
+
+
 class SupervisorDecision(RuntimeContract):
     """Deterministic decision record bound to exact configuration and input hashes."""
 
@@ -281,15 +392,9 @@ class SupervisorDecision(RuntimeContract):
     decision_id: Identifier
     run_id: Identifier
     evaluated_at: AwareDatetime
-    supervisor_state: Literal[
-        "initializing",
-        "monitoring_normal",
-        "monitoring_degraded",
-        "intervention_requested",
-        "intervention_latched",
-        "stopped_unverified",
-    ]
+    supervisor_state: SupervisorStateName
     action: Literal["none", "advisory_warning", "inhibit_request", "protective_stop_request"]
+    first_out_reason: Identifier
     reason_codes: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=64)]
     configuration_sha256: Sha256
     input_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1, max_length=256)]
@@ -307,6 +412,8 @@ class SupervisorDecision(RuntimeContract):
             raise ValueError("duplicate reason_codes")
         if tuple(sorted(self.reason_codes)) != self.reason_codes:
             raise ValueError("reason_codes must be sorted")
+        if self.first_out_reason not in self.reason_codes:
+            raise ValueError("first_out_reason must be present in reason_codes")
         return self
 
 

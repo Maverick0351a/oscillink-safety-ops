@@ -172,6 +172,46 @@
       "requirement_ids": ["SR-011"],
       "test_ids": ["TEST-011"],
       "change_impact_id": "CI-011"
+    },
+    {
+      "evidence_id": "EVID-018",
+      "evidence_type": "implemented_correlation_boundary_tests",
+      "path": "tests/runtime/test_correlator.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-001", "SR-003", "SR-004"],
+      "test_ids": ["TEST-001", "TEST-003", "TEST-004"],
+      "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-019",
+      "evidence_type": "implemented_policy_and_supervisor_tests",
+      "path": "tests/runtime/test_supervisor.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-001", "SR-003", "SR-004", "SR-005", "SR-007", "SR-008"],
+      "test_ids": ["TEST-001", "TEST-003", "TEST-004", "TEST-005", "TEST-007", "TEST-008"],
+      "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-020",
+      "evidence_type": "implemented_latch_and_recovery_state_tests",
+      "path": "tests/runtime/test_state_machine.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-002", "SR-007", "SR-010", "SR-011"],
+      "test_ids": ["TEST-002", "TEST-007", "TEST-010", "TEST-011"],
+      "change_impact_id": "CI-002"
+    },
+    {
+      "evidence_id": "EVID-021",
+      "evidence_type": "implemented_latched_state_persistence_tests",
+      "path": "tests/runtime/test_persistence.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-009"],
+      "test_ids": ["TEST-009"],
+      "change_impact_id": "CI-009"
     }
   ],
   "open_target_system_values": {

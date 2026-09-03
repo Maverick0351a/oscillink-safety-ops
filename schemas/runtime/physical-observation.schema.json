@@ -2,6 +2,19 @@
   "additionalProperties": false,
   "description": "Independently sourced represented zone and machine state.",
   "properties": {
+    "acceleration_mps2": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Acceleration Mps2"
+    },
     "authority_state": {
       "const": "untrusted_observation",
       "default": "untrusted_observation",
@@ -62,6 +75,7 @@
       "enum": [
         "clear",
         "present",
+        "entering",
         "unknown",
         "contradictory"
       ],
@@ -72,6 +86,12 @@
       "const": "none",
       "default": "none",
       "title": "Operational Authority",
+      "type": "string"
+    },
+    "output_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Output Authority",
       "type": "string"
     },
     "quality": {

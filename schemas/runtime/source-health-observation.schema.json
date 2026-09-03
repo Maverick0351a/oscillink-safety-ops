@@ -80,6 +80,12 @@
       "title": "Operational Authority",
       "type": "string"
     },
+    "output_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Output Authority",
+      "type": "string"
+    },
     "received_at": {
       "format": "date-time",
       "title": "Received At",

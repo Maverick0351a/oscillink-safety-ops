@@ -19,10 +19,12 @@ from oscillink_safety_ops.runtime import (
     IncidentEvent,
     IncidentTimeline,
     PhysicalObservation,
+    RecoveryEvent,
     RuntimeObservation,
     SourceHealthObservation,
     SupervisorConfiguration,
     SupervisorDecision,
+    SupervisorStateRecord,
     bind_observation_bytes,
 )
 
@@ -121,11 +123,41 @@ def decision_data() -> dict[str, object]:
         "evaluated_at": NOW,
         "supervisor_state": "monitoring_degraded",
         "action": "inhibit_request",
+        "first_out_reason": "source_state_unverifiable",
         "reason_codes": ("source_state_unverifiable",),
         "configuration_sha256": SHA_A,
         "input_sha256": (SHA_B, SHA_C),
         "authority_state": "deterministic_supervisor_record",
         "operational_authority": "simulated_request_only",
+    }
+
+
+def state_data() -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "state_id": "state:001",
+        "run_id": "run:001",
+        "evaluated_at": NOW,
+        "supervisor_state": "initializing",
+        "latched": False,
+        "first_out_reason": "initializing",
+        "reason_codes": ("initializing",),
+        "configuration_sha256": SHA_A,
+        "input_sha256": (SHA_B,),
+    }
+
+
+def recovery_event_data() -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "event_id": "recovery:001",
+        "run_id": "run:001",
+        "observed_at": NOW,
+        "event_kind": "reset",
+        "actor_domain": "independent_safety_authority",
+        "authorization_state": "externally_authorized",
+        "configuration_sha256": SHA_A,
+        "input_sha256": SHA_B,
     }
 
 
@@ -170,6 +202,8 @@ def acknowledgment_data() -> dict[str, object]:
         (SourceHealthObservation, health_data),
         (SupervisorConfiguration, configuration_data),
         (SupervisorDecision, decision_data),
+        (SupervisorStateRecord, state_data),
+        (RecoveryEvent, recovery_event_data),
         (ActionRequest, request_data),
         (ActionAcknowledgment, acknowledgment_data),
     ),
@@ -184,6 +218,33 @@ def test_runtime_contracts_are_strict_frozen_and_reject_extra_fields(
         model.model_validate({**data, "reset": True})
     with pytest.raises(ValidationError):
         setattr(instance, next(iter(data)), "changed")
+
+
+@pytest.mark.parametrize(
+    "changes",
+    (
+        {"active_request_sha256": SHA_C, "output_state": "request_pending"},
+        {"supervisor_state": "intervention_latched", "latched": True},
+        {
+            "supervisor_state": "stopped_unverified",
+            "latched": True,
+            "active_request_sha256": SHA_C,
+            "output_state": "request_pending",
+        },
+        {
+            "supervisor_state": "reset_ready",
+            "latched": True,
+            "active_request_sha256": SHA_C,
+            "output_state": "unresolved",
+        },
+        {"fresh_start_required": True},
+    ),
+)
+def test_supervisor_state_rejects_impossible_request_and_recovery_combinations(
+    changes: dict[str, object],
+) -> None:
+    with pytest.raises(ValidationError):
+        SupervisorStateRecord.model_validate({**state_data(), **changes})
 
 
 @pytest.mark.parametrize("factory", (command_data, physical_data, health_data))
@@ -215,6 +276,7 @@ def test_production_facing_observations_reject_administrative_authority(
     assert instance.authority_state == "untrusted_observation"
     assert instance.configuration_authority == "none"
     assert instance.reset_authority == "none"
+    assert instance.output_authority == "none"
     assert instance.evidence_suppression_authority == "none"
 
 
@@ -430,9 +492,11 @@ def test_runtime_schema_export_is_complete_canonical_and_current() -> None:
         "command-observation.schema.json",
         "incident-timeline.schema.json",
         "physical-observation.schema.json",
+        "recovery-event.schema.json",
         "source-health-observation.schema.json",
         "supervisor-configuration.schema.json",
         "supervisor-decision.schema.json",
+        "supervisor-state-record.schema.json",
     }
     assert set(RUNTIME_SCHEMAS) == expected_names
     root = Path(__file__).resolve().parents[2] / "schemas" / "runtime"
@@ -455,6 +519,7 @@ def test_observation_schemas_fix_untrusted_nonadministrative_authority() -> None
         assert properties["authority_state"]["const"] == "untrusted_observation"
         assert properties["configuration_authority"]["const"] == "none"
         assert properties["reset_authority"]["const"] == "none"
+        assert properties["output_authority"]["const"] == "none"
         assert properties["evidence_suppression_authority"]["const"] == "none"
         assert schema["additionalProperties"] is False
         assert (
@@ -470,6 +535,18 @@ def test_observation_schemas_fix_untrusted_nonadministrative_authority() -> None
             }
             & properties.keys()
         )
+
+
+def test_recovery_schema_excludes_production_ai_and_motion_authority() -> None:
+    from scripts.export_runtime_schemas import RUNTIME_SCHEMAS
+
+    schema = RUNTIME_SCHEMAS["recovery-event.schema.json"]
+    properties = cast(dict[str, dict[str, Any]], schema["properties"])
+    assert properties["actor_domain"]["const"] == "independent_safety_authority"
+    assert properties["motion_authority"]["const"] == "none"
+    assert properties["configuration_authority"]["const"] == "none"
+    assert properties["output_authority"]["const"] == "none"
+    assert properties["evidence_suppression_authority"]["const"] == "none"
 
 
 def test_canonical_verifier_detects_runtime_schema_drift(

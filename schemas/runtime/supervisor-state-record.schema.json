@@ -1,33 +1,29 @@
 {
   "additionalProperties": false,
-  "description": "Deterministic decision record bound to exact configuration and input hashes.",
+  "description": "Persistent deterministic intervention and recovery state; never a command.",
   "properties": {
-    "action": {
-      "enum": [
-        "none",
-        "advisory_warning",
-        "inhibit_request",
-        "protective_stop_request"
+    "active_request_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
       ],
-      "title": "Action",
-      "type": "string"
+      "default": null,
+      "title": "Active Request Sha256"
     },
     "authority_state": {
-      "const": "deterministic_supervisor_record",
-      "default": "deterministic_supervisor_record",
+      "const": "deterministic_supervisor_state",
+      "default": "deterministic_supervisor_state",
       "title": "Authority State",
       "type": "string"
     },
     "configuration_sha256": {
       "pattern": "^sha256:[0-9a-f]{64}$",
       "title": "Configuration Sha256",
-      "type": "string"
-    },
-    "decision_id": {
-      "maxLength": 256,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
-      "title": "Decision Id",
       "type": "string"
     },
     "evaluated_at": {
@@ -42,6 +38,11 @@
       "title": "First Out Reason",
       "type": "string"
     },
+    "fresh_start_required": {
+      "default": false,
+      "title": "Fresh Start Required",
+      "type": "boolean"
+    },
     "input_sha256": {
       "items": {
         "pattern": "^sha256:[0-9a-f]{64}$",
@@ -52,10 +53,31 @@
       "title": "Input Sha256",
       "type": "array"
     },
+    "latched": {
+      "title": "Latched",
+      "type": "boolean"
+    },
+    "motion_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Motion Authority",
+      "type": "string"
+    },
     "operational_authority": {
-      "const": "simulated_request_only",
-      "default": "simulated_request_only",
+      "const": "none",
+      "default": "none",
       "title": "Operational Authority",
+      "type": "string"
+    },
+    "output_state": {
+      "default": "not_requested",
+      "enum": [
+        "not_requested",
+        "request_pending",
+        "acknowledged_unverified",
+        "unresolved"
+      ],
+      "title": "Output State",
       "type": "string"
     },
     "reason_codes": {
@@ -70,6 +92,13 @@
       "title": "Reason Codes",
       "type": "array"
     },
+    "reset_sequence": {
+      "default": 0,
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "title": "Reset Sequence",
+      "type": "integer"
+    },
     "run_id": {
       "maxLength": 256,
       "minLength": 1,
@@ -82,6 +111,13 @@
       "default": 1,
       "title": "Schema Version",
       "type": "integer"
+    },
+    "state_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "State Id",
+      "type": "string"
     },
     "supervisor_state": {
       "enum": [
@@ -101,16 +137,16 @@
     }
   },
   "required": [
-    "decision_id",
+    "state_id",
     "run_id",
     "evaluated_at",
     "supervisor_state",
-    "action",
+    "latched",
     "first_out_reason",
     "reason_codes",
     "configuration_sha256",
     "input_sha256"
   ],
-  "title": "SupervisorDecision",
+  "title": "SupervisorStateRecord",
   "type": "object"
 }

@@ -1,0 +1,103 @@
+{
+  "additionalProperties": false,
+  "description": "Exact recovery event from a separate external safety authority.",
+  "properties": {
+    "actor_domain": {
+      "const": "independent_safety_authority",
+      "title": "Actor Domain",
+      "type": "string"
+    },
+    "authorization_state": {
+      "const": "externally_authorized",
+      "title": "Authorization State",
+      "type": "string"
+    },
+    "configuration_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Configuration Authority",
+      "type": "string"
+    },
+    "configuration_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Configuration Sha256",
+      "type": "string"
+    },
+    "event_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_kind": {
+      "enum": [
+        "reset",
+        "rearm",
+        "recovery_confirmed",
+        "fresh_start"
+      ],
+      "title": "Event Kind",
+      "type": "string"
+    },
+    "evidence_suppression_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Evidence Suppression Authority",
+      "type": "string"
+    },
+    "input_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Sha256",
+      "type": "string"
+    },
+    "motion_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Motion Authority",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "output_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Output Authority",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "event_id",
+    "run_id",
+    "observed_at",
+    "event_kind",
+    "actor_domain",
+    "authorization_state",
+    "configuration_sha256",
+    "input_sha256"
+  ],
+  "title": "RecoveryEvent",
+  "type": "object"
+}

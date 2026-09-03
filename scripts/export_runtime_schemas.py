@@ -11,9 +11,11 @@ from oscillink_safety_ops.runtime.contracts import (
     CommandObservation,
     IncidentTimeline,
     PhysicalObservation,
+    RecoveryEvent,
     SourceHealthObservation,
     SupervisorConfiguration,
     SupervisorDecision,
+    SupervisorStateRecord,
 )
 
 RUNTIME_SCHEMAS: dict[str, dict[str, object]] = {
@@ -22,9 +24,11 @@ RUNTIME_SCHEMAS: dict[str, dict[str, object]] = {
     "command-observation.schema.json": CommandObservation.model_json_schema(),
     "incident-timeline.schema.json": IncidentTimeline.model_json_schema(),
     "physical-observation.schema.json": PhysicalObservation.model_json_schema(),
+    "recovery-event.schema.json": RecoveryEvent.model_json_schema(),
     "source-health-observation.schema.json": SourceHealthObservation.model_json_schema(),
     "supervisor-configuration.schema.json": SupervisorConfiguration.model_json_schema(),
     "supervisor-decision.schema.json": SupervisorDecision.model_json_schema(),
+    "supervisor-state-record.schema.json": SupervisorStateRecord.model_json_schema(),
 }
 
 

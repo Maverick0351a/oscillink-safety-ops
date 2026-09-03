@@ -2,13 +2,12 @@
 
 ## Scope and status
 
-This assurance set applies only to `SCOPE-ROBOT-CELL-001`: a planned closed-file replay of one
-simulated fenced industrial robot cell. The repository now implements strict runtime records,
-exact-byte Ed25519 configuration verification, immutable run binding, and pure freshness/order
-evaluation. It does not yet implement policy evaluation, latching, persistence, request creation,
-or any intervention path. A later output in this scope may only be a local, one-way **simulated
-request** to an external safety-controller fixture. It will not be a machine command and will not
-establish that motion stopped.
+This assurance set applies only to `SCOPE-ROBOT-CELL-001`: a closed-file simulation of one fenced
+industrial robot cell. The repository implements strict runtime records, exact-byte Ed25519
+configuration verification, immutable run binding, freshness/order evaluation, deterministic
+correlation and policy, a persistent intervention/recovery state model, and construction of local
+in-memory **simulated requests**. It does not connect to or control machinery, deliver requests to an
+external controller, or establish that motion stopped.
 
 ## Controlled claims
 
@@ -19,9 +18,9 @@ present in, enters, or cannot be excluded from a configured protected zone. The 
 `HAZ-001` through `HAZ-012` cover the mandatory families and trace to planned requirements,
 controls, allocations, tests, and evidence records.
 
-**Current status:** the lifecycle concept is documented and Batch 3 contract/configuration/time
-boundaries are implemented. Supervisory policy, recovery, output, and target-system behavior remain
-unimplemented.
+**Current status:** the lifecycle concept and deterministic closed-record supervisor are implemented
+through local simulated-request construction and persisted state. Replay campaigns, output
+transport, and target-system behavior remain unimplemented.
 
 ### CLM-002 — Independent decision boundary
 
@@ -30,9 +29,10 @@ it with independently modeled occupancy, motion, source-health, timebase, and co
 observations. Production AI is not allocated configuration, reset, acknowledgment, evidence
 suppression, clock, identity, credential, or policy authority.
 
-**Current status:** the production-input schemas enforce an untrusted-observation-only boundary and
-reject administrative fields. Physical independence and common-cause behavior of any target system
-remain unvalidated.
+**Current status:** production-input schemas enforce an untrusted-observation-only boundary and
+reject administrative fields; deterministic correlation and policy use the independently modeled
+observations. Physical independence and common-cause behavior of any target system remain
+unvalidated.
 
 ### CLM-003 — Conservative simulated response
 
@@ -41,9 +41,9 @@ local simulated inhibit or protective-stop request. Missing acknowledgment or un
 must remain an explicit fault; neither a request nor an acknowledgment is evidence of successful
 physical stopping.
 
-**Current status:** provenance-bearing decision, request, acknowledgment, and incident record
-contracts exist, but no logic creates or delivers a request. Latching and output behavior remain
-planned and unimplemented.
+**Current status:** deterministic logic creates and latches an in-memory simulated request record,
+handles untrusted fixture acknowledgments conservatively, and persists exact-byte state. No logic
+delivers a request or verifies physical stopping.
 
 ### CLM-004 — Recovery separation
 
@@ -51,7 +51,9 @@ The planned state model separates acknowledgment, reset eligibility, reset, rear
 recovery, and a later fresh start. Process restart and production-AI input cannot clear a latch.
 Reset never commands motion.
 
-**Current status:** planned and subject to `TEST-009` and `TEST-010` after runtime implementation.
+**Current status:** the pure state model separates these stages, denies invalid/replayed recovery
+events, preserves latches in content-addressed state, and never creates motion authority. External
+authorization, controller recovery, and target-system validation are not implemented.
 
 ## Claims explicitly not made
 

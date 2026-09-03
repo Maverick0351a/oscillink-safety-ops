@@ -2,10 +2,11 @@
 
 ## Item under consideration
 
-`SCOPE-ROBOT-CELL-001` is the assurance scope for a planned deterministic supervisor evaluated with
-closed files representing one simulated fenced robot cell. This batch creates assurance documents
-only. A later runtime batch may consume replay records and write a local simulated request artifact;
-no machine interface is in scope.
+`SCOPE-ROBOT-CELL-001` is the assurance scope for a deterministic supervisor evaluated with closed
+records representing one simulated fenced robot cell. The implemented runtime validates and
+correlates records, evaluates deterministic policy, maintains persistent latch/recovery state, and
+constructs an in-memory simulated request record. No machine interface or live request transport is
+in scope.
 
 ## Logical flow
 
@@ -17,7 +18,7 @@ INDEPENDENT OBSERVATION DOMAIN
   simulated occupancy, motion, source health, timebase and configuration identity
                          |
                          v
-OSCILLINK DETERMINISTIC LOGIC (planned, not implemented in this batch)
+OSCILLINK DETERMINISTIC LOGIC (implemented for closed records)
   validate -> align -> correlate -> evaluate -> latch -> record
                          |
                          v
@@ -32,10 +33,9 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
 ## Inside the Oscillink scope
 
 - exact replay input identity and provenance;
-- deterministic validation, freshness, ordering, correlation, and policy evaluation as later
-  requirements;
-- a persistent simulated intervention latch and causal incident record as later requirements;
-- construction of a one-way local simulated request;
+- deterministic validation, freshness, ordering, correlation, and policy evaluation;
+- a persistent simulated intervention latch and recovery-state record;
+- in-memory construction of a one-way local simulated request record;
 - visibility of acknowledgment absence, output-path faults, restart, and recovery state; and
 - configuration control, traceability, planned verification, and change impact.
 
@@ -56,9 +56,9 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
 Production-AI records are untrusted observations. They cannot select policy, alter limits, change
 source identities, provide reset authority, acknowledge the simulated request, or suppress evidence.
 The governance plane controls reviewed configuration and evidence but cannot command physical or
-simulated motion. The planned Oscillink output can request an action only; the external safety
-controller and final element remain solely responsible for any physical response in a future target
-system.
+simulated motion. The implemented output is an in-memory simulated request record only; the external
+safety controller and final element remain solely responsible for any physical response in a future
+target system.
 
 A controller acknowledgment, if represented in simulation, means only that a fixture reported
 receipt. It does not prove that a controller is safety-rated, that a final element acted, or that a
