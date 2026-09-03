@@ -100,6 +100,24 @@ def check_runtime_schemas() -> None:
     print("runtime schemas: ok")
 
 
+def check_scenario_manifest() -> None:
+    from scripts.verify_scenario_manifest import verify_scenario_manifest
+
+    errors = verify_scenario_manifest(ROOT / "scenarios" / "robot_cell_v1")
+    if errors:
+        raise SystemExit("\n".join(errors))
+    print("runtime scenario manifest: ok")
+
+
+def check_tla_result() -> None:
+    from scripts.verify_tla import verify_formal_result_binding
+
+    errors = verify_formal_result_binding(ROOT)
+    if errors:
+        raise SystemExit("\n".join(errors))
+    print("formal result binding: ok")
+
+
 def check_repository_surface() -> None:
     from scripts.verify_repository_surface import validate_repository_surface
 
@@ -170,6 +188,8 @@ def main() -> None:
     check_repository_surface()
     check_schemas()
     check_runtime_schemas()
+    check_scenario_manifest()
+    check_tla_result()
     check_osha_catalog()
     check_fixture()
     run("uv", "run", "python", "scripts/verify_traceability.py", pythonpath="")

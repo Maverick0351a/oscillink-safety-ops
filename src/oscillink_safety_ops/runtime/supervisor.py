@@ -92,7 +92,7 @@ def start_supervisor(
     if not (
         configuration.configuration.valid_from
         <= evaluation_time
-        <= configuration.configuration.valid_until
+        < configuration.configuration.valid_until
     ):
         raise ValueError("configuration is outside its validity window at supervisor start")
 
@@ -148,7 +148,7 @@ def evaluate_supervisor(
         candidate.configuration_sha256 != runtime.configuration.configuration_sha256
     )
     active_configuration = runtime.configuration.configuration
-    if not (active_configuration.valid_from <= evaluation_time <= active_configuration.valid_until):
+    if not (active_configuration.valid_from <= evaluation_time < active_configuration.valid_until):
         faults = tuple(sorted({*faults, "configuration_invalid_at_evaluation"}))
     next_freshness = runtime.freshness
     try:

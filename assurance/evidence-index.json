@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "scope_id": "SCOPE-ROBOT-CELL-001",
-  "boundary": "Planned closed-file simulated request only; no machine control, stopping proof, application validation, or certification claim.",
+  "boundary": "Implemented closed-file replay and local simulated report only; no machine control, stopping proof, application validation, or certification claim.",
   "records": [
     {
       "evidence_id": "EVID-001",
@@ -212,6 +212,36 @@
       "requirement_ids": ["SR-009"],
       "test_ids": ["TEST-009"],
       "change_impact_id": "CI-009"
+    },
+    {
+      "evidence_id": "EVID-022",
+      "evidence_type": "synthetic_frozen_replay_corpus",
+      "path": "scenarios/robot_cell_v1/MANIFEST.json",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-001", "SR-003", "SR-005", "SR-006", "SR-008"],
+      "test_ids": ["TEST-001", "TEST-003", "TEST-005", "TEST-006", "TEST-008"],
+      "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-023",
+      "evidence_type": "synthetic_property_fuzz_and_boundary_tests",
+      "path": "tests/runtime/test_property_state_machine.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-002", "SR-005", "SR-006", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
+      "test_ids": ["TEST-002", "TEST-005", "TEST-006", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
+      "change_impact_id": "CI-002"
+    },
+    {
+      "evidence_id": "EVID-024",
+      "evidence_type": "synthetic_abstract_tla_model_check",
+      "path": "assurance/tla/formal-result.json",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-002", "SR-005", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
+      "test_ids": ["TEST-002", "TEST-005", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
+      "change_impact_id": "CI-002"
     }
   ],
   "open_target_system_values": {

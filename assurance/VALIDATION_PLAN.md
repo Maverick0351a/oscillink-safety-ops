@@ -2,11 +2,13 @@
 
 ## Status and interpretation
 
-All tests below apply to `SCOPE-ROBOT-CELL-001`. Batches 3 and 4 implement adversarial unit-test
-portions of `TEST-001` through `TEST-011` for runtime contracts, configuration, provenance,
-freshness/order, correlation, policy, latch/recovery state, in-memory simulated-request creation,
-and state persistence. Full replay campaigns, request delivery, output timeouts, and common-cause
-campaigns remain planned. A passing result demonstrates only deterministic software behavior for
+All tests below apply to `SCOPE-ROBOT-CELL-001`. Batches 3 through 5 implement adversarial unit and
+property-test portions of `TEST-001` through `TEST-011` for runtime contracts, configuration,
+provenance, freshness/order, correlation, policy, latch/recovery state, in-memory simulated-request
+creation, state persistence, deterministic replay, local report publication, and abstract TLA+
+invariants. Four frozen synthetic replay cases cover nominal, zone-entry, stale-source, and
+contradictory-source behavior. Live request delivery, output timeouts, hardware response, and
+common-cause campaigns remain planned. A passing result demonstrates only software behavior for
 the exact tested bytes, configuration, inputs, and platform. It does not validate a real robot cell
 or prove stopping, risk reduction, compliance, or certification.
 
@@ -16,13 +18,15 @@ For each test retain exact source revision, locked dependencies, platform, test 
 test identity, configuration/scenario bytes and SHA-256, initial persisted state, ordered inputs,
 expected output bytes, actual output bytes, state transitions, first-out reason, duration, and full
 pass/fail diagnostics. Failure is retained and never overwritten. `EVID-001` through `EVID-012`
-index the complete planned specifications; `EVID-013` onward index implemented unit-test evidence.
+index the complete planned specifications; `EVID-013` onward index implemented maintainer-run
+software evidence.
 
 ### TEST-001 — Occupied/unknown zone during motion
 
 - **Implemented portion:** present, entering, and unknown occupancy with commanded or measured
   motion produce deterministic conservative policy and a latched in-memory simulated request in
-  `tests/runtime/test_correlator.py`, `test_policy.py`, and `test_supervisor.py`.
+  `tests/runtime/test_correlator.py`, `test_policy.py`, and `test_supervisor.py`. The frozen
+  `zone-entry` replay exercises this path end to end through canonical report generation.
 
 - **Requirement:** `SR-001`; hazard/control: `HAZ-001` / `CTRL-001`.
 - **Stimuli:** commanded motion with occupied zone; entry during measured motion; unknown occupancy;
@@ -69,7 +73,8 @@ index the complete planned specifications; `EVID-013` onward index implemented u
 ### TEST-005 — Missing/stale/frozen/malformed/contradictory sensing
 
 - **Implemented portion:** freshness/source-state rejection plus deterministic fail-closed policy,
-  contributing reasons, and latch outcomes are covered in the Batch 3 and 4 runtime tests.
+  contributing reasons, latch outcomes, hostile replay parsing, and frozen stale/contradictory
+  source reports are covered in the runtime tests and corpus.
 
 - **Requirement:** `SR-005`; hazard/control: `HAZ-005` / `CTRL-005`.
 - **Stimuli:** remove each required source; freeze a value; exceed freshness; inject sequence gap,
@@ -105,7 +110,8 @@ index the complete planned specifications; `EVID-013` onward index implemented u
 
 - **Implemented portion:** exact-byte loading, Ed25519 verification, authority/revision/ceiling checks,
   path confinement, and immutable run binding implemented in `tests/runtime/test_configuration.py`.
-  Mid-run substitution also produces deterministic fail-closed policy and a latch.
+  Mid-run substitution also produces deterministic fail-closed policy and a latch. Replay tests
+  reject forged, changed, expired, wrong-scope, and source-role-substituted artifacts.
 
 - **Requirement:** `SR-008`; hazard/control: `HAZ-008` / `CTRL-008`.
 - **Stimuli:** changed bytes under reused identity, unauthorized/revoked signer, rollback, path escape,
@@ -130,7 +136,8 @@ index the complete planned specifications; `EVID-013` onward index implemented u
 
 - **Implemented portion:** pure transitions deny production-AI authority, invalid stage, unresolved
   prerequisites, and replayed/future events; acknowledgment/reset/rearm/recovery/fresh start remain
-  distinct and never command motion. External authorization is represented, not implemented.
+  distinct and never command motion. Deterministic Hypothesis cases and the abstract TLA+ model check
+  latch/recovery invariants. External authorization is represented, not implemented.
 
 - **Requirement:** `SR-010`; hazard/control: `HAZ-010` / `CTRL-010`.
 - **Stimuli:** reset/rearm from production AI, while occupied, moving, degraded, configuration-changed,

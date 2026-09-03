@@ -5,8 +5,8 @@
 `SCOPE-ROBOT-CELL-001` is the assurance scope for a deterministic supervisor evaluated with closed
 records representing one simulated fenced robot cell. The implemented runtime validates and
 correlates records, evaluates deterministic policy, maintains persistent latch/recovery state, and
-constructs an in-memory simulated request record. No machine interface or live request transport is
-in scope.
+constructs an in-memory simulated request record. Deterministic replay may publish a verified local
+report file. No machine interface or live request transport is in scope.
 
 ## Logical flow
 
@@ -23,7 +23,7 @@ OSCILLINK DETERMINISTIC LOGIC (implemented for closed records)
                          |
                          v
 LOCAL ONE-WAY OUTPUT BOUNDARY
-  simulated request file or in-memory fixture only
+  canonical local replay report or in-memory simulated request only
                          |
                          v
 EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
@@ -36,6 +36,8 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
 - deterministic validation, freshness, ordering, correlation, and policy evaluation;
 - a persistent simulated intervention latch and recovery-state record;
 - in-memory construction of a one-way local simulated request record;
+- deterministic signed-configuration replay and atomic local report publication;
+- frozen synthetic scenarios, property/fuzz regressions, and abstract TLA+ model evidence;
 - visibility of acknowledgment absence, output-path faults, restart, and recovery state; and
 - configuration control, traceability, planned verification, and change impact.
 
@@ -56,9 +58,9 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
 Production-AI records are untrusted observations. They cannot select policy, alter limits, change
 source identities, provide reset authority, acknowledge the simulated request, or suppress evidence.
 The governance plane controls reviewed configuration and evidence but cannot command physical or
-simulated motion. The implemented output is an in-memory simulated request record only; the external
-safety controller and final element remain solely responsible for any physical response in a future
-target system.
+simulated motion. Implemented outputs are an in-memory simulated request record and a canonical local
+report file only; the external safety controller and final element remain solely responsible for any
+physical response in a future target system.
 
 A controller acknowledgment, if represented in simulation, means only that a fixture reported
 receipt. It does not prove that a controller is safety-rated, that a final element acted, or that a

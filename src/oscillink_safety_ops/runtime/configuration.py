@@ -9,7 +9,7 @@ import stat
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from types import MappingProxyType
 from typing import Any, Self
 
@@ -222,7 +222,12 @@ def configuration_signing_bytes(
 def _bounded_regular_file_bytes(relative_path: Path, authority: ConfigurationAuthority) -> bytes:
     if not isinstance(relative_path, Path):
         raise ConfigurationError("configuration path must be a Path")
-    if relative_path.is_absolute() or relative_path.anchor or ".." in relative_path.parts:
+    if (
+        relative_path.is_absolute()
+        or relative_path.anchor
+        or PureWindowsPath(str(relative_path)).drive
+        or ".." in relative_path.parts
+    ):
         raise ConfigurationError("configuration path must be relative and cannot escape its root")
 
     candidate = authority.root.joinpath(relative_path)

@@ -31,6 +31,8 @@ from .regulatory_artifacts import (
     extract_regulatory_section_xml,
     verify_regulatory_artifact,
 )
+from .runtime.outputs import publish_local_output
+from .runtime.replay import replay_closed_files
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -97,11 +99,38 @@ def _parser() -> argparse.ArgumentParser:
     )
     section_compare.add_argument("--annual", type=Path, required=True)
     section_compare.add_argument("--ecfr", type=Path, required=True)
+    runtime = subparsers.add_parser("runtime", help="run deterministic closed-file simulation")
+    runtime_actions = runtime.add_subparsers(dest="runtime_action", required=True)
+    replay = runtime_actions.add_parser("replay", help="replay signed configuration and JSONL")
+    replay.add_argument("--configuration", type=Path, required=True)
+    replay.add_argument("--input", type=Path, required=True)
+    replay.add_argument("--output", type=Path, required=True)
+    replay.add_argument(
+        "--authority",
+        type=Path,
+        help="public authority file (defaults to authority.json beside configuration)",
+    )
     return parser
 
 
 def run(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.subcommand == "runtime":
+        root = Path.cwd()
+        authority_path = args.authority or (args.configuration.parent / "authority.json")
+        runtime_result = replay_closed_files(
+            root=root,
+            configuration=args.configuration,
+            input_path=args.input,
+            authority_path=authority_path,
+        )
+        output_artifact = publish_local_output(
+            runtime_result.canonical_bytes,
+            root=root,
+            relative_path=args.output,
+        )
+        print(json.dumps(asdict(output_artifact), default=str, sort_keys=True))
+        return 0
     if args.subcommand == "episode-evaluate":
         episode_packet = load_safety_evidence_packet(args.packet)
         envelope = load_envelope(args.envelope)
@@ -144,13 +173,13 @@ def run(argv: Sequence[str] | None = None) -> int:
             source_revision=args.source_revision,
             adapter_config_sha256=args.adapter_config_sha256,
         )
-        artifact = store_operational_export(args.input, root=args.store_root)
-        result = {
+        operational_artifact = store_operational_export(args.input, root=args.store_root)
+        operational_result = {
             "schema_version": 1,
             "batch": batch.model_dump(mode="json"),
-            "stored_artifact": asdict(artifact),
+            "stored_artifact": asdict(operational_artifact),
         }
-        print(json.dumps(result, indent=2, sort_keys=True))
+        print(json.dumps(operational_result, indent=2, sort_keys=True))
         return 0
     if args.subcommand == "regulatory":
         if args.regulatory_action == "section-compare":

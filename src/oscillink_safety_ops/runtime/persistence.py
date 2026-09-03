@@ -8,7 +8,7 @@ import os
 import stat
 import tempfile
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any, Literal
 
 from pydantic import ValidationError
@@ -61,7 +61,7 @@ class StateLoadResult:
 def _relative_path(path: Path) -> None:
     if not isinstance(path, Path):
         raise PersistenceError("invalid_path", "state path must be a Path")
-    if path.is_absolute() or path.anchor or ".." in path.parts:
+    if path.is_absolute() or path.anchor or PureWindowsPath(str(path)).drive or ".." in path.parts:
         raise PersistenceError(
             "path_escape", "state path must be relative and cannot escape its root"
         )

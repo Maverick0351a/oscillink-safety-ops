@@ -6,8 +6,9 @@ This assurance set applies only to `SCOPE-ROBOT-CELL-001`: a closed-file simulat
 industrial robot cell. The repository implements strict runtime records, exact-byte Ed25519
 configuration verification, immutable run binding, freshness/order evaluation, deterministic
 correlation and policy, a persistent intervention/recovery state model, and construction of local
-in-memory **simulated requests**. It does not connect to or control machinery, deliver requests to an
-external controller, or establish that motion stopped.
+in-memory **simulated requests**, deterministic closed-file replay, and atomic local report
+publication. It does not connect to or control machinery, deliver requests to an external
+controller, or establish that motion stopped.
 
 ## Controlled claims
 
@@ -19,8 +20,9 @@ present in, enters, or cannot be excluded from a configured protected zone. The 
 controls, allocations, tests, and evidence records.
 
 **Current status:** the lifecycle concept and deterministic closed-record supervisor are implemented
-through local simulated-request construction and persisted state. Replay campaigns, output
-transport, and target-system behavior remain unimplemented.
+through local simulated-request construction, persisted state, four frozen synthetic scenarios,
+property/fuzz tests, and an abstract finite-state TLC check. Live output transport and target-system
+behavior remain unimplemented.
 
 ### CLM-002 — Independent decision boundary
 
@@ -42,8 +44,8 @@ must remain an explicit fault; neither a request nor an acknowledgment is eviden
 physical stopping.
 
 **Current status:** deterministic logic creates and latches an in-memory simulated request record,
-handles untrusted fixture acknowledgments conservatively, and persists exact-byte state. No logic
-delivers a request or verifies physical stopping.
+handles untrusted fixture acknowledgments conservatively, persists exact-byte state, and publishes
+only a local closed-file replay report. No logic delivers a request or verifies physical stopping.
 
 ### CLM-004 — Recovery separation
 
@@ -56,6 +58,10 @@ events, preserves latches in content-addressed state, and never creates motion a
 authorization, controller recovery, and target-system validation are not implemented.
 
 ## Claims explicitly not made
+
+The frozen scenarios, Hypothesis properties, fuzz regressions, and TLA+ result are maintainer-run
+synthetic software evidence. They do not establish refinement to the Python implementation or target
+system behavior.
 
 This set does not claim machine control, incident prevention, safe operation, compliance,
 certification, field effectiveness, a safety-rated component, successful stopping, or approval to
