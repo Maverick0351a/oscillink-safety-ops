@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "scope_id": "SCOPE-ROBOT-CELL-001",
-  "boundary": "Implemented closed-file replay and local simulated report only; no machine control, stopping proof, application validation, or certification claim.",
+  "boundary": "Implemented closed-file replay, exact-byte synthetic benchmark, and generated read-only static monitor only; no machine control, stopping proof, application validation, or certification claim.",
   "records": [
     {
       "evidence_id": "EVID-001",
@@ -242,6 +242,26 @@
       "requirement_ids": ["SR-002", "SR-005", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
       "test_ids": ["TEST-002", "TEST-005", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
       "change_impact_id": "CI-002"
+    },
+    {
+      "evidence_id": "EVID-025",
+      "evidence_type": "synthetic_exact_byte_benchmark",
+      "path": "benchmark/robot_cell_v1/benchmark-manifest.json",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-001", "SR-002", "SR-003", "SR-004", "SR-005", "SR-006", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
+      "test_ids": ["TEST-001", "TEST-002", "TEST-003", "TEST-004", "TEST-005", "TEST-006", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
+      "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-026",
+      "evidence_type": "synthetic_read_only_monitor_demo",
+      "path": "demo/assets/data.json",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-001", "SR-002", "SR-003", "SR-004", "SR-005", "SR-006", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
+      "test_ids": ["TEST-001", "TEST-002", "TEST-003", "TEST-004", "TEST-005", "TEST-006", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
+      "change_impact_id": "CI-001"
     }
   ],
   "open_target_system_values": {

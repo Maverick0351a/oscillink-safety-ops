@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .audit import audit_plan, evaluate_recorded_episode
+from .benchmark import verify_benchmark
 from .governance import build_operational_impact_report
 from .io import (
     FixtureIntegrityError,
@@ -110,11 +111,27 @@ def _parser() -> argparse.ArgumentParser:
         type=Path,
         help="public authority file (defaults to authority.json beside configuration)",
     )
+    benchmark = subparsers.add_parser("benchmark", help="work with frozen synthetic benchmarks")
+    benchmark_actions = benchmark.add_subparsers(dest="benchmark_action", required=True)
+    benchmark_verify = benchmark_actions.add_parser(
+        "verify", help="verify a frozen benchmark offline"
+    )
+    benchmark_verify.add_argument("--root", type=Path, required=True)
+    benchmark_verify.add_argument(
+        "--repository-root",
+        type=Path,
+        default=Path.cwd(),
+        help="local repository whose HEAD is bound by the benchmark manifest",
+    )
     return parser
 
 
 def run(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.subcommand == "benchmark":
+        benchmark_verification = verify_benchmark(args.root, repository_root=args.repository_root)
+        print(json.dumps(asdict(benchmark_verification), sort_keys=True, separators=(",", ":")))
+        return 0
     if args.subcommand == "runtime":
         root = Path.cwd()
         authority_path = args.authority or (args.configuration.parent / "authority.json")

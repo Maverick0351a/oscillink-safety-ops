@@ -6,7 +6,9 @@
 records representing one simulated fenced robot cell. The implemented runtime validates and
 correlates records, evaluates deterministic policy, maintains persistent latch/recovery state, and
 constructs an in-memory simulated request record. Deterministic replay may publish a verified local
-report file. No machine interface or live request transport is in scope.
+report file. A generated dependency-free static monitor may display all 36 exact expected benchmark
+results for scenario selection and evidence inspection. No machine interface or live request
+transport is in scope.
 
 ## Logical flow
 
@@ -38,6 +40,7 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
 - in-memory construction of a one-way local simulated request record;
 - deterministic signed-configuration replay and atomic local report publication;
 - frozen synthetic scenarios, property/fuzz regressions, and abstract TLA+ model evidence;
+- a 36-case exact-byte synthetic benchmark and generated static read-only inspection demo;
 - visibility of acknowledgment absence, output-path faults, restart, and recovery state; and
 - configuration control, traceability, planned verification, and change impact.
 
@@ -47,6 +50,8 @@ EXTERNAL SAFETY DOMAIN (represented, not implemented or validated)
   emergency-stop devices, and final elements;
 - transport to a live controller, equipment credentials, controller addresses, ROS publishers,
   fieldbus writers, reverse control callbacks, and remote reset;
+- UI commands, form submission, reset, rearm, acknowledgment, stop, control, external resources, or
+  browser network clients in the static demo;
 - selection or calculation of PLr, PL, SIL, PFH, category, architecture, diagnostic coverage,
   common-cause score, proof-test interval, or stopping distance/time;
 - application risk assessment, electrical or mechanical integration, commissioning, validation,

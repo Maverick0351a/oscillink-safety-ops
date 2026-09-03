@@ -3,13 +3,14 @@
 ## Applicability and status
 
 These requirements apply only to `SCOPE-ROBOT-CELL-001`, the closed-file simulated fenced robot-cell
-demonstrator. Batches 3 through 5 implement contract, configuration-authority, provenance,
+demonstrator. Batches 3 through 6 implement contract, configuration-authority, provenance,
 freshness/order, deterministic correlation/policy, latch/recovery state, simulated-request
 construction, state persistence, replay, local reports, property/fuzz cases, and an abstract TLA+
-model as identified in the evidence index. “Shall” expresses the complete requirement; untested
-scenario dimensions and every target-system behavior remain planned. Each requirement has one
-accountable owner, status, change-impact rule, control, test, and evidence record in
-`TRACEABILITY.csv`.
+model as identified in the evidence index. Batch 6 adds a 36-case exact-byte synthetic benchmark and
+a generated read-only static inspection demo; neither is runtime, field, application-validation, or
+physical-stop evidence. “Shall” expresses the complete requirement; untested scenario dimensions
+and every target-system behavior remain planned. Each requirement has one accountable owner, status,
+change-impact rule, control, test, and evidence record in `TRACEABILITY.csv`.
 
 ### SR-001 — Exclude motion with present or unknown occupancy
 

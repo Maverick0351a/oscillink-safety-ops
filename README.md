@@ -6,9 +6,10 @@ Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for
 > observed behavior remain within the approved operating envelope and requests a protective response
 > when they do not.
 
-The repository currently implements the governed evidence and offline-evaluation plane that will
-support that supervisor. The deterministic runtime-supervision plane, intervention latch, robot-cell
-replay, and simulated one-way protective requests are planned and are not implemented yet.
+The repository implements the governed evidence and offline-evaluation plane plus a deterministic
+closed-record runtime supervisor, persistent intervention/recovery state, robot-cell replay, local
+simulated one-way protective-request records, and a generated read-only synthetic monitor. It does
+not connect to equipment or establish that a physical stop occurred.
 
 > **Current status:** experimental private product with implemented deterministic contracts. The
 > code makes no legal, compliance, certification, safe-operation, work-authorization, deployment,
@@ -57,6 +58,8 @@ separate. Every transformation retains exact identity. No arrow reaches equipmen
 | Read-only operational JSONL evidence | Legal, engineering, and OT-owner review | Automatic conflict resolution or policy promotion |
 | Offline plan and episode evaluation | Public release and publication audit | Autonomous approval of model-generated constraints |
 | Deterministic schemas, fixtures, and hidden-test protocol | | |
+| 36-case exact-byte synthetic robot-cell benchmark | | Physical stopping or field effectiveness |
+| Dependency-free read-only static evidence monitor | | A runtime operator/control interface |
 
 Tests establish deterministic software behavior only. They do not establish that a source applies,
 that an interpretation is legally correct, or that an operation is safe.
@@ -69,12 +72,20 @@ project-authored and synthetic.
 ```bash
 uv sync --locked --dev
 PYTHONPATH= uv run python scripts/verify.py
+PYTHONPATH= uv run safety-ops benchmark verify --root benchmark/robot_cell_v1
+PYTHONPATH= uv run python scripts/verify_demo.py demo
 PYTHONPATH= uv run safety-ops episode-evaluate \
   --packet tests/fixtures/synthetic_press/safety-evidence-packet-v1.json \
   --episode tests/fixtures/synthetic_press/episode.json \
   --envelope tests/fixtures/synthetic_press/episode-envelope.json \
   --root tests/fixtures/synthetic_press
 ```
+
+Open `demo/index.html` directly to inspect all 36 generated synthetic scenarios without a server.
+The interface can only select a scenario and inspect evidence. It has no command, reset, rearm,
+acknowledgment, stop, form-submit, runtime-machine, or external-network surface. Read
+[`SAFETY_MANAGER_DEMO.md`](benchmark/robot_cell_v1/SAFETY_MANAGER_DEMO.md) before interpreting the
+results.
 
 The episode report binds exact packet and payload identities and emits closed evidence states. Its
 fixed top-level output remains:
@@ -151,7 +162,8 @@ replacement for existing CMMS, checklist, document-management, or control system
 ## Verification status
 
 The canonical verifier checks text hygiene, generated schemas, the OSHA source catalog, synthetic
-fixtures, Ruff, formatting, strict mypy, package builds, and the full test suite.
+fixtures, the 36-case exact-byte benchmark, byte-identical static-demo generation and no-control/
+no-network interface rules, Ruff, formatting, strict mypy, package builds, and the full test suite.
 
 Exact-SHA verification has passed on Windows and an independent Linux Buildbox for the current
 implemented feature baseline. Hosted CI has not evaluated local-only maturation commits because they
@@ -166,6 +178,8 @@ planned runtime-supervision boundary, deployment dependencies, and claims that r
 - [Technical overview](docs/technical-overview.md)
 - [Assurance status and limitations](docs/assurance-status.md)
 - [Synthetic local demonstration](docs/synthetic-demo.md)
+- [Safety-manager benchmark field guide](benchmark/robot_cell_v1/SAFETY_MANAGER_DEMO.md)
+- [Synthetic benchmark Dataset card](benchmark/robot_cell_v1/DATASET_CARD.md)
 - [Product and authority boundary](docs/product-boundary.md)
 - [Execution plan and current gates](docs/execution-plan.md)
 - [Hidden evaluation protocol](docs/hidden-evaluation-protocol.md)

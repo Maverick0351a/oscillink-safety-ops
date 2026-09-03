@@ -20,9 +20,10 @@ present in, enters, or cannot be excluded from a configured protected zone. The 
 controls, allocations, tests, and evidence records.
 
 **Current status:** the lifecycle concept and deterministic closed-record supervisor are implemented
-through local simulated-request construction, persisted state, four frozen synthetic scenarios,
-property/fuzz tests, and an abstract finite-state TLC check. Live output transport and target-system
-behavior remain unimplemented.
+through local simulated-request construction, persisted state, four frozen replay scenarios, a
+36-case exact-byte synthetic benchmark, property/fuzz tests, and an abstract finite-state TLC check.
+The generated static monitor only displays those benchmark records. Live output transport and
+target-system behavior remain unimplemented.
 
 ### CLM-002 — Independent decision boundary
 
@@ -45,7 +46,9 @@ physical stopping.
 
 **Current status:** deterministic logic creates and latches an in-memory simulated request record,
 handles untrusted fixture acknowledgments conservatively, persists exact-byte state, and publishes
-only a local closed-file replay report. No logic delivers a request or verifies physical stopping.
+only a local closed-file replay report. The benchmark and static monitor keep request,
+acknowledgment, and `not_established` physical-stop state distinct. No logic delivers a request or
+verifies physical stopping.
 
 ### CLM-004 — Recovery separation
 
@@ -59,9 +62,10 @@ authorization, controller recovery, and target-system validation are not impleme
 
 ## Claims explicitly not made
 
-The frozen scenarios, Hypothesis properties, fuzz regressions, and TLA+ result are maintainer-run
-synthetic software evidence. They do not establish refinement to the Python implementation or target
-system behavior.
+The frozen scenarios, 36-case benchmark, generated demo, Hypothesis properties, fuzz regressions,
+and TLA+ result are maintainer-run synthetic software evidence. They do not establish refinement to
+the Python implementation or target-system behavior. The demo is an inspection surface only and
+adds no runtime, command, reset, rearm, acknowledgment, stop, or control authority.
 
 This set does not claim machine control, incident prevention, safe operation, compliance,
 certification, field effectiveness, a safety-rated component, successful stopping, or approval to

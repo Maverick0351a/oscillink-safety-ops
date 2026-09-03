@@ -109,6 +109,39 @@ def check_scenario_manifest() -> None:
     print("runtime scenario manifest: ok")
 
 
+def check_benchmark() -> None:
+    from oscillink_safety_ops.benchmark import verify_benchmark
+
+    result = verify_benchmark(ROOT / "benchmark" / "robot_cell_v1", repository_root=ROOT)
+    if (
+        result.total_cases != 36
+        or result.exact_matches != 36
+        or result.fault_families != 12
+        or result.repeat_runs != 3
+        or result.network_accessed is not False
+    ):
+        raise SystemExit("frozen benchmark verification totals are invalid")
+    print("benchmark: 36/36 exact; 12 fault families; 3 repeat runs")
+
+
+def check_demo() -> None:
+    from scripts.verify_demo import verify_demo
+
+    result = verify_demo(
+        ROOT / "demo",
+        benchmark_root=ROOT / "benchmark" / "robot_cell_v1",
+        repository_root=ROOT,
+    )
+    if (
+        result.total_cases != 36
+        or result.exact_matches != 36
+        or result.control_surfaces != 0
+        or result.network_accessed is not False
+    ):
+        raise SystemExit("static demo verification totals are invalid")
+    print("demo: 36 scenarios; exact generated assets; no network/control surfaces")
+
+
 def check_tla_result() -> None:
     from scripts.verify_tla import verify_formal_result_binding
 
@@ -189,6 +222,8 @@ def main() -> None:
     check_schemas()
     check_runtime_schemas()
     check_scenario_manifest()
+    check_benchmark()
+    check_demo()
     check_tla_result()
     check_osha_catalog()
     check_fixture()

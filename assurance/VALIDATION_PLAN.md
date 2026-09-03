@@ -2,15 +2,17 @@
 
 ## Status and interpretation
 
-All tests below apply to `SCOPE-ROBOT-CELL-001`. Batches 3 through 5 implement adversarial unit and
+All tests below apply to `SCOPE-ROBOT-CELL-001`. Batches 3 through 6 implement adversarial unit and
 property-test portions of `TEST-001` through `TEST-011` for runtime contracts, configuration,
 provenance, freshness/order, correlation, policy, latch/recovery state, in-memory simulated-request
 creation, state persistence, deterministic replay, local report publication, and abstract TLA+
 invariants. Four frozen synthetic replay cases cover nominal, zone-entry, stale-source, and
-contradictory-source behavior. Live request delivery, output timeouts, hardware response, and
-common-cause campaigns remain planned. A passing result demonstrates only software behavior for
-the exact tested bytes, configuration, inputs, and platform. It does not validate a real robot cell
-or prove stopping, risk reduction, compliance, or certification.
+contradictory-source behavior. A separate generated 36-case exact-byte synthetic benchmark expands
+represented boundary, integrity, authority, persistence, simultaneous-fault, and staged-recovery
+cases. Its generated static monitor is display-only. Live request delivery, output timeouts, hardware
+response, and common-cause campaigns remain planned. A passing result demonstrates only software
+behavior for the exact tested bytes, configuration, inputs, and platform. It does not validate a real
+robot cell or prove stopping, risk reduction, compliance, or certification.
 
 ## Common evidence protocol
 
@@ -20,6 +22,20 @@ expected output bytes, actual output bytes, state transitions, first-out reason,
 pass/fail diagnostics. Failure is retained and never overwritten. `EVID-001` through `EVID-012`
 index the complete planned specifications; `EVID-013` onward index implemented maintainer-run
 software evidence.
+
+## Batch 6 synthetic benchmark and demo evidence
+
+`EVID-025` binds 36 canonical case inputs to 36 exact expected-result records, mechanically derived
+metrics, generated schemas and field guide, exact source/configuration/runtime identities, and three
+byte-identical executions per case. It exercises implemented portions of `TEST-001` through
+`TEST-011`; it does not complete those application-level tests or exercise `TEST-012` common-cause
+campaigns. It intentionally reports no wall-clock latency.
+
+`EVID-026` binds the dependency-free static monitor to every expected result and metric. Verification
+checks semantic landmarks, accessible selection, required boundary copy, local-only resources,
+generated-byte repeatability, and absence of command/form/network/dynamic-HTML surfaces. Display
+correctness is not a safety function and does not establish request delivery, acknowledgment truth,
+or physical stopping.
 
 ### TEST-001 — Occupied/unknown zone during motion
 
