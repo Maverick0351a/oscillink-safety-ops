@@ -5,7 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeAlias
 
-from .contracts import CommandObservation, PhysicalObservation, SupervisorConfiguration
+from .contracts import (
+    CommandAttributionRecord,
+    CommandObservation,
+    PhysicalObservation,
+    SupervisorConfiguration,
+)
 
 CorrelatableObservation: TypeAlias = CommandObservation | PhysicalObservation
 
@@ -20,12 +25,16 @@ class CorrelationResult:
     occupancy_states: tuple[str, ...]
     reason_codes: tuple[str, ...]
     input_sha256: tuple[str, ...]
+    command_history: tuple[CommandAttributionRecord, ...] = ()
+    consumed_command_attributions: tuple[str, ...] = ()
 
 
 def correlate_command_and_state(
     observations: tuple[CorrelatableObservation, ...],
     *,
     configuration: SupervisorConfiguration,
+    command_history: tuple[CommandAttributionRecord, ...] = (),
+    consumed_command_attributions: tuple[str, ...] = (),
 ) -> CorrelationResult:
     """Correlate explicit inputs without clocks, I/O, randomness, or mutable state."""
 
@@ -44,6 +53,37 @@ def correlate_command_and_state(
     measured_motion = any(item.motion_state == "moving" for item in physical)
     occupancies = tuple(sorted({item.occupancy for item in physical}))
     reasons: set[str] = set()
+    consumed = set(consumed_command_attributions)
+    prior_history_by_key = {
+        (item.command_id, item.sequence_number): item for item in command_history
+    }
+    if len(prior_history_by_key) != len(command_history) or len(command_history) > 256:
+        raise ValueError("command history must contain at most 256 unique identities")
+    prior_keys = {f"{item.command_id}:sequence:{item.sequence_number}" for item in command_history}
+    if not consumed.issubset(prior_keys):
+        raise ValueError("consumed command attribution is absent from history")
+    history_by_key = dict(prior_history_by_key)
+    for command in commands:
+        record = CommandAttributionRecord(
+            command_id=command.command_id,
+            sequence_number=command.sequence_number,
+            observed_at=command.observed_at,
+            motion_requested=command.motion_requested,
+            input_sha256=command.input_sha256,
+        )
+        key = (record.command_id, record.sequence_number)
+        existing = history_by_key.get(key)
+        if existing is not None and existing != record:
+            reasons.add("command_identity_reused")
+        else:
+            history_by_key[key] = record
+    if len(history_by_key) > 256:
+        reasons.add("command_history_capacity_exceeded")
+        bounded = dict(prior_history_by_key)
+        for key, record in sorted(history_by_key.items()):
+            if key not in bounded and len(bounded) < 256:
+                bounded[key] = record
+        history_by_key = bounded
 
     if len({item.motion_requested for item in commands}) > 1:
         reasons.add("command_observation_contradiction")
@@ -86,13 +126,20 @@ def correlate_command_and_state(
         reasons.add("motion_direction_state_contradiction")
     if len({item.calibration_sha256 for item in physical}) > 1:
         reasons.add("calibration_identity_mismatch")
+    if any(
+        item.calibration_sha256 not in configuration.approved_calibration_sha256
+        for item in physical
+    ):
+        reasons.add("calibration_identity_unapproved")
 
     for item in moving_physical:
         if item.attributed_command_id is None or item.attributed_command_sequence is None:
             reasons.add("command_attribution_missing")
             continue
         identity_matches = tuple(
-            command for command in commands if command.command_id == item.attributed_command_id
+            command
+            for command in history_by_key.values()
+            if command.command_id == item.attributed_command_id
         )
         if not identity_matches:
             reasons.add("command_attribution_id_mismatch")
@@ -108,10 +155,14 @@ def correlate_command_and_state(
         if len(sequence_matches) != 1:
             reasons.add("command_attribution_ambiguous")
             continue
-        command = sequence_matches[0]
-        if not command.motion_requested:
+        matched_command = sequence_matches[0]
+        attribution_key = f"{matched_command.command_id}:sequence:{matched_command.sequence_number}"
+        if attribution_key in consumed:
+            reasons.add("command_attribution_reused")
+        consumed.add(attribution_key)
+        if not matched_command.motion_requested:
             reasons.add("command_attribution_nonmotion")
-        delay_seconds = (item.observed_at - command.observed_at).total_seconds()
+        delay_seconds = (item.observed_at - matched_command.observed_at).total_seconds()
         if delay_seconds < 0.0:
             reasons.add("command_response_precedes_command")
         elif delay_seconds > configuration.max_correlation_delay_seconds:
@@ -140,4 +191,6 @@ def correlate_command_and_state(
         occupancy_states=occupancies,
         reason_codes=tuple(sorted(reasons)),
         input_sha256=hashes,
+        command_history=tuple(record for _, record in sorted(history_by_key.items())),
+        consumed_command_attributions=tuple(sorted(consumed)),
     )

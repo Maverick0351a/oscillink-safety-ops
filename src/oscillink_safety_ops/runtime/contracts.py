@@ -246,6 +246,7 @@ class SupervisorConfiguration(RuntimeContract):
     max_receive_delay_seconds: FiniteNonNegative
     max_future_skew_seconds: FiniteNonNegative
     max_correlation_delay_seconds: FinitePositive
+    approved_calibration_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1, max_length=64)]
     max_speed_mps: FinitePositive
     max_acceleration_mps2: FinitePositive
     signer_id: Identifier
@@ -257,6 +258,9 @@ class SupervisorConfiguration(RuntimeContract):
     _parse_valid_from = field_validator("valid_from", mode="before")(_parse_wire_datetime)
     _parse_valid_until = field_validator("valid_until", mode="before")(_parse_wire_datetime)
     _parse_required_sources = field_validator("required_source_ids", mode="before")(
+        _json_array_to_tuple
+    )
+    _parse_approved_calibrations = field_validator("approved_calibration_sha256", mode="before")(
         _json_array_to_tuple
     )
 
@@ -275,6 +279,10 @@ class SupervisorConfiguration(RuntimeContract):
             raise ValueError("duplicate required_source_ids")
         if tuple(sorted(self.required_source_ids)) != self.required_source_ids:
             raise ValueError("required_source_ids must be sorted")
+        if len(self.approved_calibration_sha256) != len(set(self.approved_calibration_sha256)):
+            raise ValueError("duplicate approved_calibration_sha256")
+        if tuple(sorted(self.approved_calibration_sha256)) != self.approved_calibration_sha256:
+            raise ValueError("approved_calibration_sha256 must be sorted")
         return self
 
 
@@ -285,6 +293,20 @@ def _validate_hash_tuple(values: tuple[str, ...], *, field_name: str) -> None:
         raise ValueError(f"duplicate {field_name}")
     if tuple(sorted(values)) != values:
         raise ValueError(f"{field_name} must be sorted")
+
+
+class CommandAttributionRecord(RuntimeContract):
+    """Bounded historical command identity used only for deterministic correlation."""
+
+    schema_version: Literal[1] = 1
+    command_id: Identifier
+    sequence_number: SequenceNumber
+    observed_at: AwareDatetime
+    motion_requested: StrictBool
+    input_sha256: Sha256
+    operational_authority: Literal["none"] = "none"
+
+    _parse_observed_at = field_validator("observed_at", mode="before")(_parse_wire_datetime)
 
 
 SupervisorStateName: TypeAlias = Literal[
@@ -323,6 +345,8 @@ class SupervisorStateRecord(RuntimeContract):
     ] = "not_requested"
     reset_sequence: SequenceNumber = 0
     fresh_start_required: StrictBool = False
+    command_history: Annotated[tuple[CommandAttributionRecord, ...], Field(max_length=256)] = ()
+    consumed_command_attributions: Annotated[tuple[Identifier, ...], Field(max_length=256)] = ()
     authority_state: Literal["deterministic_supervisor_state"] = "deterministic_supervisor_state"
     motion_authority: Literal["none"] = "none"
     operational_authority: Literal["none"] = "none"
@@ -330,6 +354,10 @@ class SupervisorStateRecord(RuntimeContract):
     _parse_evaluated_at = field_validator("evaluated_at", mode="before")(_parse_wire_datetime)
     _parse_reason_codes = field_validator("reason_codes", mode="before")(_json_array_to_tuple)
     _parse_input_hashes = field_validator("input_sha256", mode="before")(_json_array_to_tuple)
+    _parse_command_history = field_validator("command_history", mode="before")(_json_array_to_tuple)
+    _parse_consumed_attributions = field_validator("consumed_command_attributions", mode="before")(
+        _json_array_to_tuple
+    )
 
     @model_validator(mode="after")
     def validate_state_record(self) -> Self:
@@ -340,6 +368,22 @@ class SupervisorStateRecord(RuntimeContract):
             raise ValueError("reason_codes must be sorted")
         if self.first_out_reason not in self.reason_codes:
             raise ValueError("first_out_reason must be present in reason_codes")
+        history_identities = tuple(
+            (item.command_id, item.sequence_number) for item in self.command_history
+        )
+        if history_identities != tuple(sorted(history_identities)) or len(
+            history_identities
+        ) != len(set(history_identities)):
+            raise ValueError("command_history must have unique sorted command identities")
+        history_keys = {
+            f"{command_id}:sequence:{sequence}" for command_id, sequence in history_identities
+        }
+        if self.consumed_command_attributions != tuple(
+            sorted(set(self.consumed_command_attributions))
+        ):
+            raise ValueError("consumed command attributions must be unique and sorted")
+        if not set(self.consumed_command_attributions).issubset(history_keys):
+            raise ValueError("consumed command attribution must exist in command_history")
         nonlatched = {"initializing", "monitoring_normal", "monitoring_degraded"}
         if (self.supervisor_state not in nonlatched) is not self.latched:
             raise ValueError("latched flag contradicts supervisor_state")

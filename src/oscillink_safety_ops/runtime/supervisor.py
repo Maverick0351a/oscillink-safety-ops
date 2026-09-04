@@ -22,7 +22,12 @@ from .contracts import (
 from .correlator import CorrelationResult, correlate_command_and_state
 from .freshness import EvaluationState, FreshnessError, Observation, evaluate_freshness_and_order
 from .policy import PolicyEvaluation, evaluate_policy
-from .state_machine import apply_policy_evaluation, initial_supervisor_state, record_action_request
+from .state_machine import (
+    apply_policy_evaluation,
+    initial_supervisor_state,
+    record_action_request,
+    record_command_attribution_history,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -130,6 +135,8 @@ def evaluate_supervisor(
         correlation = correlate_command_and_state(
             correlatable,
             configuration=runtime.configuration.configuration,
+            command_history=runtime.state.command_history,
+            consumed_command_attributions=runtime.state.consumed_command_attributions,
         )
         faults: tuple[str, ...] = ()
     except ValueError:
@@ -140,6 +147,8 @@ def evaluate_supervisor(
             occupancy_states=(),
             reason_codes=(),
             input_sha256=input_hashes,
+            command_history=runtime.state.command_history,
+            consumed_command_attributions=runtime.state.consumed_command_attributions,
         )
         faults = ("correlation_unverifiable",)
 
@@ -168,8 +177,15 @@ def evaluate_supervisor(
         configuration_changed=configuration_changed,
         output_uncertain=output_uncertain,
     )
-    transition = apply_policy_evaluation(
+    attribution_state = record_command_attribution_history(
         runtime.state,
+        command_history=correlation.command_history,
+        consumed_command_attributions=correlation.consumed_command_attributions,
+        evaluation_time=evaluation_time,
+        input_sha256=input_hashes,
+    ).state
+    transition = apply_policy_evaluation(
+        attribution_state,
         policy,
         evaluation_time=evaluation_time,
         input_sha256=input_hashes,

@@ -112,6 +112,28 @@ def test_canonical_verifier_runs_the_process_restart_gate() -> None:
     assert '"scripts/verify_process_restart.py"' in verifier
 
 
+def test_restart_preserves_consumed_command_attribution_history() -> None:
+    root = Path(__file__).resolve().parents[2]
+    completed = subprocess.run(
+        [sys.executable, "scripts/verify_process_restart.py"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    report = json.loads(completed.stdout)
+    history = report["attribution_history"]
+    assert report["attribution_history_process_count"] == 2
+    assert history["restart_integrity_state"] == "verified"
+    assert history["latched"] is True
+    assert history["history_count"] == 1
+    assert history["history_command_id"] == "command-id:restart-history"
+    assert history["consumed"] == ["command-id:restart-history:sequence:0"]
+    assert history["physical_stop"] == "not_established"
+
+
 def test_restart_adversarial_processes_fail_closed_without_clearing_the_latch() -> None:
     root = Path(__file__).resolve().parents[2]
     completed = subprocess.run(

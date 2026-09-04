@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 from .contracts import (
     ActionAcknowledgment,
+    CommandAttributionRecord,
     RecoveryEvent,
     SupervisorStateName,
     SupervisorStateRecord,
@@ -93,9 +94,25 @@ def _build_state(
     output_state: str = "not_requested",
     reset_sequence: int = 0,
     fresh_start_required: bool = False,
+    command_history: tuple[CommandAttributionRecord, ...] | None = None,
+    consumed_command_attributions: tuple[str, ...] | None = None,
 ) -> SupervisorStateRecord:
     ordered_reasons = tuple(sorted(set(reason_codes)))
     ordered_hashes = tuple(sorted(input_sha256))
+    history = (
+        command_history
+        if command_history is not None
+        else previous.command_history
+        if previous is not None
+        else ()
+    )
+    consumed = (
+        consumed_command_attributions
+        if consumed_command_attributions is not None
+        else previous.consumed_command_attributions
+        if previous is not None
+        else ()
+    )
     payload: dict[str, object] = {
         "previous_state_id": previous.state_id if previous is not None else None,
         "run_id": run_id,
@@ -110,6 +127,8 @@ def _build_state(
         "output_state": output_state,
         "reset_sequence": reset_sequence,
         "fresh_start_required": fresh_start_required,
+        "command_history": tuple(item.model_dump(mode="python") for item in history),
+        "consumed_command_attributions": tuple(sorted(consumed)),
     }
     return SupervisorStateRecord.model_validate(
         {"state_id": _state_id(payload), **payload_without_previous(payload)}
@@ -139,6 +158,43 @@ def initial_supervisor_state(
         reason_codes=("initializing",),
         configuration_sha256=configuration_sha256,
         input_sha256=input_sha256,
+    )
+
+
+def record_command_attribution_history(
+    state: SupervisorStateRecord,
+    *,
+    command_history: tuple[CommandAttributionRecord, ...],
+    consumed_command_attributions: tuple[str, ...],
+    evaluation_time: datetime,
+    input_sha256: tuple[str, ...],
+) -> StateTransition:
+    """Bind bounded correlation history into persistent supervisor state."""
+
+    if (
+        command_history == state.command_history
+        and consumed_command_attributions == state.consumed_command_attributions
+    ):
+        return StateTransition(state, "none")
+    return StateTransition(
+        _build_state(
+            state,
+            run_id=state.run_id,
+            evaluation_time=evaluation_time,
+            supervisor_state=state.supervisor_state,
+            latched=state.latched,
+            first_out_reason=state.first_out_reason,
+            reason_codes=state.reason_codes,
+            configuration_sha256=state.configuration_sha256,
+            input_sha256=input_sha256,
+            active_request_sha256=state.active_request_sha256,
+            output_state=state.output_state,
+            reset_sequence=state.reset_sequence,
+            fresh_start_required=state.fresh_start_required,
+            command_history=command_history,
+            consumed_command_attributions=consumed_command_attributions,
+        ),
+        "none",
     )
 
 

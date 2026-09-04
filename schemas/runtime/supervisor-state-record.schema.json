@@ -1,4 +1,60 @@
 {
+  "$defs": {
+    "CommandAttributionRecord": {
+      "additionalProperties": false,
+      "description": "Bounded historical command identity used only for deterministic correlation.",
+      "properties": {
+        "command_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+          "title": "Command Id",
+          "type": "string"
+        },
+        "input_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Sha256",
+          "type": "string"
+        },
+        "motion_requested": {
+          "title": "Motion Requested",
+          "type": "boolean"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "operational_authority": {
+          "const": "none",
+          "default": "none",
+          "title": "Operational Authority",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "sequence_number": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Sequence Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "command_id",
+        "sequence_number",
+        "observed_at",
+        "motion_requested",
+        "input_sha256"
+      ],
+      "title": "CommandAttributionRecord",
+      "type": "object"
+    }
+  },
   "additionalProperties": false,
   "description": "Persistent deterministic intervention and recovery state; never a command.",
   "properties": {
@@ -21,10 +77,31 @@
       "title": "Authority State",
       "type": "string"
     },
+    "command_history": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CommandAttributionRecord"
+      },
+      "maxItems": 256,
+      "title": "Command History",
+      "type": "array"
+    },
     "configuration_sha256": {
       "pattern": "^sha256:[0-9a-f]{64}$",
       "title": "Configuration Sha256",
       "type": "string"
+    },
+    "consumed_command_attributions": {
+      "default": [],
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+        "type": "string"
+      },
+      "maxItems": 256,
+      "title": "Consumed Command Attributions",
+      "type": "array"
     },
     "evaluated_at": {
       "format": "date-time",

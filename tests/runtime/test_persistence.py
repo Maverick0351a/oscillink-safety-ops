@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from oscillink_safety_ops.runtime import persistence as runtime_persistence
-from oscillink_safety_ops.runtime.contracts import SupervisorStateRecord
+from oscillink_safety_ops.runtime.contracts import CommandAttributionRecord, SupervisorStateRecord
 from oscillink_safety_ops.runtime.persistence import (
     PersistenceError,
     StateArtifact,
@@ -25,6 +25,7 @@ from oscillink_safety_ops.runtime.state_machine import (
     apply_policy_evaluation,
     initial_supervisor_state,
     record_action_request,
+    record_command_attribution_history,
 )
 from oscillink_safety_ops.runtime.supervisor import canonical_record_bytes
 
@@ -73,6 +74,36 @@ def test_restart_restores_only_the_exact_latched_state(tmp_path: Path) -> None:
     assert result.reason_code == "verified_restart_latch"
     assert result.state == expected
     assert result.state.latched is True
+
+
+def test_restart_restores_exact_command_attribution_history(tmp_path: Path) -> None:
+    command = CommandAttributionRecord(
+        command_id="command-id:0",
+        sequence_number=0,
+        observed_at=NOW,
+        motion_requested=True,
+        input_sha256=INPUT,
+    )
+    expected = record_command_attribution_history(
+        state(),
+        command_history=(command,),
+        consumed_command_attributions=("command-id:0:sequence:0",),
+        evaluation_time=NOW,
+        input_sha256=(INPUT,),
+    ).state
+    artifact = persist_supervisor_state(expected, root=tmp_path)
+
+    result = runtime_persistence.load_restart_state_or_fail_closed(
+        artifact,
+        root=tmp_path,
+        expected_run_id=expected.run_id,
+        expected_configuration_sha256=expected.configuration_sha256,
+        fail_closed_state=state(),
+    )
+
+    assert result.integrity_state == "verified"
+    assert result.state.command_history == (command,)
+    assert result.state.consumed_command_attributions == ("command-id:0:sequence:0",)
 
 
 def test_restart_rejects_a_pre_restart_nonlatched_state(tmp_path: Path) -> None:

@@ -31,6 +31,7 @@ INVARIANTS: Final = (
     "RebootPreservesLatch",
     "NoMotionCommandDuringRecovery",
     "FaultsFailClosed",
+    "AttributionUniquenessChronologyFailClosed",
 )
 MAX_SET_SIZE: Final = 100_000
 HEAP_MAX_MIB: Final = 512

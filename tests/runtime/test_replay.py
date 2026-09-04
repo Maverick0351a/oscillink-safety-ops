@@ -50,6 +50,7 @@ def _write_fixture(root: Path) -> tuple[Path, Path, Path]:
         "max_receive_delay_seconds": 0.2,
         "max_future_skew_seconds": 0.0,
         "max_correlation_delay_seconds": 0.25,
+        "approved_calibration_sha256": ["sha256:" + "d" * 64],
         "max_speed_mps": 1.0,
         "max_acceleration_mps2": 2.0,
         "signer_id": "demo-safety-config-signer-v1",

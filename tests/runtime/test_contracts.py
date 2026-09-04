@@ -106,6 +106,7 @@ def configuration_data() -> dict[str, object]:
         "max_receive_delay_seconds": 0.2,
         "max_future_skew_seconds": 0.0,
         "max_correlation_delay_seconds": 0.25,
+        "approved_calibration_sha256": (SHA_C,),
         "max_speed_mps": 1.0,
         "max_acceleration_mps2": 2.0,
         "signer_id": "safety-config-signer:001",
@@ -347,6 +348,35 @@ def test_configuration_timestamps_must_be_timezone_aware(field: str) -> None:
         SupervisorConfiguration.model_validate(data)
 
 
+def test_approved_calibration_hashes_must_be_nonempty_unique_and_sorted() -> None:
+    for value in ((), (SHA_C, SHA_C), (SHA_C, SHA_A)):
+        data = configuration_data()
+        data["approved_calibration_sha256"] = value
+        with pytest.raises(ValidationError):
+            SupervisorConfiguration.model_validate(data)
+
+
+def test_supervisor_state_rejects_malformed_attribution_history() -> None:
+    command = {
+        "schema_version": 1,
+        "command_id": "command-id:0",
+        "sequence_number": 0,
+        "observed_at": NOW,
+        "motion_requested": True,
+        "input_sha256": SHA_A,
+        "operational_authority": "none",
+    }
+    for history, consumed in (
+        ((command, command), ()),
+        ((command,), ("command-id:missing:sequence:0",)),
+    ):
+        data = state_data()
+        data["command_history"] = history
+        data["consumed_command_attributions"] = consumed
+        with pytest.raises(ValidationError):
+            SupervisorStateRecord.model_validate(data)
+
+
 @pytest.mark.parametrize(
     ("model", "factory", "field"),
     (
@@ -384,6 +414,7 @@ def test_configuration_rejects_invalid_chronology_duplicate_sources_and_threshol
         "max_receive_delay_seconds",
         "max_future_skew_seconds",
         "max_correlation_delay_seconds",
+        "approved_calibration_sha256",
         "max_speed_mps",
         "max_acceleration_mps2",
     ):

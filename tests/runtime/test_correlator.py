@@ -6,6 +6,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Literal
 
 from oscillink_safety_ops.runtime.contracts import (
+    CommandAttributionRecord,
     CommandObservation,
     PhysicalObservation,
     SupervisorConfiguration,
@@ -30,6 +31,7 @@ def configuration() -> SupervisorConfiguration:
         max_receive_delay_seconds=0.2,
         max_future_skew_seconds=0.0,
         max_correlation_delay_seconds=0.25,
+        approved_calibration_sha256=(SHA_C,),
         max_speed_mps=1.0,
         max_acceleration_mps2=2.0,
         signer_id="safety-config-signer:001",
@@ -264,6 +266,18 @@ def test_conflicting_physical_calibration_identity_is_explicit() -> None:
     assert "calibration_identity_mismatch" in result.reason_codes
 
 
+def test_physical_calibration_must_be_approved_by_signed_configuration() -> None:
+    result = correlate_command_and_state(
+        (
+            command(),
+            physical().model_copy(update={"calibration_sha256": "sha256:" + "e" * 64}),
+        ),
+        configuration=configuration(),
+    )
+
+    assert "calibration_identity_unapproved" in result.reason_codes
+
+
 def test_command_identity_sequence_and_window_attribution_are_exact() -> None:
     wrong_identity = correlate_command_and_state(
         (
@@ -317,3 +331,98 @@ def test_missing_command_identity_and_sequence_attribution_is_explicit() -> None
     )
 
     assert "command_attribution_missing" in result.reason_codes
+
+
+def test_historical_command_attribution_is_persistable_and_single_use() -> None:
+    first = correlate_command_and_state(
+        (command(), physical()),
+        configuration=configuration(),
+    )
+    assert len(first.command_history) == 1
+
+    second_command = command(motion=False).model_copy(
+        update={
+            "observation_id": "command:1",
+            "command_id": "command-id:1",
+            "sequence_number": 1,
+            "observed_at": NOW + timedelta(seconds=0.1),
+            "received_at": NOW + timedelta(seconds=0.1),
+            "input_sha256": "sha256:" + "d" * 64,
+        }
+    )
+    attributed_motion = physical(motion="moving", speed=0.5).model_copy(
+        update={
+            "observation_id": "physical:1",
+            "sequence_number": 1,
+            "observed_at": NOW + timedelta(seconds=0.1),
+            "received_at": NOW + timedelta(seconds=0.1),
+            "input_sha256": "sha256:" + "e" * 64,
+            "attributed_command_id": "command-id:0",
+            "attributed_command_sequence": 0,
+        }
+    )
+    second = correlate_command_and_state(
+        (second_command, attributed_motion),
+        configuration=configuration(),
+        command_history=first.command_history,
+        consumed_command_attributions=first.consumed_command_attributions,
+    )
+    assert "command_attribution_id_mismatch" not in second.reason_codes
+    assert "command_attribution_sequence_mismatch" not in second.reason_codes
+    assert "command_attribution_reused" not in second.reason_codes
+
+    third = correlate_command_and_state(
+        (
+            second_command.model_copy(
+                update={
+                    "observation_id": "command:2",
+                    "command_id": "command-id:2",
+                    "sequence_number": 2,
+                    "input_sha256": "sha256:" + "f" * 64,
+                }
+            ),
+            attributed_motion.model_copy(
+                update={
+                    "observation_id": "physical:2",
+                    "sequence_number": 2,
+                    "input_sha256": "sha256:" + "1" * 64,
+                }
+            ),
+        ),
+        configuration=configuration(),
+        command_history=second.command_history,
+        consumed_command_attributions=second.consumed_command_attributions,
+    )
+    assert "command_attribution_reused" in third.reason_codes
+
+
+def test_command_identity_reuse_and_history_capacity_fail_closed() -> None:
+    original = correlate_command_and_state(
+        (command(), physical()),
+        configuration=configuration(),
+    )
+    forged = command().model_copy(update={"input_sha256": "sha256:" + "d" * 64})
+    reused = correlate_command_and_state(
+        (forged, physical()),
+        configuration=configuration(),
+        command_history=original.command_history,
+    )
+    assert "command_identity_reused" in reused.reason_codes
+
+    full_history = tuple(
+        CommandAttributionRecord(
+            command_id=f"history-command:{index:03d}",
+            sequence_number=index,
+            observed_at=NOW,
+            motion_requested=True,
+            input_sha256="sha256:" + format(index, "064x"),
+        )
+        for index in range(256)
+    )
+    capacity = correlate_command_and_state(
+        (command(), physical()),
+        configuration=configuration(),
+        command_history=full_history,
+    )
+    assert "command_history_capacity_exceeded" in capacity.reason_codes
+    assert len(capacity.command_history) == 256

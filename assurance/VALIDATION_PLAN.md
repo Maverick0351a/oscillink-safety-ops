@@ -70,8 +70,9 @@ or physical stopping.
   conflicting physical calibration identities are also explicit. Physical motion attribution now
   binds command identity and sequence together and checks response chronology against an immutable
   signed maximum delay. Missing, mismatched, non-motion, ambiguous, early, and late attribution fail
-  closed. Cross-evaluation attribution history remains planned, and no represented attribute
-  establishes physical independence or measurement accuracy.
+  closed. A bounded persistent command ledger carries exact command identity across evaluations and
+  process restart, records consumed attributions, rejects identity reuse, and fails closed at
+  capacity. No represented attribute establishes physical independence or measurement accuracy.
 
 - **Requirement:** `SR-003`; hazard/control: `HAZ-003` / `CTRL-003`.
 - **Stimuli:** orphan motion, wrong direction/frame/program/state, missing expected response,
@@ -95,7 +96,9 @@ or physical stopping.
 
 - **Implemented portion:** freshness/source-state rejection plus deterministic fail-closed policy,
   contributing reasons, latch outcomes, hostile replay parsing, and frozen stale/contradictory
-  source reports are covered in the runtime tests and corpus.
+  source reports are covered in the runtime tests and corpus. Physical calibration hashes must now
+  appear in the exact signed configuration's sorted approval set; cross-source conflicts and
+  unapproved identities remain explicit.
 
 - **Requirement:** `SR-005`; hazard/control: `HAZ-005` / `CTRL-005`.
 - **Stimuli:** remove each required source; freeze a value; exceed freshness; inject sequence gap,

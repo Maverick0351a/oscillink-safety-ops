@@ -239,8 +239,8 @@
       "path": "assurance/tla/formal-result.json",
       "owner": "ROLE-SAFETY-OWNER",
       "status": "implemented",
-      "requirement_ids": ["SR-002", "SR-005", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
-      "test_ids": ["TEST-002", "TEST-005", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
+      "requirement_ids": ["SR-002", "SR-003", "SR-005", "SR-006", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
+      "test_ids": ["TEST-002", "TEST-003", "TEST-005", "TEST-006", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
       "change_impact_id": "CI-002"
     },
     {
@@ -332,6 +332,26 @@
       "requirement_ids": ["SR-003", "SR-006"],
       "test_ids": ["TEST-003", "TEST-006"],
       "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-034",
+      "evidence_type": "implemented_governed_command_history_and_calibration_tests",
+      "path": "tests/runtime/test_correlator.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-003", "SR-005", "SR-006"],
+      "test_ids": ["TEST-003", "TEST-005", "TEST-006"],
+      "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-035",
+      "evidence_type": "synthetic_process_restart_attribution_history_replay",
+      "path": "tests/runtime/test_process_restart.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-003", "SR-006", "SR-009"],
+      "test_ids": ["TEST-003", "TEST-006", "TEST-009"],
+      "change_impact_id": "CI-009"
     }
   ],
   "open_target_system_values": {

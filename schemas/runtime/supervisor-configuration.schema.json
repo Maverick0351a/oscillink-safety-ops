@@ -2,6 +2,16 @@
   "additionalProperties": false,
   "description": "Signed configuration values; file-byte authority is established by the loader.",
   "properties": {
+    "approved_calibration_sha256": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Approved Calibration Sha256",
+      "type": "array"
+    },
     "authority_state": {
       "const": "externally_signed_configuration",
       "default": "externally_signed_configuration",
@@ -122,6 +132,7 @@
     "max_receive_delay_seconds",
     "max_future_skew_seconds",
     "max_correlation_delay_seconds",
+    "approved_calibration_sha256",
     "max_speed_mps",
     "max_acceleration_mps2",
     "signer_id",

@@ -10,7 +10,11 @@ import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from oscillink_safety_ops.runtime.contracts import ActionAcknowledgment, RecoveryEvent
+from oscillink_safety_ops.runtime.contracts import (
+    ActionAcknowledgment,
+    CommandAttributionRecord,
+    RecoveryEvent,
+)
 from oscillink_safety_ops.runtime.persistence import (
     StateArtifact,
     load_restart_state_or_fail_closed,
@@ -26,6 +30,7 @@ from oscillink_safety_ops.runtime.state_machine import (
     observe_action_acknowledgment,
     observe_action_request_timeout,
     record_action_request,
+    record_command_attribution_history,
 )
 
 NOW = datetime(2026, 9, 3, 12, 0, tzinfo=UTC)
@@ -71,6 +76,7 @@ INVALID_RECOVERY_PHASES = tuple(
     for case in INVALID_RECOVERY_CASES
     for operation in ("create", "check")
 )
+ATTRIBUTION_HISTORY_PHASES = ("attribution-history-create", "attribution-history-check")
 
 
 def _canonical_json(value: object) -> str:
@@ -430,11 +436,44 @@ def _run_adversarial_worker(root: Path, case: str) -> dict[str, object]:
     }
 
 
+def _run_attribution_history_worker(root: Path, phase: str) -> dict[str, object]:
+    if phase.endswith("-create"):
+        command = CommandAttributionRecord(
+            command_id="command-id:restart-history",
+            sequence_number=0,
+            observed_at=NOW,
+            motion_requested=True,
+            input_sha256=STARTUP_INPUT_SHA256,
+        )
+        state = record_command_attribution_history(
+            _create_latched_state(),
+            command_history=(command,),
+            consumed_command_attributions=("command-id:restart-history:sequence:0",),
+            evaluation_time=NOW,
+            input_sha256=(STARTUP_INPUT_SHA256,),
+        ).state
+        artifact = persist_supervisor_state(state, root=root)
+        _write_checkpoint(root, artifact)
+        return {"phase": phase, "state_sha256": artifact.sha256}
+
+    state = _load_checkpoint(root)
+    return {
+        "phase": phase,
+        "restart_integrity_state": "verified",
+        "latched": state.latched,
+        "history_count": len(state.command_history),
+        "history_command_id": state.command_history[0].command_id,
+        "consumed": state.consumed_command_attributions,
+        "physical_stop": "not_established",
+    }
+
+
 def _run_parent() -> dict[str, object]:
     phases: list[dict[str, object]] = []
     adversarial_cases: list[dict[str, object]] = []
     output_uncertainty_cases: list[dict[str, object]] = []
     invalid_recovery_cases: list[dict[str, object]] = []
+    attribution_history: dict[str, object] = {}
     with tempfile.TemporaryDirectory(prefix="oscillink-process-restart-") as temporary:
         root = Path(temporary)
         for phase in PHASES:
@@ -490,6 +529,20 @@ def _run_parent() -> dict[str, object]:
             if completed.returncode != 0:
                 raise RuntimeError(completed.stderr.strip() or f"worker failed: {case}")
             adversarial_cases.append(json.loads(completed.stdout))
+        attribution_root = root / "attribution-history"
+        for phase in ATTRIBUTION_HISTORY_PHASES:
+            if phase.endswith("-create"):
+                attribution_root.mkdir()
+            completed = subprocess.run(  # noqa: S603 -- fixed interpreter and local script
+                [sys.executable, __file__, "--worker", phase, "--root", str(attribution_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if completed.returncode != 0:
+                raise RuntimeError(completed.stderr.strip() or f"worker failed: {phase}")
+            if phase.endswith("-check"):
+                attribution_history = json.loads(completed.stdout)
     return {
         "schema_version": 1,
         "verification": "process_restart_latch_recovery_v1",
@@ -501,6 +554,8 @@ def _run_parent() -> dict[str, object]:
         "invalid_recovery_cases": invalid_recovery_cases,
         "adversarial_process_count": len(adversarial_cases),
         "adversarial_cases": adversarial_cases,
+        "attribution_history_process_count": len(ATTRIBUTION_HISTORY_PHASES),
+        "attribution_history": attribution_history,
         "physical_stop": "not_established",
         "operational_authority": "none",
     }
@@ -510,7 +565,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--worker",
-        choices=(PHASES + OUTPUT_UNCERTAINTY_PHASES + INVALID_RECOVERY_PHASES + ADVERSARIAL_CASES),
+        choices=(
+            PHASES
+            + OUTPUT_UNCERTAINTY_PHASES
+            + INVALID_RECOVERY_PHASES
+            + ATTRIBUTION_HISTORY_PHASES
+            + ADVERSARIAL_CASES
+        ),
     )
     parser.add_argument("--root", type=Path)
     arguments = parser.parse_args()
@@ -523,6 +584,8 @@ def main() -> None:
             report = _run_output_uncertainty_worker(arguments.root, arguments.worker)
         elif arguments.worker in INVALID_RECOVERY_PHASES:
             report = _run_invalid_recovery_worker(arguments.root, arguments.worker)
+        elif arguments.worker in ATTRIBUTION_HISTORY_PHASES:
+            report = _run_attribution_history_worker(arguments.root, arguments.worker)
         else:
             report = _run_worker(arguments.root, arguments.worker)
     else:

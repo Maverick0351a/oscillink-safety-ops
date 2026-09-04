@@ -26,6 +26,9 @@ Authorities == {"none", "production_observer", "fixture_observer",
 Events == {"init", "production_attempt", "ack", "assess_reset", "reset",
            "rearm", "recovery_confirmed", "fresh_start", "fresh_evidence",
            "reboot", "noop"} \cup FaultEvents
+AttributionFaultEvents == {"attribution_identity_reused",
+                           "attribution_response_precedes_command",
+                           "attribution_response_late"}
 
 Init ==
     /\ mode = "monitoring"
@@ -228,6 +231,13 @@ NoMotionCommandDuringRecovery ==
 
 FaultsFailClosed ==
     lastEvent \in FaultEvents =>
+        /\ latched
+        /\ mode = "intervention_latched"
+        /\ ~recoveryCompleted
+
+AttributionUniquenessChronologyFailClosed ==
+    lastEvent \in AttributionFaultEvents =>
+        /\ lastEvent \in FaultEvents
         /\ latched
         /\ mode = "intervention_latched"
         /\ ~recoveryCompleted

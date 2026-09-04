@@ -45,6 +45,7 @@ def bound(raw: bytes = b"synthetic-config-v1") -> BoundConfiguration:
         max_receive_delay_seconds=0.2,
         max_future_skew_seconds=0.0,
         max_correlation_delay_seconds=0.25,
+        approved_calibration_sha256=(SHA_D,),
         max_speed_mps=1.0,
         max_acceleration_mps2=2.0,
         signer_id="safety-config-signer:001",
@@ -220,6 +221,54 @@ def test_motion_attribution_mismatch_creates_only_a_local_simulated_request() ->
     assert result.action_request is not None
     assert result.action_request.operational_authority == "none"
     assert result.state.state.latched is True
+
+
+def test_historical_attribution_is_carried_between_supervisor_evaluations_and_single_use() -> None:
+    first = evaluate_supervisor(
+        observations(commanded=True), evaluation_time=NOW, runtime=runtime()
+    )
+    later = NOW + timedelta(seconds=0.1)
+    second_batch: list[Observation] = list(
+        observations(
+            sequence=1,
+            at=later,
+            motion="moving",
+            commanded=False,
+            speed=0.5,
+            digests=("sha256:" + "e" * 64, "sha256:" + "f" * 64, SHA_D),
+        )
+    )
+    second_batch[1] = second_batch[1].model_copy(
+        update={
+            "attributed_command_id": "command-id:0",
+            "attributed_command_sequence": 0,
+        }
+    )
+    second = evaluate_supervisor(tuple(second_batch), evaluation_time=later, runtime=first.state)
+    assert "command_attribution_reused" not in second.decision.reason_codes
+    assert "command-id:0:sequence:0" in second.state.state.consumed_command_attributions
+
+    latest = NOW + timedelta(seconds=0.2)
+    third_batch: list[Observation] = list(
+        observations(
+            sequence=2,
+            at=latest,
+            motion="moving",
+            commanded=False,
+            speed=0.5,
+            digests=("sha256:" + "2" * 64, "sha256:" + "3" * 64, "sha256:" + "4" * 64),
+        )
+    )
+    third_batch[1] = third_batch[1].model_copy(
+        update={
+            "attributed_command_id": "command-id:0",
+            "attributed_command_sequence": 0,
+        }
+    )
+    third = evaluate_supervisor(tuple(third_batch), evaluation_time=latest, runtime=second.state)
+
+    assert "command_attribution_reused" in third.decision.reason_codes
+    assert len(third.state.state.command_history) == 3
 
 
 def test_missing_stale_frozen_and_contradictory_sources_fail_closed() -> None:

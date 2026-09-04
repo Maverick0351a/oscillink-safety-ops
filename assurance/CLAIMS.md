@@ -36,15 +36,21 @@ suppression, clock, identity, credential, or policy authority.
 reject administrative fields; deterministic correlation and policy use independently modeled
 observations. Commanded and represented physical direction, frame, and program attributes remain
 optional untrusted data, but missing, ambiguous, contradictory, or mismatched motion attribution
-cannot normalize into monitoring-normal while motion is represented. Conflicting calibration
-identities are explicit. Physical independence, calibration approval, measurement accuracy, and
-common-cause behavior of any target system remain unvalidated.
+cannot normalize into monitoring-normal while motion is represented. Conflicting or unapproved
+calibration identities are explicit, and accepted calibration hashes are bound to the exact signed
+configuration. Physical independence, calibration adequacy, measurement accuracy, and common-cause
+behavior of any target system remain unvalidated.
 
 Physical motion attribution additionally binds a represented command ID and source sequence as one
 pair and evaluates response chronology against a signed configuration-controlled maximum delay.
 Missing, mismatched, ambiguous, non-motion, early, or late attribution remains explicit and produces
 only a local simulated request. The configured delay is a synthetic software boundary, not a
 validated machine response-time or stopping-time claim.
+
+The supervisor state carries a bounded exact command ledger and consumed-attribution identities
+across evaluations and verified restart. Reuse, substitution, malformed history, and capacity
+exhaustion fail closed. This is deterministic software provenance, not authentication of a physical
+command or proof of causation.
 
 ### CLM-003 — Conservative simulated response
 
