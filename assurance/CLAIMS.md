@@ -33,9 +33,12 @@ observations. Production AI is not allocated configuration, reset, acknowledgmen
 suppression, clock, identity, credential, or policy authority.
 
 **Current status:** production-input schemas enforce an untrusted-observation-only boundary and
-reject administrative fields; deterministic correlation and policy use the independently modeled
-observations. Physical independence and common-cause behavior of any target system remain
-unvalidated.
+reject administrative fields; deterministic correlation and policy use independently modeled
+observations. Commanded and represented physical direction, frame, and program attributes remain
+optional untrusted data, but missing, ambiguous, contradictory, or mismatched motion attribution
+cannot normalize into monitoring-normal while motion is represented. Conflicting calibration
+identities are explicit. Physical independence, calibration approval, measurement accuracy, and
+common-cause behavior of any target system remain unvalidated.
 
 ### CLM-003 — Conservative simulated response
 

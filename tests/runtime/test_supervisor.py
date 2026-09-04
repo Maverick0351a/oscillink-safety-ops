@@ -183,6 +183,36 @@ def test_occupied_measured_motion_creates_only_local_simulated_request_and_latch
     assert result.state.state.latched is True
 
 
+def test_motion_attribution_mismatch_creates_only_a_local_simulated_request() -> None:
+    batch: list[Observation] = list(observations(motion="moving", commanded=True, speed=0.5))
+    batch[0] = batch[0].model_copy(
+        update={
+            "motion_direction": "positive",
+            "frame_id": "frame:robot-base",
+            "program_id": "program:synthetic-cell",
+        }
+    )
+    batch[1] = batch[1].model_copy(
+        update={
+            "motion_direction": "negative",
+            "frame_id": "frame:workpiece",
+            "program_id": "program:unexpected",
+        }
+    )
+
+    result = evaluate_supervisor(tuple(batch), evaluation_time=NOW, runtime=runtime())
+
+    assert result.decision.action == "protective_stop_request"
+    assert {
+        "motion_direction_mismatch",
+        "motion_frame_mismatch",
+        "motion_program_mismatch",
+    }.issubset(result.decision.reason_codes)
+    assert result.action_request is not None
+    assert result.action_request.operational_authority == "none"
+    assert result.state.state.latched is True
+
+
 def test_missing_stale_frozen_and_contradictory_sources_fail_closed() -> None:
     missing = evaluate_supervisor(observations()[:-1], evaluation_time=NOW, runtime=runtime())
     stale = evaluate_supervisor(

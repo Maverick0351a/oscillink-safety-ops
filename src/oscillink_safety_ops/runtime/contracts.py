@@ -167,6 +167,7 @@ class CommandObservation(RuntimeObservation):
     motion_requested: StrictBool
     program_id: Identifier | None = None
     frame_id: Identifier | None = None
+    motion_direction: Literal["positive", "negative", "stationary", "unknown"] | None = None
 
     @model_validator(mode="after")
     def require_consistent_motion_intent(self) -> Self:
@@ -187,6 +188,9 @@ class PhysicalObservation(RuntimeObservation):
     acceleration_mps2: FiniteNonNegative | None = None
     quality: Literal["good", "degraded", "invalid", "missing", "contradictory"]
     calibration_sha256: Sha256
+    program_id: Identifier | None = None
+    frame_id: Identifier | None = None
+    motion_direction: Literal["positive", "negative", "stationary", "unknown"] | None = None
 
     @model_validator(mode="after")
     def preserve_unknown_and_contradictory_state(self) -> Self:

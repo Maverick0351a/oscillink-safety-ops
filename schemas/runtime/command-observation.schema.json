@@ -62,6 +62,24 @@
       "title": "Input Sha256",
       "type": "string"
     },
+    "motion_direction": {
+      "anyOf": [
+        {
+          "enum": [
+            "positive",
+            "negative",
+            "stationary",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Motion Direction"
+    },
     "motion_requested": {
       "title": "Motion Requested",
       "type": "boolean"

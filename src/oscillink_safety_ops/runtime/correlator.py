@@ -52,6 +52,41 @@ def correlate_command_and_state(
     if measured_motion and not commanded_motion:
         reasons.update(("orphan_motion", "unexpected_motion"))
 
+    motion_commands = tuple(item for item in commands if item.motion_requested)
+    moving_physical = tuple(item for item in physical if item.motion_state == "moving")
+    attribution = (
+        ("motion_direction", "motion_direction"),
+        ("motion_frame", "frame_id"),
+        ("motion_program", "program_id"),
+    )
+    for reason_prefix, field_name in attribution:
+        relevant = (*motion_commands, *moving_physical)
+        if relevant and any(getattr(item, field_name) is None for item in relevant):
+            reasons.add(f"{reason_prefix}_attribution_missing")
+        if field_name == "motion_direction" and any(
+            getattr(item, field_name) == "unknown" for item in relevant
+        ):
+            reasons.add("motion_direction_attribution_ambiguous")
+        command_values = {getattr(item, field_name) for item in motion_commands}
+        physical_values = {getattr(item, field_name) for item in moving_physical}
+        known_command_values = command_values - {None}
+        known_physical_values = physical_values - {None}
+        if (
+            len(known_command_values) > 1
+            or len(known_physical_values) > 1
+            or (
+                known_command_values
+                and known_physical_values
+                and known_command_values != known_physical_values
+            )
+        ):
+            reasons.add(f"{reason_prefix}_mismatch")
+
+    if any(item.motion_direction == "stationary" for item in moving_physical):
+        reasons.add("motion_direction_state_contradiction")
+    if len({item.calibration_sha256 for item in physical}) > 1:
+        reasons.add("calibration_identity_mismatch")
+
     for item in physical:
         if item.occupancy in {"present", "entering", "unknown"}:
             if commanded_motion:

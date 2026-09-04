@@ -66,6 +66,12 @@ def _observations(
     clock_state: str = "healthy",
     health_last_sequence: int | None = None,
     tag: str | None = None,
+    command_direction: str | None = "positive",
+    physical_direction: str | None = "positive",
+    command_frame_id: str | None = "frame:robot-base",
+    physical_frame_id: str | None = "frame:robot-base",
+    command_program_id: str | None = "program:synthetic-cell",
+    physical_program_id: str | None = "program:synthetic-cell",
 ) -> list[dict[str, Any]]:
     run_id = _run(case_id)
     received = received_at or observed_at
@@ -84,6 +90,9 @@ def _observations(
             "command_id": f"command-id:{suffix}",
             "command_kind": "motion_requested" if command_motion else "idle",
             "motion_requested": command_motion,
+            "motion_direction": command_direction,
+            "frame_id": command_frame_id,
+            "program_id": command_program_id,
         },
         {
             "schema_version": 1,
@@ -101,6 +110,9 @@ def _observations(
             "acceleration_mps2": acceleration_mps2,
             "quality": quality,
             "calibration_sha256": "sha256:" + "d" * 64,
+            "motion_direction": physical_direction,
+            "frame_id": physical_frame_id,
+            "program_id": physical_program_id,
         },
         {
             "schema_version": 1,
@@ -263,9 +275,26 @@ def build_case_documents() -> list[dict[str, Any]]:
     )
     add(
         "case:command-actual-mismatch",
-        "Commanded motion without measured motion",
+        "Commanded motion with state and attribution mismatch",
         ("motion_correlation",),
-        [_evaluate(_observations("case:command-actual-mismatch", command_motion=True), T0)],
+        [
+            _evaluate(_observations("case:command-actual-mismatch", command_motion=True), T0),
+            _evaluate(
+                _observations(
+                    "case:command-actual-mismatch",
+                    sequence=1,
+                    observed_at=T01,
+                    command_motion=True,
+                    motion_state="moving",
+                    speed_mps=0.5,
+                    acceleration_mps2=0.5,
+                    physical_direction="negative",
+                    physical_frame_id="frame:workpiece",
+                    physical_program_id="program:unexpected",
+                ),
+                T01,
+            ),
+        ],
     )
     for case_id, title, speed, acceleration in (
         ("case:speed-at-boundary", "Speed exactly at configured boundary", 1.0, 0.5),

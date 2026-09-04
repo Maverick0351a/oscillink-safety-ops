@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import Literal
 
 from oscillink_safety_ops.runtime.contracts import (
     CommandObservation,
@@ -35,7 +36,13 @@ def configuration() -> SupervisorConfiguration:
     )
 
 
-def command(*, motion: bool = True) -> CommandObservation:
+def command(
+    *,
+    motion: bool = True,
+    direction: Literal["positive", "negative", "stationary", "unknown"] | None = "positive",
+    frame_id: str | None = "frame:robot-base",
+    program_id: str | None = "program:synthetic-cell",
+) -> CommandObservation:
     return CommandObservation(
         observation_id="command:0",
         run_id="run:001",
@@ -47,6 +54,9 @@ def command(*, motion: bool = True) -> CommandObservation:
         command_id="command-id:0",
         command_kind="motion_requested" if motion else "idle",
         motion_requested=motion,
+        motion_direction=direction,
+        frame_id=frame_id,
+        program_id=program_id,
     )
 
 
@@ -56,6 +66,9 @@ def physical(
     motion: str = "stopped",
     speed: float | None = 0.0,
     acceleration: float | None = 0.0,
+    direction: Literal["positive", "negative", "stationary", "unknown"] | None = "positive",
+    frame_id: str | None = "frame:robot-base",
+    program_id: str | None = "program:synthetic-cell",
 ) -> PhysicalObservation:
     return PhysicalObservation.model_validate(
         {
@@ -73,6 +86,9 @@ def physical(
             "acceleration_mps2": acceleration,
             "quality": "degraded" if occupancy == "unknown" else "good",
             "calibration_sha256": SHA_C,
+            "motion_direction": direction,
+            "frame_id": frame_id,
+            "program_id": program_id,
         }
     )
 
@@ -160,3 +176,83 @@ def test_correlation_is_input_order_independent_and_binds_sorted_exact_hashes() 
     assert forward == reverse
     assert forward.input_sha256 == (SHA_A, SHA_B)
     assert forward.reason_codes == tuple(sorted(forward.reason_codes))
+
+
+def test_direction_frame_and_program_mismatches_are_independently_explicit() -> None:
+    direction = correlate_command_and_state(
+        (command(direction="positive"), physical(motion="moving", speed=0.5, direction="negative")),
+        configuration=configuration(),
+    )
+    frame = correlate_command_and_state(
+        (
+            command(frame_id="frame:robot-base"),
+            physical(motion="moving", speed=0.5, frame_id="frame:workpiece"),
+        ),
+        configuration=configuration(),
+    )
+    program = correlate_command_and_state(
+        (
+            command(program_id="program:synthetic-cell"),
+            physical(motion="moving", speed=0.5, program_id="program:unexpected"),
+        ),
+        configuration=configuration(),
+    )
+
+    assert "motion_direction_mismatch" in direction.reason_codes
+    assert "motion_frame_mismatch" in frame.reason_codes
+    assert "motion_program_mismatch" in program.reason_codes
+
+
+def test_missing_motion_attribution_is_explicit_when_motion_cannot_be_excluded() -> None:
+    result = correlate_command_and_state(
+        (
+            command(direction=None, frame_id=None, program_id=None),
+            physical(
+                motion="moving",
+                speed=0.5,
+                direction=None,
+                frame_id=None,
+                program_id=None,
+            ),
+        ),
+        configuration=configuration(),
+    )
+
+    assert {
+        "motion_direction_attribution_missing",
+        "motion_frame_attribution_missing",
+        "motion_program_attribution_missing",
+    }.issubset(result.reason_codes)
+
+
+def test_ambiguous_direction_and_state_contradiction_cannot_normalize() -> None:
+    ambiguous = correlate_command_and_state(
+        (command(direction="unknown"), physical(motion="moving", speed=0.5)),
+        configuration=configuration(),
+    )
+    contradictory = correlate_command_and_state(
+        (command(), physical(motion="moving", speed=0.5, direction="stationary")),
+        configuration=configuration(),
+    )
+
+    assert "motion_direction_attribution_ambiguous" in ambiguous.reason_codes
+    assert "motion_direction_state_contradiction" in contradictory.reason_codes
+
+
+def test_conflicting_physical_calibration_identity_is_explicit() -> None:
+    first = physical(motion="moving", speed=0.5)
+    second = first.model_copy(
+        update={
+            "observation_id": "physical:other",
+            "source_id": "independent-zone-sensor:b",
+            "input_sha256": "sha256:" + "d" * 64,
+            "calibration_sha256": "sha256:" + "e" * 64,
+        }
+    )
+
+    result = correlate_command_and_state(
+        (command(), first, second),
+        configuration=configuration(),
+    )
+
+    assert "calibration_identity_mismatch" in result.reason_codes

@@ -292,6 +292,26 @@
       "requirement_ids": ["SR-007"],
       "test_ids": ["TEST-007"],
       "change_impact_id": "CI-007"
+    },
+    {
+      "evidence_id": "EVID-030",
+      "evidence_type": "implemented_motion_attribution_correlation_tests",
+      "path": "tests/runtime/test_correlator.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-003", "SR-005"],
+      "test_ids": ["TEST-003", "TEST-005"],
+      "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-031",
+      "evidence_type": "synthetic_motion_attribution_benchmark_case",
+      "path": "benchmark/robot_cell_v1/expected-results.jsonl",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-003"],
+      "test_ids": ["TEST-003"],
+      "change_impact_id": "CI-003"
     }
   ],
   "open_target_system_values": {

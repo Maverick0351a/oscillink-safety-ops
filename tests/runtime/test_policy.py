@@ -54,6 +54,15 @@ def test_unexpected_mismatch_excessive_and_unverifiable_motion_fail_closed() -> 
         "excessive_speed",
         "excessive_acceleration",
         "acceleration_unavailable",
+        "calibration_identity_mismatch",
+        "motion_direction_attribution_ambiguous",
+        "motion_direction_attribution_missing",
+        "motion_direction_mismatch",
+        "motion_direction_state_contradiction",
+        "motion_frame_attribution_missing",
+        "motion_frame_mismatch",
+        "motion_program_attribution_missing",
+        "motion_program_mismatch",
     ):
         result = evaluate_policy(correlation(reason, measured=True))
         assert result.action == "protective_stop_request"

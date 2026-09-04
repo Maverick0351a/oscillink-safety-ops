@@ -44,10 +44,43 @@
       "title": "Evidence Suppression Authority",
       "type": "string"
     },
+    "frame_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Frame Id"
+    },
     "input_sha256": {
       "pattern": "^sha256:[0-9a-f]{64}$",
       "title": "Input Sha256",
       "type": "string"
+    },
+    "motion_direction": {
+      "anyOf": [
+        {
+          "enum": [
+            "positive",
+            "negative",
+            "stationary",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Motion Direction"
     },
     "motion_state": {
       "enum": [
@@ -93,6 +126,21 @@
       "default": "none",
       "title": "Output Authority",
       "type": "string"
+    },
+    "program_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Program Id"
     },
     "quality": {
       "enum": [

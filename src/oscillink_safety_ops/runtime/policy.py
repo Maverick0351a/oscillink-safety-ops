@@ -55,12 +55,21 @@ _SOURCE_FAILURES = {
 }
 _MEASURED_HAZARDS = {
     "acceleration_unavailable",
+    "calibration_identity_mismatch",
     "excessive_acceleration",
     "excessive_speed",
     "human_entering_with_measured_motion",
     "human_present_with_measured_motion",
     "human_unknown_with_measured_motion",
     "orphan_motion",
+    "motion_direction_attribution_ambiguous",
+    "motion_direction_attribution_missing",
+    "motion_direction_mismatch",
+    "motion_direction_state_contradiction",
+    "motion_frame_attribution_missing",
+    "motion_frame_mismatch",
+    "motion_program_attribution_missing",
+    "motion_program_mismatch",
     "unexpected_motion",
 }
 _COMMAND_HAZARDS = {
