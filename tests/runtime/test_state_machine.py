@@ -283,6 +283,42 @@ def test_reset_cannot_be_used_as_fresh_start() -> None:
     assert reset.state.fresh_start_required is False
 
 
+def test_invalid_reset_after_recovery_confirmation_remains_a_valid_conservative_state() -> None:
+    ready = assess_reset_readiness(
+        stopped_unverified(), conditions=conditions(), evaluation_time=NOW
+    ).state
+    reset = apply_recovery_event(
+        ready,
+        recovery_event("reset"),
+        conditions=conditions(),
+        evaluation_time=NOW,
+    ).state
+    rearmed = apply_recovery_event(
+        reset,
+        recovery_event("rearm"),
+        conditions=conditions(),
+        evaluation_time=NOW,
+    ).state
+    confirmed = apply_recovery_event(
+        rearmed,
+        recovery_event("recovery_confirmed"),
+        conditions=conditions(),
+        evaluation_time=NOW,
+    ).state
+
+    rejected = apply_recovery_event(
+        confirmed,
+        recovery_event("reset"),
+        conditions=conditions(),
+        evaluation_time=NOW,
+    ).state
+
+    assert rejected.supervisor_state == "reset_not_permitted"
+    assert rejected.latched is True
+    assert rejected.fresh_start_required is False
+    assert rejected.active_request_sha256 == REQUEST
+
+
 def test_state_records_are_byte_deterministic_for_same_explicit_inputs() -> None:
     first = apply_policy_evaluation(
         initial(),

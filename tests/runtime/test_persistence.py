@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from oscillink_safety_ops.runtime import persistence as runtime_persistence
 from oscillink_safety_ops.runtime.contracts import SupervisorStateRecord
 from oscillink_safety_ops.runtime.persistence import (
     PersistenceError,
@@ -23,6 +24,7 @@ from oscillink_safety_ops.runtime.policy import PolicyEvaluation
 from oscillink_safety_ops.runtime.state_machine import (
     apply_policy_evaluation,
     initial_supervisor_state,
+    record_action_request,
 )
 from oscillink_safety_ops.runtime.supervisor import canonical_record_bytes
 
@@ -31,11 +33,11 @@ CONFIG = "sha256:" + "a" * 64
 INPUT = "sha256:" + "b" * 64
 
 
-def state() -> SupervisorStateRecord:
+def state(*, run_id: str = "run:001", configuration_sha256: str = CONFIG) -> SupervisorStateRecord:
     initial = initial_supervisor_state(
-        run_id="run:001",
+        run_id=run_id,
         evaluation_time=NOW,
-        configuration_sha256=CONFIG,
+        configuration_sha256=configuration_sha256,
         input_sha256=(INPUT,),
     )
     return apply_policy_evaluation(
@@ -43,7 +45,7 @@ def state() -> SupervisorStateRecord:
         PolicyEvaluation("inhibit_request", "missing_source", ("missing_source",)),
         evaluation_time=NOW,
         input_sha256=(INPUT,),
-        configuration_sha256=CONFIG,
+        configuration_sha256=configuration_sha256,
     ).state
 
 
@@ -53,6 +55,124 @@ def artifact_for(relative_path: Path, raw: bytes) -> StateArtifact:
         sha256="sha256:" + hashlib.sha256(raw).hexdigest(),
         byte_count=len(raw),
     )
+
+
+def test_restart_restores_only_the_exact_latched_state(tmp_path: Path) -> None:
+    expected = state()
+    artifact = persist_supervisor_state(expected, root=tmp_path)
+
+    result = runtime_persistence.load_restart_state_or_fail_closed(
+        artifact,
+        root=tmp_path,
+        expected_run_id=expected.run_id,
+        expected_configuration_sha256=expected.configuration_sha256,
+        fail_closed_state=expected,
+    )
+
+    assert result.integrity_state == "verified"
+    assert result.reason_code == "verified_restart_latch"
+    assert result.state == expected
+    assert result.state.latched is True
+
+
+def test_restart_rejects_a_pre_restart_nonlatched_state(tmp_path: Path) -> None:
+    normal = apply_policy_evaluation(
+        initial_supervisor_state(
+            run_id="run:001",
+            evaluation_time=NOW,
+            configuration_sha256=CONFIG,
+            input_sha256=(INPUT,),
+        ),
+        PolicyEvaluation("none", "monitoring_normal", ("monitoring_normal",)),
+        evaluation_time=NOW,
+        input_sha256=(INPUT,),
+        configuration_sha256=CONFIG,
+    ).state
+    artifact = persist_supervisor_state(normal, root=tmp_path)
+    fail_closed = state()
+
+    result = runtime_persistence.load_restart_state_or_fail_closed(
+        artifact,
+        root=tmp_path,
+        expected_run_id=normal.run_id,
+        expected_configuration_sha256=normal.configuration_sha256,
+        fail_closed_state=fail_closed,
+    )
+
+    assert result.integrity_state == "failed_closed"
+    assert result.reason_code == "restart_state_not_latched"
+    assert result.state == fail_closed
+
+
+@pytest.mark.parametrize(
+    ("expected_run_id", "expected_configuration_sha256", "fail_closed"),
+    (
+        ("run:other", CONFIG, state(run_id="run:other")),
+        ("run:001", "sha256:" + "c" * 64, state(configuration_sha256="sha256:" + "c" * 64)),
+    ),
+    ids=("run-mismatch", "configuration-mismatch"),
+)
+def test_restart_rejects_latched_state_from_another_run_or_configuration(
+    tmp_path: Path,
+    expected_run_id: str,
+    expected_configuration_sha256: str,
+    fail_closed: SupervisorStateRecord,
+) -> None:
+    artifact = persist_supervisor_state(state(), root=tmp_path)
+
+    result = runtime_persistence.load_restart_state_or_fail_closed(
+        artifact,
+        root=tmp_path,
+        expected_run_id=expected_run_id,
+        expected_configuration_sha256=expected_configuration_sha256,
+        fail_closed_state=fail_closed,
+    )
+
+    assert result.integrity_state == "failed_closed"
+    assert result.reason_code == "restart_identity_mismatch"
+    assert result.state == fail_closed
+    assert result.state.latched is True
+
+
+def test_restart_rejects_a_fail_closed_fallback_for_the_wrong_identity(tmp_path: Path) -> None:
+    expected = state()
+    artifact = persist_supervisor_state(expected, root=tmp_path)
+
+    with pytest.raises(ValueError, match="fail_closed_state identity"):
+        runtime_persistence.load_restart_state_or_fail_closed(
+            artifact,
+            root=tmp_path,
+            expected_run_id="run:other",
+            expected_configuration_sha256=expected.configuration_sha256,
+            fail_closed_state=expected,
+        )
+
+
+def test_restart_rejects_a_stale_valid_state_against_the_trusted_expected_state_id(
+    tmp_path: Path,
+) -> None:
+    stale = state()
+    current = record_action_request(
+        stale,
+        request_sha256="sha256:" + "d" * 64,
+        evaluation_time=NOW,
+        input_sha256=(INPUT,),
+    ).state
+    stale_artifact = persist_supervisor_state(stale, root=tmp_path)
+    fail_closed = state()
+
+    result = runtime_persistence.load_restart_state_or_fail_closed(
+        stale_artifact,
+        root=tmp_path,
+        expected_run_id=current.run_id,
+        expected_configuration_sha256=current.configuration_sha256,
+        expected_state_id=current.state_id,
+        fail_closed_state=fail_closed,
+    )
+
+    assert result.integrity_state == "failed_closed"
+    assert result.reason_code == "restart_state_id_mismatch"
+    assert result.state == fail_closed
 
 
 def test_persist_and_load_exact_canonical_bytes_preserves_latch_across_restart(

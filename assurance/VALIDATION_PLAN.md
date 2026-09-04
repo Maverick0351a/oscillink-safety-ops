@@ -138,9 +138,14 @@ or physical stopping.
 ### TEST-009 — Restart persistence
 
 - **Implemented portion:** canonical state bytes are content-addressed, root-confined, atomically
-  published, exact-byte verified, and reloaded with latches preserved; missing, truncated,
-  substituted, poisoned, and corrupt artifacts return a caller-supplied conservative latch. Full
-  process-level restart replay remains planned.
+  published, exact-byte verified, and reloaded with latches preserved. A canonical process-level
+  replay crosses a fresh operating-system process before acknowledgment, reset readiness, reset,
+  rearm, recovery confirmation, and fresh start. Separate process cases preserve pending and
+  unresolved output without inferring acknowledgment, stopping, or reset readiness. Missing,
+  corrupt, partially published, stale, conflicting, nonlatched, run-mismatched, or
+  trusted-state-ID-mismatched restart inputs fail closed. Process probes also deny sequence bypass
+  after interrupted reset-not-permitted, rearm-pending, recovery-pending, and recovery-confirmed
+  states. Exhaustive invalid-event permutations remain planned.
 
 - **Requirement:** `SR-009`; hazard/control: `HAZ-009` / `CTRL-009`.
 - **Stimuli:** restart from every latch/recovery state; missing, truncated, corrupt, stale, and
@@ -152,8 +157,10 @@ or physical stopping.
 
 - **Implemented portion:** pure transitions deny production-AI authority, invalid stage, unresolved
   prerequisites, and replayed/future events; acknowledgment/reset/rearm/recovery/fresh start remain
-  distinct and never command motion. Deterministic Hypothesis cases and the abstract TLA+ model check
-  latch/recovery invariants. External authorization is represented, not implemented.
+  distinct and never command motion. Invalid reset after recovery confirmation returns a valid
+  conservative state rather than carrying a fresh-start flag into an incompatible state.
+  Deterministic Hypothesis cases, cross-process interruption probes, and the abstract TLA+ model
+  check latch/recovery invariants. External authorization is represented, not implemented.
 
 - **Requirement:** `SR-010`; hazard/control: `HAZ-010` / `CTRL-010`.
 - **Stimuli:** reset/rearm from production AI, while occupied, moving, degraded, configuration-changed,

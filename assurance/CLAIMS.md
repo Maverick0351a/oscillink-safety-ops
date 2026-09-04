@@ -57,7 +57,12 @@ recovery, and a later fresh start. Process restart and production-AI input canno
 Reset never commands motion.
 
 **Current status:** the pure state model separates these stages, denies invalid/replayed recovery
-events, preserves latches in content-addressed state, and never creates motion authority. External
+events, preserves latches in content-addressed state, and never creates motion authority. A local
+canonical verifier now crosses a fresh operating-system process before each represented recovery
+transition. It preserves pending or unresolved output without inferring acknowledgment or stopping,
+denies invalid recovery-sequence probes, and fails closed on missing, corrupt, partially published,
+stale, conflicting, nonlatched, or identity-mismatched restart state. Stale/conflicting detection
+requires a trusted expected state identity supplied outside the persisted candidate. External
 authorization, controller recovery, and target-system validation are not implemented.
 
 ## Claims explicitly not made

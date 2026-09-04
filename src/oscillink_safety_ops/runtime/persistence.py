@@ -290,6 +290,55 @@ def load_supervisor_state(
     return _parse_state(raw)
 
 
+def load_restart_state_or_fail_closed(
+    artifact: StateArtifact,
+    *,
+    root: Path,
+    expected_run_id: str,
+    expected_configuration_sha256: str,
+    fail_closed_state: SupervisorStateRecord,
+    expected_state_id: str | None = None,
+    max_bytes: int = DEFAULT_MAX_STATE_BYTES,
+) -> StateLoadResult:
+    """Restore one exact state for a process restart without clearing its latch."""
+
+    if (
+        fail_closed_state.run_id != expected_run_id
+        or fail_closed_state.configuration_sha256 != expected_configuration_sha256
+    ):
+        raise ValueError("fail_closed_state identity must match the expected restart identity")
+    result = load_supervisor_state_or_fail_closed(
+        artifact,
+        root=root,
+        fail_closed_state=fail_closed_state,
+        max_bytes=max_bytes,
+    )
+    if result.integrity_state == "failed_closed":
+        return result
+    if (
+        result.state.run_id != expected_run_id
+        or result.state.configuration_sha256 != expected_configuration_sha256
+    ):
+        return StateLoadResult(
+            fail_closed_state,
+            "failed_closed",
+            "restart_identity_mismatch",
+        )
+    if expected_state_id is not None and result.state.state_id != expected_state_id:
+        return StateLoadResult(
+            fail_closed_state,
+            "failed_closed",
+            "restart_state_id_mismatch",
+        )
+    if not result.state.latched:
+        return StateLoadResult(
+            fail_closed_state,
+            "failed_closed",
+            "restart_state_not_latched",
+        )
+    return StateLoadResult(result.state, "verified", "verified_restart_latch")
+
+
 def load_supervisor_state_or_fail_closed(
     artifact: StateArtifact,
     *,

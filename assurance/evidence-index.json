@@ -262,6 +262,16 @@
       "requirement_ids": ["SR-001", "SR-002", "SR-003", "SR-004", "SR-005", "SR-006", "SR-007", "SR-008", "SR-009", "SR-010", "SR-011"],
       "test_ids": ["TEST-001", "TEST-002", "TEST-003", "TEST-004", "TEST-005", "TEST-006", "TEST-007", "TEST-008", "TEST-009", "TEST-010", "TEST-011"],
       "change_impact_id": "CI-001"
+    },
+    {
+      "evidence_id": "EVID-027",
+      "evidence_type": "synthetic_process_restart_recovery_replay",
+      "path": "tests/runtime/test_process_restart.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-009", "SR-010"],
+      "test_ids": ["TEST-009", "TEST-010"],
+      "change_impact_id": "CI-009"
     }
   ],
   "open_target_system_values": {

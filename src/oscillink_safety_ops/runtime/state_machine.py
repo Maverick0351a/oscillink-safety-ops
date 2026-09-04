@@ -370,6 +370,9 @@ def apply_recovery_event(
             target = "reset_not_permitted"
             reasons = tuple(sorted({*reasons, "fresh_start_not_permitted"}))
 
+    if target != "recovery_pending":
+        fresh_start_required = False
+
     return StateTransition(
         _build_state(
             state,
