@@ -28,7 +28,7 @@ or command interface. Every request and receipt is represented synthetic data; p
 ## High-value cases
 
 - `case:simultaneous-priority-faults`: first-out `configuration_changed_mid_run` with sorted reasons
-  `command_actual_mismatch, configuration_changed_mid_run, excessive_acceleration, excessive_speed, human_present_with_measured_motion, orphan_motion, output_uncertain, unexpected_motion`.
+  `command_actual_mismatch, command_attribution_nonmotion, configuration_changed_mid_run, excessive_acceleration, excessive_speed, human_present_with_measured_motion, orphan_motion, output_uncertain, unexpected_motion`.
 - `case:false-acknowledgment`: a mismatched receipt does not resolve the output path or prove stop.
 - `case:restart-latch-preservation`: process restart preserves the intervention latch.
 - `case:production-reset-attempt`: production-AI reset authority is rejected.
