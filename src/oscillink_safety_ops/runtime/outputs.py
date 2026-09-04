@@ -3,12 +3,18 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import stat
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path, PureWindowsPath
 from typing import Final
+
+from pydantic import ValidationError
+
+from .contracts import ActionRequest
+from .supervisor import canonical_record_bytes
 
 DEFAULT_MAX_OUTPUT_BYTES: Final = 8 * 1024 * 1024
 
@@ -110,6 +116,55 @@ def _read_verified(path: Path, *, expected: bytes, maximum: int) -> None:
         raise OutputError("collision", "output destination exact-byte collision")
 
 
+def _validate_existing_directory(root: Path, relative: Path) -> Path:
+    cursor = root
+    for part in relative.parts:
+        if part in {"", "."}:
+            continue
+        cursor /= part
+        try:
+            metadata = cursor.lstat()
+        except FileNotFoundError as error:
+            raise OutputError("missing_output", "output parent is missing") from error
+        except OSError as error:
+            raise OutputError("metadata_unavailable", "output parent is unavailable") from error
+        if stat.S_ISLNK(metadata.st_mode):
+            raise OutputError("path_symlink", "output path contains a symlink")
+        if not stat.S_ISDIR(metadata.st_mode):
+            raise OutputError("non_directory_parent", "output parent is not a directory")
+    return cursor
+
+
+def _read_bounded_snapshot(path: Path, *, maximum: int) -> bytes:
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError as error:
+        raise OutputError("missing_output", "request artifact is missing") from error
+    except OSError as error:
+        raise OutputError("metadata_unavailable", "request artifact is unavailable") from error
+    if stat.S_ISLNK(metadata.st_mode):
+        raise OutputError("path_symlink", "request artifact cannot be a symlink")
+    if not stat.S_ISREG(metadata.st_mode):
+        raise OutputError("non_regular", "request artifact must be a regular file")
+    if metadata.st_size > maximum:
+        raise OutputError("oversized", f"request artifact exceeds {maximum} bytes")
+    try:
+        with path.open("rb") as stream:
+            opened = os.fstat(stream.fileno())
+            if not stat.S_ISREG(opened.st_mode):
+                raise OutputError("non_regular", "request artifact must be a regular file")
+            if (metadata.st_dev, metadata.st_ino) != (opened.st_dev, opened.st_ino):
+                raise OutputError("substitution", "request artifact changed while opening")
+            raw = stream.read(maximum + 1)
+    except OutputError:
+        raise
+    except OSError as error:
+        raise OutputError("read_failed", "request artifact cannot be read") from error
+    if len(raw) > maximum:
+        raise OutputError("oversized", f"request artifact exceeds {maximum} bytes")
+    return raw
+
+
 def _fsync_directory(directory: Path) -> None:
     try:
         descriptor = os.open(directory, os.O_RDONLY)
@@ -177,4 +232,119 @@ def publish_local_output(
             except OSError as error:
                 raise OutputError("cleanup_failed", "temporary output cleanup failed") from error
     _read_verified(destination, expected=raw, maximum=max_bytes)
+    return artifact
+
+
+def _request_binding_bytes(request: ActionRequest, artifact: OutputArtifact) -> bytes:
+    return (
+        json.dumps(
+            {
+                "operational_authority": "none",
+                "request_id": request.request_id,
+                "request_relative_path": artifact.relative_path.as_posix(),
+                "request_sha256": artifact.sha256,
+                "schema_version": 1,
+            },
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def load_action_request(
+    artifact: OutputArtifact,
+    *,
+    root: Path,
+    max_bytes: int = DEFAULT_MAX_OUTPUT_BYTES,
+) -> ActionRequest:
+    """Load one local simulated request artifact."""
+
+    _relative(artifact.relative_path)
+    if type(max_bytes) is not int or max_bytes < 1 or max_bytes > 64 * 1024 * 1024:
+        raise OutputError("invalid_bound", "output byte bound is invalid")
+    if artifact.byte_count > max_bytes:
+        raise OutputError("oversized", f"request artifact exceeds {max_bytes} bytes")
+    resolved_root = _root(root)
+    _validate_existing_directory(resolved_root, artifact.relative_path.parent)
+    path = resolved_root / artifact.relative_path
+    raw = _read_bounded_snapshot(path, maximum=max_bytes)
+    if len(raw) != artifact.byte_count:
+        raise OutputError("byte_count_mismatch", "request artifact byte count mismatch")
+    digest = "sha256:" + hashlib.sha256(raw).hexdigest()
+    if digest != artifact.sha256:
+        raise OutputError("hash_mismatch", "request artifact exact-byte hash mismatch")
+    if artifact.relative_path.name != f"{digest.removeprefix('sha256:')}.json":
+        raise OutputError("content_address_mismatch", "request artifact path is not its digest")
+    try:
+        request = ActionRequest.model_validate_json(raw)
+    except ValidationError as error:
+        raise OutputError("invalid_request", "request artifact violates its contract") from error
+    if canonical_record_bytes(request) != raw:
+        raise OutputError("noncanonical_request", "request artifact bytes are not canonical")
+    identity_digest = hashlib.sha256(request.request_id.encode("utf-8")).hexdigest()
+    binding_path = (
+        resolved_root / artifact.relative_path.parent / "by-id" / f"{identity_digest}.json"
+    )
+    try:
+        _validate_existing_directory(resolved_root, artifact.relative_path.parent / "by-id")
+    except OutputError as error:
+        if error.code == "missing_output":
+            raise OutputError(
+                "missing_identity_binding", "request identity binding is missing"
+            ) from error
+        raise
+    try:
+        binding_path.lstat()
+    except FileNotFoundError as error:
+        raise OutputError(
+            "missing_identity_binding", "request identity binding is missing"
+        ) from error
+    except OSError as error:
+        raise OutputError(
+            "metadata_unavailable", "request identity binding is unavailable"
+        ) from error
+    _read_verified(
+        binding_path,
+        expected=_request_binding_bytes(request, artifact),
+        maximum=max_bytes,
+    )
+    return request
+
+
+def persist_action_request(
+    request: ActionRequest,
+    *,
+    root: Path,
+    directory: Path = Path("requests"),
+    max_bytes: int = DEFAULT_MAX_OUTPUT_BYTES,
+) -> OutputArtifact:
+    """Publish one canonical simulated request under its exact content address."""
+
+    raw = canonical_record_bytes(request)
+    digest = hashlib.sha256(raw).hexdigest()
+    artifact = publish_local_output(
+        raw,
+        root=root,
+        relative_path=directory / f"{digest}.json",
+        max_bytes=max_bytes,
+    )
+    identity_digest = hashlib.sha256(request.request_id.encode("utf-8")).hexdigest()
+    binding = _request_binding_bytes(request, artifact)
+    try:
+        publish_local_output(
+            binding,
+            root=root,
+            relative_path=directory / "by-id" / f"{identity_digest}.json",
+            max_bytes=max_bytes,
+        )
+    except OutputError as error:
+        if error.code == "collision":
+            raise OutputError(
+                "request_identity_collision",
+                "request identity is already bound to different exact bytes",
+            ) from error
+        raise
     return artifact

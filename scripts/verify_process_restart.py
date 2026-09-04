@@ -24,6 +24,7 @@ from oscillink_safety_ops.runtime.state_machine import (
     assess_reset_readiness,
     initial_supervisor_state,
     observe_action_acknowledgment,
+    observe_action_request_timeout,
     record_action_request,
 )
 
@@ -56,6 +57,8 @@ OUTPUT_UNCERTAINTY_PHASES = (
     "request-pending-check",
     "output-unresolved-create",
     "output-unresolved-check",
+    "request-timeout-create",
+    "request-timeout-check",
 )
 INVALID_RECOVERY_CASES = (
     "reset-not-permitted",
@@ -311,6 +314,12 @@ def _run_output_uncertainty_worker(root: Path, phase: str) -> dict[str, object]:
                 false_acknowledgment,
                 evaluation_time=NOW,
             ).state
+        elif phase == "request-timeout-create":
+            state = observe_action_request_timeout(
+                state,
+                evaluation_time=NOW + timedelta(seconds=1),
+                timeout_seconds=1.0,
+            ).state
         artifact = persist_supervisor_state(state, root=root)
         _write_checkpoint(root, artifact)
         return {"phase": phase, "state_sha256": artifact.sha256}
@@ -337,6 +346,7 @@ def _run_output_uncertainty_worker(root: Path, phase: str) -> dict[str, object]:
         "latched": state.latched,
         "active_request_sha256": state.active_request_sha256,
         "output_state": state.output_state,
+        "reason_codes": state.reason_codes,
         "reset_probe_state": reset_probe.supervisor_state,
         "reset_probe_latched": reset_probe.latched,
         "acknowledgment_inferred": state.output_state == "acknowledged_unverified",

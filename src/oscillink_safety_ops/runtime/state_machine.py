@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .contracts import (
     ActionAcknowledgment,
@@ -205,6 +206,88 @@ def record_action_request(
     )
 
 
+def observe_action_request_persistence_failure(
+    state: SupervisorStateRecord,
+    *,
+    evaluation_time: datetime,
+) -> StateTransition:
+    """Record local request persistence uncertainty without inferring delivery."""
+
+    if (
+        state.supervisor_state != "intervention_latched"
+        or state.active_request_sha256 is None
+        or state.output_state != "request_pending"
+    ):
+        raise ValueError("request persistence failure requires a pending latched action request")
+    if evaluation_time.tzinfo is None or evaluation_time.utcoffset() is None:
+        raise ValueError("evaluation_time must be timezone-aware")
+    if evaluation_time < state.evaluated_at:
+        raise ValueError("evaluation_time cannot predate the pending request")
+    reasons = tuple(sorted({*state.reason_codes, "output_persistence_failed"}))
+    return StateTransition(
+        _build_state(
+            state,
+            run_id=state.run_id,
+            evaluation_time=evaluation_time,
+            supervisor_state="intervention_latched",
+            latched=True,
+            first_out_reason=state.first_out_reason,
+            reason_codes=reasons,
+            configuration_sha256=state.configuration_sha256,
+            input_sha256=state.input_sha256,
+            active_request_sha256=state.active_request_sha256,
+            output_state="unresolved",
+            reset_sequence=state.reset_sequence,
+        ),
+        "none",
+    )
+
+
+def observe_action_request_timeout(
+    state: SupervisorStateRecord,
+    *,
+    evaluation_time: datetime,
+    timeout_seconds: float,
+) -> StateTransition:
+    """Evaluate a pending simulated request against an explicit timeout boundary."""
+
+    if (
+        state.supervisor_state != "intervention_latched"
+        or state.active_request_sha256 is None
+        or state.output_state != "request_pending"
+    ):
+        raise ValueError("request timeout requires a pending latched action request")
+    if type(timeout_seconds) not in {int, float} or not math.isfinite(timeout_seconds):
+        raise ValueError("timeout_seconds must be finite")
+    if timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
+    if evaluation_time.tzinfo is None or evaluation_time.utcoffset() is None:
+        raise ValueError("evaluation_time must be timezone-aware")
+    if evaluation_time < state.evaluated_at:
+        raise ValueError("evaluation_time cannot predate the pending request")
+    deadline = state.evaluated_at + timedelta(seconds=timeout_seconds)
+    if evaluation_time < deadline:
+        return StateTransition(state, "none")
+    reasons = tuple(sorted({*state.reason_codes, "output_timeout"}))
+    return StateTransition(
+        _build_state(
+            state,
+            run_id=state.run_id,
+            evaluation_time=evaluation_time,
+            supervisor_state="intervention_latched",
+            latched=True,
+            first_out_reason=state.first_out_reason,
+            reason_codes=reasons,
+            configuration_sha256=state.configuration_sha256,
+            input_sha256=state.input_sha256,
+            active_request_sha256=state.active_request_sha256,
+            output_state="unresolved",
+            reset_sequence=state.reset_sequence,
+        ),
+        "none",
+    )
+
+
 def observe_action_acknowledgment(
     state: SupervisorStateRecord,
     acknowledgment: ActionAcknowledgment,
@@ -213,6 +296,8 @@ def observe_action_acknowledgment(
 ) -> StateTransition:
     valid = (
         state.latched
+        and state.supervisor_state == "intervention_latched"
+        and state.output_state == "request_pending"
         and state.active_request_sha256 is not None
         and acknowledgment.run_id == state.run_id
         and acknowledgment.configuration_sha256 == state.configuration_sha256

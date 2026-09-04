@@ -51,10 +51,11 @@ def test_restart_during_output_uncertainty_preserves_request_and_denies_recovery
 
     assert completed.returncode == 0, completed.stderr
     report = json.loads(completed.stdout)
-    assert report["output_uncertainty_process_count"] == 4
+    assert report["output_uncertainty_process_count"] == 6
     assert {case["case"] for case in report["output_uncertainty_cases"]} == {
         "request-pending",
         "output-unresolved",
+        "request-timeout",
     }
     for case in report["output_uncertainty_cases"]:
         assert case["restart_integrity_state"] == "verified"
@@ -69,6 +70,10 @@ def test_restart_during_output_uncertainty_preserves_request_and_denies_recovery
         "request_pending",
         "unresolved",
     }
+    timed_out = next(
+        case for case in report["output_uncertainty_cases"] if case["case"] == "request-timeout"
+    )
+    assert "output_timeout" in timed_out["reason_codes"]
 
 
 def test_restart_from_invalid_or_interrupted_recovery_state_cannot_bypass_sequence() -> None:

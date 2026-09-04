@@ -44,10 +44,12 @@ local simulated inhibit or protective-stop request. Missing acknowledgment or un
 must remain an explicit fault; neither a request nor an acknowledgment is evidence of successful
 physical stopping.
 
-**Current status:** deterministic logic creates and latches an in-memory simulated request record,
-handles untrusted fixture acknowledgments conservatively, persists exact-byte state, and publishes
-only a local closed-file replay report. The benchmark and static monitor keep request,
-acknowledgment, and `not_established` physical-stop state distinct. No logic delivers a request or
+**Current status:** deterministic logic creates and latches a simulated request record, publishes it
+only as a content-addressed local artifact with an immutable request-ID binding, handles untrusted
+fixture acknowledgments conservatively, and persists exact-byte state. Explicit-time timeout keeps
+the request latched and unresolved, including across process restart; a late acknowledgment cannot
+resolve that fault. The benchmark and static monitor keep request, acknowledgment, and
+`not_established` physical-stop state distinct. No logic delivers a request to an external system or
 verifies physical stopping.
 
 ### CLM-004 — Recovery separation

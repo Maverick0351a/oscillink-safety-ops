@@ -7,6 +7,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 from pydantic import ValidationError
 
+from oscillink_safety_ops.runtime import state_machine as runtime_state_machine
 from oscillink_safety_ops.runtime.contracts import (
     ActionAcknowledgment,
     RecoveryEvent,
@@ -135,6 +136,92 @@ def test_required_state_vocabulary_and_normal_degraded_intervention_transitions(
     assert degraded.state.supervisor_state == "monitoring_degraded"
     assert intervention.state.supervisor_state == "intervention_requested"
     assert intervention.state.latched is True
+
+
+def test_request_persistence_failure_marks_output_unresolved_without_clearing_latch() -> None:
+    state = latched()
+
+    result = runtime_state_machine.observe_action_request_persistence_failure(
+        state,
+        evaluation_time=NOW + timedelta(milliseconds=1),
+    )
+
+    assert result.state.supervisor_state == "intervention_latched"
+    assert result.state.output_state == "unresolved"
+    assert result.state.latched is True
+    assert result.state.active_request_sha256 == REQUEST
+    assert "output_persistence_failed" in result.state.reason_codes
+    assert result.action == "none"
+
+
+def test_request_timeout_rejects_evaluation_time_rollback() -> None:
+    with pytest.raises(ValueError, match="predate"):
+        runtime_state_machine.observe_action_request_timeout(
+            latched(),
+            evaluation_time=NOW - timedelta(microseconds=1),
+            timeout_seconds=1.0,
+        )
+
+
+@pytest.mark.parametrize("timeout_seconds", (float("nan"), float("inf"), float("-inf")))
+def test_request_timeout_rejects_nonfinite_duration(timeout_seconds: float) -> None:
+    with pytest.raises(ValueError, match="finite"):
+        runtime_state_machine.observe_action_request_timeout(
+            latched(),
+            evaluation_time=NOW,
+            timeout_seconds=timeout_seconds,
+        )
+
+
+def test_request_timeout_does_not_fire_before_the_explicit_deadline() -> None:
+    state = latched()
+
+    result = runtime_state_machine.observe_action_request_timeout(
+        state,
+        evaluation_time=NOW + timedelta(milliseconds=999),
+        timeout_seconds=1.0,
+    )
+
+    assert result.state == state
+    assert result.action == "none"
+
+
+def test_request_timeout_fires_at_the_explicit_deadline_and_preserves_the_latch() -> None:
+    state = latched()
+    deadline = NOW + timedelta(seconds=1)
+
+    result = runtime_state_machine.observe_action_request_timeout(
+        state,
+        evaluation_time=deadline,
+        timeout_seconds=1.0,
+    )
+
+    assert result.state.supervisor_state == "intervention_latched"
+    assert result.state.output_state == "unresolved"
+    assert result.state.latched is True
+    assert result.state.active_request_sha256 == REQUEST
+    assert result.state.first_out_reason == state.first_out_reason
+    assert "output_timeout" in result.state.reason_codes
+    assert result.state.evaluated_at == deadline
+    assert result.action == "none"
+
+
+def test_acknowledgment_observed_after_timeout_cannot_resolve_the_output_fault() -> None:
+    deadline = NOW + timedelta(seconds=1)
+    timed_out = runtime_state_machine.observe_action_request_timeout(
+        latched(),
+        evaluation_time=deadline,
+        timeout_seconds=1.0,
+    ).state
+    late = acknowledgment().model_copy(update={"observed_at": deadline})
+
+    result = observe_action_acknowledgment(timed_out, late, evaluation_time=deadline)
+
+    assert result.state.supervisor_state == "intervention_latched"
+    assert result.state.output_state == "unresolved"
+    assert result.state.latched is True
+    assert "output_timeout" in result.state.reason_codes
+    assert "output_false_acknowledgment" in result.state.reason_codes
 
 
 def test_acknowledgment_is_distinct_from_reset_and_never_clears_latch() -> None:

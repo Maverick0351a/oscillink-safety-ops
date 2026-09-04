@@ -272,6 +272,26 @@
       "requirement_ids": ["SR-009", "SR-010"],
       "test_ids": ["TEST-009", "TEST-010"],
       "change_impact_id": "CI-009"
+    },
+    {
+      "evidence_id": "EVID-028",
+      "evidence_type": "implemented_local_request_artifact_tests",
+      "path": "tests/runtime/test_outputs.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-007"],
+      "test_ids": ["TEST-007"],
+      "change_impact_id": "CI-007"
+    },
+    {
+      "evidence_id": "EVID-029",
+      "evidence_type": "implemented_request_timeout_state_tests",
+      "path": "tests/runtime/test_state_machine.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-007"],
+      "test_ids": ["TEST-007"],
+      "change_impact_id": "CI-007"
     }
   ],
   "open_target_system_values": {

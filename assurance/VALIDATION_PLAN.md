@@ -112,8 +112,12 @@ or physical stopping.
 ### TEST-007 — Output request and acknowledgment faults
 
 - **Implemented portion:** provenance-bearing non-authoritative output contracts, in-memory request
-  creation, latch recording, and false/replayed fixture-acknowledgment handling are covered. Request
-  delivery, request-artifact persistence, and timeout behavior remain planned.
+  creation, latch recording, and false/replayed fixture-acknowledgment handling are covered. Local
+  simulated request artifacts are atomically published under exact content addresses with immutable
+  request-ID bindings, bounded exact-byte reload, canonical-form validation, and collision rejection.
+  Explicit-time timeout transitions preserve the request and latch, mark output unresolved at the
+  deadline, reject time rollback/non-finite durations, and prevent late acknowledgment from resolving
+  the timeout. Cross-process replay verifies the timed-out state. Live delivery remains unimplemented.
 
 - **Requirement:** `SR-007`; hazard/control: `HAZ-007` / `CTRL-007`.
 - **Stimuli:** local write failure, partial/corrupt request, reused identity with changed bytes,
