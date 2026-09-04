@@ -129,7 +129,7 @@ def test_generator_writes_repeatable_exact_outputs_metrics_schemas_and_manifest(
     first = generate_benchmark(
         destination,
         source_repository=repository,
-        runtime_baseline_commit="ac22ed53de1baaf73612f051f95feb7e6e603521",
+        runtime_baseline_commit="dc27cf6ce25be97b0cb70b698679445103409e7b",
     )
     first_bytes = {
         path.relative_to(destination).as_posix(): path.read_bytes()
@@ -139,7 +139,7 @@ def test_generator_writes_repeatable_exact_outputs_metrics_schemas_and_manifest(
     second = generate_benchmark(
         destination,
         source_repository=repository,
-        runtime_baseline_commit="ac22ed53de1baaf73612f051f95feb7e6e603521",
+        runtime_baseline_commit="dc27cf6ce25be97b0cb70b698679445103409e7b",
     )
     second_bytes = {
         path.relative_to(destination).as_posix(): path.read_bytes()

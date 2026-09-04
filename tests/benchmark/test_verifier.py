@@ -14,7 +14,7 @@ from scripts import generate_benchmark as benchmark_generator
 from scripts.generate_benchmark import generate_benchmark
 from scripts.verify_benchmark import verify_benchmark as verify_benchmark
 
-SOURCE_COMMIT = "ac22ed53de1baaf73612f051f95feb7e6e603521"
+SOURCE_COMMIT = "dc27cf6ce25be97b0cb70b698679445103409e7b"
 MAX_BENCHMARK_FILE_BYTES = 4 * 1024 * 1024
 
 

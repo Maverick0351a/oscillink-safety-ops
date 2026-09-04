@@ -991,7 +991,7 @@ def verify_benchmark(
     runtime_baseline_commit = manifest["runtime_baseline_commit"]
     if (
         type(runtime_baseline_commit) is not str
-        or runtime_baseline_commit != "ac22ed53de1baaf73612f051f95feb7e6e603521"
+        or runtime_baseline_commit != "dc27cf6ce25be97b0cb70b698679445103409e7b"
     ):
         raise BenchmarkVerificationError("source_drift", "runtime baseline commit identity drifted")
     benchmark_source = _read_regular(repository, "src/oscillink_safety_ops/benchmark.py")
