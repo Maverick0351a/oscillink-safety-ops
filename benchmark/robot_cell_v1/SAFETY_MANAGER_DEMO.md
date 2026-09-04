@@ -11,7 +11,7 @@ or command interface. Every request and receipt is represented synthetic data; p
 - 36/36 exact byte matches across 3 runs per case
 - 12/12 required fault families represented
 - 108 deterministic executions; no wall-clock latency claim
-- actions: `inhibit_request` 12, `none` 4, `protective_stop_request` 20
+- actions: `inhibit_request` 11, `none` 4, `protective_stop_request` 21
 
 ## Inspection sequence
 

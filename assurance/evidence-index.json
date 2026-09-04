@@ -308,7 +308,7 @@
       "evidence_type": "synthetic_motion_attribution_benchmark_case",
       "path": "benchmark/robot_cell_v1/expected-results.jsonl",
       "owner": "ROLE-SAFETY-OWNER",
-      "status": "planned",
+      "status": "implemented",
       "requirement_ids": ["SR-003"],
       "test_ids": ["TEST-003"],
       "change_impact_id": "CI-003"

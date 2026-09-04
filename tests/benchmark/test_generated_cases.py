@@ -102,6 +102,14 @@ def test_every_generated_case_executes_exactly_and_key_boundary_oracles_hold(
         results["case:simultaneous-source-motion-faults"].result["final"]["first_out_reason"]
         == "stale_observation"
     )
+    attribution = results["case:command-actual-mismatch"].result["timeline"][1]
+    assert attribution["action"] == "protective_stop_request"
+    assert attribution["reason_codes"] == [
+        "motion_direction_mismatch",
+        "motion_frame_mismatch",
+        "motion_program_mismatch",
+    ]
+    assert attribution["physical_stop"] == "not_established"
     for execution in results.values():
         reasons = execution.result["final"]["reason_codes"]
         assert reasons == sorted(set(reasons))
@@ -117,7 +125,7 @@ def test_generator_writes_repeatable_exact_outputs_metrics_schemas_and_manifest(
     first = generate_benchmark(
         destination,
         source_repository=repository,
-        runtime_baseline_commit="9485b192151d9440776938ae5dd28fa8a9befac1",
+        runtime_baseline_commit="9547c24dffb8e523ec2bc7e27e453c5606752944",
     )
     first_bytes = {
         path.relative_to(destination).as_posix(): path.read_bytes()
@@ -127,7 +135,7 @@ def test_generator_writes_repeatable_exact_outputs_metrics_schemas_and_manifest(
     second = generate_benchmark(
         destination,
         source_repository=repository,
-        runtime_baseline_commit="9485b192151d9440776938ae5dd28fa8a9befac1",
+        runtime_baseline_commit="9547c24dffb8e523ec2bc7e27e453c5606752944",
     )
     second_bytes = {
         path.relative_to(destination).as_posix(): path.read_bytes()
