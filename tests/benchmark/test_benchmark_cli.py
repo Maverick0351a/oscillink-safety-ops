@@ -10,7 +10,7 @@ import pytest
 from oscillink_safety_ops.cli import run
 from scripts.generate_benchmark import generate_benchmark
 
-SOURCE_COMMIT = "c5517650c5ef5ce325ebd8d52e0eb4987ae2bf43"
+SOURCE_COMMIT = "9485b192151d9440776938ae5dd28fa8a9befac1"
 
 
 def test_benchmark_verify_cli_emits_machine_readable_verified_totals(
