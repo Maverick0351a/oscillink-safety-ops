@@ -67,8 +67,11 @@ or physical stopping.
 - **Implemented portion:** orphan motion, commanded/measured state mismatch, contradictory command
   observations, and direction/frame/program attribution are explicit and fail closed. Missing,
   ambiguous, contradictory, or cross-source mismatched attributes produce stable reason codes;
-  conflicting physical calibration identities are also explicit. Bounded correlation windows remain
-  planned, and no represented attribute establishes physical independence or measurement accuracy.
+  conflicting physical calibration identities are also explicit. Physical motion attribution now
+  binds command identity and sequence together and checks response chronology against an immutable
+  signed maximum delay. Missing, mismatched, non-motion, ambiguous, early, and late attribution fail
+  closed. Cross-evaluation attribution history remains planned, and no represented attribute
+  establishes physical independence or measurement accuracy.
 
 - **Requirement:** `SR-003`; hazard/control: `HAZ-003` / `CTRL-003`.
 - **Stimuli:** orphan motion, wrong direction/frame/program/state, missing expected response,

@@ -312,6 +312,26 @@
       "requirement_ids": ["SR-003"],
       "test_ids": ["TEST-003"],
       "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-032",
+      "evidence_type": "implemented_bounded_command_attribution_tests",
+      "path": "tests/runtime/test_correlator.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-003", "SR-006"],
+      "test_ids": ["TEST-003", "TEST-006"],
+      "change_impact_id": "CI-003"
+    },
+    {
+      "evidence_id": "EVID-033",
+      "evidence_type": "synthetic_bounded_attribution_benchmark_case",
+      "path": "benchmark/robot_cell_v1/expected-results.jsonl",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "planned",
+      "requirement_ids": ["SR-003", "SR-006"],
+      "test_ids": ["TEST-003", "TEST-006"],
+      "change_impact_id": "CI-003"
     }
   ],
   "open_target_system_values": {

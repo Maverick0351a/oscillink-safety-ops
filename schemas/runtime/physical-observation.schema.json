@@ -15,6 +15,35 @@
       "default": null,
       "title": "Acceleration Mps2"
     },
+    "attributed_command_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attributed Command Id"
+    },
+    "attributed_command_sequence": {
+      "anyOf": [
+        {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attributed Command Sequence"
+    },
     "authority_state": {
       "const": "untrusted_observation",
       "default": "untrusted_observation",

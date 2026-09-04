@@ -44,6 +44,7 @@ def bound(raw: bytes = b"synthetic-config-v1") -> BoundConfiguration:
         max_observation_age_seconds=0.5,
         max_receive_delay_seconds=0.2,
         max_future_skew_seconds=0.0,
+        max_correlation_delay_seconds=0.25,
         max_speed_mps=1.0,
         max_acceleration_mps2=2.0,
         signer_id="safety-config-signer:001",
@@ -79,6 +80,9 @@ def observations(
         command_id=f"command-id:{sequence}",
         command_kind="motion_requested" if commanded else "idle",
         motion_requested=commanded,
+        motion_direction="positive",
+        frame_id="frame:robot-base",
+        program_id="program:synthetic-cell",
     )
     physical = PhysicalObservation.model_validate(
         {
@@ -96,6 +100,11 @@ def observations(
             "acceleration_mps2": acceleration,
             "quality": quality,
             "calibration_sha256": SHA_D,
+            "motion_direction": "positive",
+            "frame_id": "frame:robot-base",
+            "program_id": "program:synthetic-cell",
+            "attributed_command_id": f"command-id:{sequence}",
+            "attributed_command_sequence": sequence,
         }
     )
     health = SourceHealthObservation(

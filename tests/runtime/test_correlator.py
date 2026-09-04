@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Literal
 
 from oscillink_safety_ops.runtime.contracts import (
@@ -29,6 +29,7 @@ def configuration() -> SupervisorConfiguration:
         max_observation_age_seconds=0.5,
         max_receive_delay_seconds=0.2,
         max_future_skew_seconds=0.0,
+        max_correlation_delay_seconds=0.25,
         max_speed_mps=1.0,
         max_acceleration_mps2=2.0,
         signer_id="safety-config-signer:001",
@@ -69,6 +70,8 @@ def physical(
     direction: Literal["positive", "negative", "stationary", "unknown"] | None = "positive",
     frame_id: str | None = "frame:robot-base",
     program_id: str | None = "program:synthetic-cell",
+    attributed_command_id: str | None = "command-id:0",
+    attributed_command_sequence: int | None = 0,
 ) -> PhysicalObservation:
     return PhysicalObservation.model_validate(
         {
@@ -89,6 +92,8 @@ def physical(
             "motion_direction": direction,
             "frame_id": frame_id,
             "program_id": program_id,
+            "attributed_command_id": attributed_command_id,
+            "attributed_command_sequence": attributed_command_sequence,
         }
     )
 
@@ -129,6 +134,7 @@ def test_orphan_unexpected_and_mismatched_motion_are_explicit() -> None:
 
     assert orphan.reason_codes == (
         "command_actual_mismatch",
+        "command_attribution_nonmotion",
         "orphan_motion",
         "unexpected_motion",
     )
@@ -256,3 +262,58 @@ def test_conflicting_physical_calibration_identity_is_explicit() -> None:
     )
 
     assert "calibration_identity_mismatch" in result.reason_codes
+
+
+def test_command_identity_sequence_and_window_attribution_are_exact() -> None:
+    wrong_identity = correlate_command_and_state(
+        (
+            command(),
+            physical(
+                motion="moving",
+                speed=0.5,
+                attributed_command_id="command-id:other",
+            ),
+        ),
+        configuration=configuration(),
+    )
+    wrong_sequence = correlate_command_and_state(
+        (
+            command(),
+            physical(motion="moving", speed=0.5, attributed_command_sequence=1),
+        ),
+        configuration=configuration(),
+    )
+    late_physical = physical(motion="moving", speed=0.5).model_copy(
+        update={"observed_at": NOW + timedelta(seconds=0.250001)}
+    )
+    late = correlate_command_and_state(
+        (command(), late_physical),
+        configuration=configuration(),
+    )
+    early_command = command().model_copy(update={"observed_at": NOW + timedelta(microseconds=1)})
+    early = correlate_command_and_state(
+        (early_command, physical(motion="moving", speed=0.5)),
+        configuration=configuration(),
+    )
+
+    assert "command_attribution_id_mismatch" in wrong_identity.reason_codes
+    assert "command_attribution_sequence_mismatch" in wrong_sequence.reason_codes
+    assert "command_response_late" in late.reason_codes
+    assert "command_response_precedes_command" in early.reason_codes
+
+
+def test_missing_command_identity_and_sequence_attribution_is_explicit() -> None:
+    result = correlate_command_and_state(
+        (
+            command(),
+            physical(
+                motion="moving",
+                speed=0.5,
+                attributed_command_id=None,
+                attributed_command_sequence=None,
+            ),
+        ),
+        configuration=configuration(),
+    )
+
+    assert "command_attribution_missing" in result.reason_codes

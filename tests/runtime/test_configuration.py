@@ -52,6 +52,7 @@ def configuration_document(
         "max_observation_age_seconds": 0.5,
         "max_receive_delay_seconds": 0.2,
         "max_future_skew_seconds": 0.0,
+        "max_correlation_delay_seconds": 0.25,
         "max_speed_mps": speed,
         "max_acceleration_mps2": 2.0,
         "signer_id": signer_id,
@@ -78,6 +79,7 @@ def constraints(*, maximum_speed: float = 2.0) -> ConfigurationConstraints:
         max_observation_age_seconds=1.0,
         max_receive_delay_seconds=1.0,
         max_future_skew_seconds=0.1,
+        max_correlation_delay_seconds=0.5,
         max_speed_mps=maximum_speed,
         max_acceleration_mps2=3.0,
         mandatory_source_ids=frozenset(

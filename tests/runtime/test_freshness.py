@@ -48,6 +48,7 @@ def configuration(
         max_observation_age_seconds=max_age,
         max_receive_delay_seconds=max_delay,
         max_future_skew_seconds=future_skew,
+        max_correlation_delay_seconds=0.25,
         max_speed_mps=1.0,
         max_acceleration_mps2=2.0,
         signer_id="safety-config-signer:001",

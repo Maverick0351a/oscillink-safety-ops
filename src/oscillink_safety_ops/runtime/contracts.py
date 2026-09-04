@@ -191,9 +191,13 @@ class PhysicalObservation(RuntimeObservation):
     program_id: Identifier | None = None
     frame_id: Identifier | None = None
     motion_direction: Literal["positive", "negative", "stationary", "unknown"] | None = None
+    attributed_command_id: Identifier | None = None
+    attributed_command_sequence: SequenceNumber | None = None
 
     @model_validator(mode="after")
     def preserve_unknown_and_contradictory_state(self) -> Self:
+        if (self.attributed_command_id is None) is not (self.attributed_command_sequence is None):
+            raise ValueError("command attribution identity and sequence must be supplied together")
         if self.motion_state == "stopped" and self.speed_mps not in (None, 0.0):
             raise ValueError("stopped motion_state requires zero or absent speed_mps")
         if self.motion_state == "moving" and self.speed_mps is None:
@@ -241,6 +245,7 @@ class SupervisorConfiguration(RuntimeContract):
     max_observation_age_seconds: FinitePositive
     max_receive_delay_seconds: FiniteNonNegative
     max_future_skew_seconds: FiniteNonNegative
+    max_correlation_delay_seconds: FinitePositive
     max_speed_mps: FinitePositive
     max_acceleration_mps2: FinitePositive
     signer_id: Identifier

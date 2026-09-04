@@ -20,6 +20,11 @@
       "title": "Max Acceleration Mps2",
       "type": "number"
     },
+    "max_correlation_delay_seconds": {
+      "exclusiveMinimum": 0.0,
+      "title": "Max Correlation Delay Seconds",
+      "type": "number"
+    },
     "max_future_skew_seconds": {
       "minimum": 0.0,
       "title": "Max Future Skew Seconds",
@@ -116,6 +121,7 @@
     "max_observation_age_seconds",
     "max_receive_delay_seconds",
     "max_future_skew_seconds",
+    "max_correlation_delay_seconds",
     "max_speed_mps",
     "max_acceleration_mps2",
     "signer_id",

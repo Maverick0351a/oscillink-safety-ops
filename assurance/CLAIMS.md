@@ -40,6 +40,12 @@ cannot normalize into monitoring-normal while motion is represented. Conflicting
 identities are explicit. Physical independence, calibration approval, measurement accuracy, and
 common-cause behavior of any target system remain unvalidated.
 
+Physical motion attribution additionally binds a represented command ID and source sequence as one
+pair and evaluates response chronology against a signed configuration-controlled maximum delay.
+Missing, mismatched, ambiguous, non-motion, early, or late attribution remains explicit and produces
+only a local simulated request. The configured delay is a synthetic software boundary, not a
+validated machine response-time or stopping-time claim.
+
 ### CLM-003 — Conservative simulated response
 
 For a prohibited or unverifiable simulated condition, the planned behavior is to create and latch a

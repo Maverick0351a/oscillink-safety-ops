@@ -113,6 +113,8 @@ def _observations(
             "motion_direction": physical_direction,
             "frame_id": physical_frame_id,
             "program_id": physical_program_id,
+            "attributed_command_id": f"command-id:{suffix}",
+            "attributed_command_sequence": sequence,
         },
         {
             "schema_version": 1,
@@ -273,6 +275,17 @@ def build_case_documents() -> list[dict[str, Any]]:
             )
         ],
     )
+    late_attribution = _observations(
+        "case:command-actual-mismatch",
+        sequence=2,
+        observed_at=T02,
+        command_motion=True,
+        motion_state="moving",
+        speed_mps=0.5,
+        acceleration_mps2=0.5,
+    )
+    late_attribution[1]["observed_at"] = T06
+    late_attribution[1]["received_at"] = T06
     add(
         "case:command-actual-mismatch",
         "Commanded motion with state and attribution mismatch",
@@ -294,6 +307,7 @@ def build_case_documents() -> list[dict[str, Any]]:
                 ),
                 T01,
             ),
+            _evaluate(late_attribution, T06),
         ],
     )
     for case_id, title, speed, acceleration in (

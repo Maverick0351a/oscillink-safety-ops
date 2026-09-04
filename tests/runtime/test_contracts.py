@@ -105,6 +105,7 @@ def configuration_data() -> dict[str, object]:
         "max_observation_age_seconds": 0.5,
         "max_receive_delay_seconds": 0.2,
         "max_future_skew_seconds": 0.0,
+        "max_correlation_delay_seconds": 0.25,
         "max_speed_mps": 1.0,
         "max_acceleration_mps2": 2.0,
         "signer_id": "safety-config-signer:001",
@@ -308,6 +309,17 @@ def test_physical_numeric_values_must_be_finite_real_numbers(value: object) -> N
         PhysicalObservation.model_validate(data)
 
 
+def test_physical_command_attribution_identity_and_sequence_are_atomic() -> None:
+    for field, value in (
+        ("attributed_command_id", "command-id:0"),
+        ("attributed_command_sequence", 0),
+    ):
+        data = physical_data()
+        data[field] = value
+        with pytest.raises(ValidationError, match="supplied together"):
+            PhysicalObservation.model_validate(data)
+
+
 @pytest.mark.parametrize("factory", (command_data, physical_data, health_data))
 @pytest.mark.parametrize("field", ("observed_at", "received_at"))
 def test_observation_timestamps_must_be_timezone_aware(
@@ -371,6 +383,7 @@ def test_configuration_rejects_invalid_chronology_duplicate_sources_and_threshol
         "max_observation_age_seconds",
         "max_receive_delay_seconds",
         "max_future_skew_seconds",
+        "max_correlation_delay_seconds",
         "max_speed_mps",
         "max_acceleration_mps2",
     ):

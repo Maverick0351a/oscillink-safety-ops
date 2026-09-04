@@ -87,6 +87,36 @@ def correlate_command_and_state(
     if len({item.calibration_sha256 for item in physical}) > 1:
         reasons.add("calibration_identity_mismatch")
 
+    for item in moving_physical:
+        if item.attributed_command_id is None or item.attributed_command_sequence is None:
+            reasons.add("command_attribution_missing")
+            continue
+        identity_matches = tuple(
+            command for command in commands if command.command_id == item.attributed_command_id
+        )
+        if not identity_matches:
+            reasons.add("command_attribution_id_mismatch")
+            continue
+        sequence_matches = tuple(
+            command
+            for command in identity_matches
+            if command.sequence_number == item.attributed_command_sequence
+        )
+        if not sequence_matches:
+            reasons.add("command_attribution_sequence_mismatch")
+            continue
+        if len(sequence_matches) != 1:
+            reasons.add("command_attribution_ambiguous")
+            continue
+        command = sequence_matches[0]
+        if not command.motion_requested:
+            reasons.add("command_attribution_nonmotion")
+        delay_seconds = (item.observed_at - command.observed_at).total_seconds()
+        if delay_seconds < 0.0:
+            reasons.add("command_response_precedes_command")
+        elif delay_seconds > configuration.max_correlation_delay_seconds:
+            reasons.add("command_response_late")
+
     for item in physical:
         if item.occupancy in {"present", "entering", "unknown"}:
             if commanded_motion:

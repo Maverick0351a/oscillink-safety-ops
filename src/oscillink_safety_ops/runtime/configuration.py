@@ -40,6 +40,7 @@ class ConfigurationConstraints:
     max_observation_age_seconds: float
     max_receive_delay_seconds: float
     max_future_skew_seconds: float
+    max_correlation_delay_seconds: float
     max_speed_mps: float
     max_acceleration_mps2: float
     mandatory_source_ids: frozenset[str]
@@ -52,6 +53,11 @@ class ConfigurationConstraints:
         )
         _require_finite_nonnegative(self.max_receive_delay_seconds, "max_receive_delay_seconds")
         _require_finite_nonnegative(self.max_future_skew_seconds, "max_future_skew_seconds")
+        _require_finite_nonnegative(
+            self.max_correlation_delay_seconds,
+            "max_correlation_delay_seconds",
+            positive=True,
+        )
         _require_finite_nonnegative(self.max_speed_mps, "max_speed_mps", positive=True)
         _require_finite_nonnegative(
             self.max_acceleration_mps2, "max_acceleration_mps2", positive=True
@@ -282,6 +288,7 @@ def _enforce_authority_constraints(
         "max_observation_age_seconds",
         "max_receive_delay_seconds",
         "max_future_skew_seconds",
+        "max_correlation_delay_seconds",
         "max_speed_mps",
         "max_acceleration_mps2",
     )
@@ -313,6 +320,7 @@ def _enforce_revision_transition(
         "max_observation_age_seconds",
         "max_receive_delay_seconds",
         "max_future_skew_seconds",
+        "max_correlation_delay_seconds",
         "max_speed_mps",
         "max_acceleration_mps2",
     )

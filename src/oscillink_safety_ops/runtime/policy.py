@@ -56,6 +56,13 @@ _SOURCE_FAILURES = {
 _MEASURED_HAZARDS = {
     "acceleration_unavailable",
     "calibration_identity_mismatch",
+    "command_attribution_ambiguous",
+    "command_attribution_id_mismatch",
+    "command_attribution_missing",
+    "command_attribution_nonmotion",
+    "command_attribution_sequence_mismatch",
+    "command_response_late",
+    "command_response_precedes_command",
     "excessive_acceleration",
     "excessive_speed",
     "human_entering_with_measured_motion",

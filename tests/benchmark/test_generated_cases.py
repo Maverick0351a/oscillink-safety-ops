@@ -110,6 +110,10 @@ def test_every_generated_case_executes_exactly_and_key_boundary_oracles_hold(
         "motion_program_mismatch",
     ]
     assert attribution["physical_stop"] == "not_established"
+    late_attribution = results["case:command-actual-mismatch"].result["timeline"][2]
+    assert late_attribution["action"] == "protective_stop_request"
+    assert "command_response_late" in late_attribution["reason_codes"]
+    assert late_attribution["physical_stop"] == "not_established"
     for execution in results.values():
         reasons = execution.result["final"]["reason_codes"]
         assert reasons == sorted(set(reasons))
