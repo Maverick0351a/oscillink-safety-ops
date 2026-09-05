@@ -32,6 +32,7 @@ INVARIANTS: Final = (
     "NoMotionCommandDuringRecovery",
     "FaultsFailClosed",
     "AttributionUniquenessChronologyFailClosed",
+    "SharedDependencyFailureNeverEstablishesIndependence",
 )
 MAX_SET_SIZE: Final = 100_000
 HEAP_MAX_MIB: Final = 512

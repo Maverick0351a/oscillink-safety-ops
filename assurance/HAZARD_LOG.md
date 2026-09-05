@@ -156,10 +156,12 @@ Hazard family: `shared-power-network-sensor-common-cause`
 - **Potential harm:** apparent independence provides no effective fault separation.
 - **Initiators:** brownout, network partition, shared perception corruption, supply-chain defect,
   environmental event, or common administrative compromise.
-- **Planned control:** `CTRL-012`; requirement `SR-012`; verification `TEST-012` / `EVID-012`.
+- **Implemented software control:** `CTRL-012`; requirement `SR-012`; verification `TEST-012` /
+  `EVID-038`–`EVID-040`.
 - **Open conditions:** every common-cause assumption is unresolved and explicitly TBD for qualified
   target-system assessment.
-- **Owner/status/change impact:** `ROLE-SAFETY-OWNER`; planned; `CI-012`.
+- **Owner/status/change impact:** `ROLE-SAFETY-OWNER`; implemented synthetic software evidence with
+  target-system independence unresolved; `CI-012`.
 
 ## Residual-risk statement
 

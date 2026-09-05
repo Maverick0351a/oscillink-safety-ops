@@ -3,16 +3,17 @@
 ## Status and interpretation
 
 All tests below apply to `SCOPE-ROBOT-CELL-001`. Batches 3 through 6 implement adversarial unit and
-property-test portions of `TEST-001` through `TEST-011` for runtime contracts, configuration,
+property-test portions of `TEST-001` through `TEST-012` for runtime contracts, configuration,
 provenance, freshness/order, correlation, policy, latch/recovery state, in-memory simulated-request
 creation, state persistence, deterministic replay, local report publication, and abstract TLA+
 invariants. Four frozen synthetic replay cases cover nominal, zone-entry, stale-source, and
 contradictory-source behavior. A separate generated 36-case exact-byte synthetic benchmark expands
 represented boundary, integrity, authority, persistence, simultaneous-fault, and staged-recovery
-cases. Its generated static monitor is display-only. Live request delivery, output timeouts, hardware
-response, and common-cause campaigns remain planned. A passing result demonstrates only software
-behavior for the exact tested bytes, configuration, inputs, and platform. It does not validate a real
-robot cell or prove stopping, risk reduction, compliance, or certification.
+cases. Its generated static monitor is display-only. Live request delivery and hardware response
+remain planned; common-cause campaigns are synthetic software evidence only. A passing result
+demonstrates only software behavior for the exact tested bytes, configuration, inputs, and platform.
+It does not validate a real robot cell or prove stopping, risk reduction, compliance, or
+certification.
 
 ## Common evidence protocol
 
@@ -28,8 +29,8 @@ software evidence.
 `EVID-025` binds 36 canonical case inputs to 36 exact expected-result records, mechanically derived
 metrics, generated schemas and field guide, exact source/configuration/runtime identities, and three
 byte-identical executions per case. It exercises implemented portions of `TEST-001` through
-`TEST-011`; it does not complete those application-level tests or exercise `TEST-012` common-cause
-campaigns. It intentionally reports no wall-clock latency.
+`TEST-012`; it does not complete those application-level tests. It intentionally reports no
+wall-clock latency.
 
 `EVID-026` binds the dependency-free static monitor to every expected result and metric. Verification
 checks semantic landmarks, accessible selection, required boundary copy, local-only resources,
@@ -204,13 +205,16 @@ or physical stopping.
   that independence is not established. Missing, ambiguous, unconfigured, configuration-mismatched,
   degraded, failed, or contradictory dependencies fail closed; a healthy affected-source claim
   during shared-dependency failure is reported as a contradiction. A canonical ten-family campaign
-  and an end-to-end supervisor case are implemented.
+  and an end-to-end supervisor case are implemented. The abstract TLA+ model additionally proves,
+  over its finite modeled state space, that a represented shared-dependency failure enters the
+  latched intervention state and never establishes independence.
 
 - **Requirement:** `SR-012`; hazard/control: `HAZ-012` / `CTRL-012`.
 - **Stimuli:** model loss/corruption of shared power, network, sensor, clock, compute, software/update,
   credentials, enclosure/environment, communications, controller fixture, and final-element status.
-- **Planned oracle:** represented common failure is reported as unresolved/degraded rather than
-  independent success. Document residual and unmodeled dependencies. Verify `EVID-012`.
+- **Implemented oracle:** represented common failure is reported as unresolved/degraded rather than
+  independent success. `EVID-038` and `EVID-039` cover runtime behavior; `EVID-040` covers the
+  exhaustive abstract invariant. Residual and unmodeled target-system dependencies remain open.
 
 ## Application validation and target values
 

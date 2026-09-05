@@ -10,11 +10,28 @@ import pytest
 from scripts.verify_tla import (
     EXPECTED_JAR_SHA256,
     EXPECTED_TLC_VERSION,
+    INVARIANTS,
     FormalVerificationError,
     parse_tlc_output,
     verify_formal_result_binding,
     verify_jar,
 )
+
+
+def test_common_cause_invariant_is_in_model_configuration_and_result() -> None:
+    root = Path(__file__).resolve().parents[1]
+    invariant = "SharedDependencyFailureNeverEstablishesIndependence"
+    model = (root / "assurance" / "tla" / "Supervisor.tla").read_text(encoding="utf-8")
+    configuration = (root / "assurance" / "tla" / "Supervisor.cfg").read_text(encoding="utf-8")
+    result = json.loads((root / "assurance" / "tla" / "formal-result.json").read_bytes())
+
+    assert invariant in INVARIANTS
+    assert invariant + " ==" in model
+    assert "commonCauseState" in model
+    assert "independenceEstablished" in model
+    assert '"shared_dependency_failure"' in configuration
+    assert invariant in configuration
+    assert invariant in result["execution"]["invariants"]
 
 
 def test_tlc_output_parser_requires_exact_success_and_state_counts() -> None:

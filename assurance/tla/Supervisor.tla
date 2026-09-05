@@ -12,10 +12,13 @@ VARIABLES mode,
           authority,
           lastEvent,
           latchBeforeEvent,
-          motionCommand
+          motionCommand,
+          commonCauseState,
+          independenceEstablished
 
 vars == <<mode, latched, everLatched, recoveryStage, recoveryCompleted,
-          acknowledged, authority, lastEvent, latchBeforeEvent, motionCommand>>
+          acknowledged, authority, lastEvent, latchBeforeEvent, motionCommand,
+          commonCauseState, independenceEstablished>>
 
 Modes == {"monitoring", "intervention_latched", "stopped_unverified",
           "reset_ready", "rearm_pending", "recovery_pending", "initializing"}
@@ -29,6 +32,7 @@ Events == {"init", "production_attempt", "ack", "assess_reset", "reset",
 AttributionFaultEvents == {"attribution_identity_reused",
                            "attribution_response_precedes_command",
                            "attribution_response_late"}
+CommonCauseStates == {"not_established", "shared_dependency_failed"}
 
 Init ==
     /\ mode = "monitoring"
@@ -41,6 +45,10 @@ Init ==
     /\ lastEvent = "init"
     /\ latchBeforeEvent = FALSE
     /\ motionCommand = FALSE
+    /\ commonCauseState = "not_established"
+    /\ independenceEstablished = FALSE
+
+CommonCauseUnchanged == UNCHANGED <<commonCauseState, independenceEstablished>>
 
 Trip(event) ==
     /\ event \in FaultEvents
@@ -54,8 +62,13 @@ Trip(event) ==
     /\ lastEvent' = event
     /\ latchBeforeEvent' = latched
     /\ motionCommand' = FALSE
+    /\ commonCauseState' = IF event = "shared_dependency_failure"
+                             THEN "shared_dependency_failed"
+                             ELSE commonCauseState
+    /\ independenceEstablished' = FALSE
 
 ProductionAttempt ==
+    /\ CommonCauseUnchanged
     /\ lastEvent' = "production_attempt"
     /\ authority' = "production_observer"
     /\ latchBeforeEvent' = latched
@@ -63,6 +76,7 @@ ProductionAttempt ==
                    recoveryCompleted, acknowledged, motionCommand>>
 
 Acknowledge ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "intervention_latched"
     /\ mode' = "stopped_unverified"
@@ -76,6 +90,7 @@ Acknowledge ==
     /\ UNCHANGED <<latched, everLatched>>
 
 AssessReset ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "stopped_unverified"
     /\ acknowledged
@@ -88,6 +103,7 @@ AssessReset ==
                    recoveryCompleted, acknowledged>>
 
 Reset ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "reset_ready"
     /\ acknowledged
@@ -101,6 +117,7 @@ Reset ==
     /\ UNCHANGED <<latched, everLatched, acknowledged>>
 
 Rearm ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "rearm_pending"
     /\ recoveryStage = 1
@@ -113,6 +130,7 @@ Rearm ==
     /\ UNCHANGED <<latched, everLatched, recoveryCompleted, acknowledged>>
 
 ConfirmRecovery ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "recovery_pending"
     /\ recoveryStage = 2
@@ -125,6 +143,7 @@ ConfirmRecovery ==
     /\ UNCHANGED <<mode, latched, everLatched, acknowledged>>
 
 FreshStart ==
+    /\ CommonCauseUnchanged
     /\ latched
     /\ mode = "recovery_pending"
     /\ recoveryStage = 3
@@ -140,6 +159,7 @@ FreshStart ==
     /\ UNCHANGED everLatched
 
 FreshEvidence ==
+    /\ CommonCauseUnchanged
     /\ mode = "initializing"
     /\ ~latched
     /\ recoveryCompleted
@@ -153,6 +173,7 @@ FreshEvidence ==
                    recoveryCompleted, acknowledged>>
 
 Reboot ==
+    /\ CommonCauseUnchanged
     /\ mode' = IF latched THEN "intervention_latched" ELSE "initializing"
     /\ acknowledged' = FALSE
     /\ recoveryStage' = IF latched THEN 0 ELSE recoveryStage
@@ -164,6 +185,7 @@ Reboot ==
     /\ UNCHANGED <<latched, everLatched>>
 
 Noop ==
+    /\ CommonCauseUnchanged
     /\ lastEvent' = "noop"
     /\ authority' = "none"
     /\ latchBeforeEvent' = latched
@@ -196,6 +218,8 @@ TypeOK ==
     /\ lastEvent \in Events
     /\ latchBeforeEvent \in BOOLEAN
     /\ motionCommand \in BOOLEAN
+    /\ commonCauseState \in CommonCauseStates
+    /\ independenceEstablished \in BOOLEAN
 
 ProductionAuthoritySeparation ==
     /\ authority # "production_admin"
@@ -241,5 +265,12 @@ AttributionUniquenessChronologyFailClosed ==
         /\ latched
         /\ mode = "intervention_latched"
         /\ ~recoveryCompleted
+
+SharedDependencyFailureNeverEstablishesIndependence ==
+    /\ ~independenceEstablished
+    /\ lastEvent = "shared_dependency_failure" =>
+        /\ commonCauseState = "shared_dependency_failed"
+        /\ latched
+        /\ mode = "intervention_latched"
 
 ====

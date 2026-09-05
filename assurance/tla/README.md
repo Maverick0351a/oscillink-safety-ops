@@ -17,7 +17,10 @@ The model checks these abstract properties:
 5. reboot preserves an existing latch;
 6. recovery transitions never command motion; and
 7. configuration change, output uncertainty, and source faults enter the latched intervention state; and
-8. abstract attribution identity reuse, response-before-command, and late-response faults fail closed.
+8. abstract attribution identity reuse, response-before-command, and late-response faults fail
+   closed; and
+9. a represented shared-dependency failure cannot establish independence and enters the latched
+   intervention state.
 
 The model intentionally disables deadlock checking because terminal or stuttering states are represented through `[Next]_vars`. It uses one TLC worker, a fixed fingerprint polynomial index, bounded heap and set size, and a bounded process timeout.
 
@@ -38,7 +41,9 @@ The runner rejects any JAR whose SHA-256 is not:
 936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88
 ```
 
-The recorded run used TLC 2.19, revision `5a47802`, from TLA+ tools v1.7.4. TLC generated 422 states, found 43 distinct states, reached search depth 10, left zero states queued, and reported no invariant violation.
+The recorded run used TLC 2.19, revision `5a47802`, from TLA+ tools v1.7.4. TLC generated 891 states,
+found 82 distinct states, reached search depth 10, left zero states queued, and reported no invariant
+violation.
 
 `--write` is a maintainer evidence-generation operation. Review model/configuration changes and rerun TLC before replacing the committed result.
 

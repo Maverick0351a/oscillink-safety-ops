@@ -392,6 +392,16 @@
       "requirement_ids": ["SR-012"],
       "test_ids": ["TEST-012"],
       "change_impact_id": "CI-012"
+    },
+    {
+      "evidence_id": "EVID-040",
+      "evidence_type": "synthetic_abstract_common_cause_invariant_check",
+      "path": "assurance/tla/formal-result.json",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-012"],
+      "test_ids": ["TEST-012"],
+      "change_impact_id": "CI-012"
     }
   ],
   "open_target_system_values": {

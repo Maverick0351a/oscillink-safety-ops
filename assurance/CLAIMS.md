@@ -61,8 +61,9 @@ command or proof of causation.
 Signed configuration may now declare represented shared dependencies and their affected source
 identities. Dependency observations cannot establish independence; nonhealthy or inconsistent
 evidence remains unresolved and a healthy affected-source claim during shared failure is explicitly
-contradictory. This does not validate physical separation, diagnostic coverage, or common-cause
-independence in a target installation.
+contradictory. The finite abstract TLA+ model exhaustively checks that a represented shared-dependency
+failure enters the latch and cannot establish independence. This does not validate physical
+separation, diagnostic coverage, or common-cause independence in a target installation.
 
 ### CLM-003 — Conservative simulated response
 
