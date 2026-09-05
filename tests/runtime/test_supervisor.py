@@ -10,7 +10,9 @@ import pytest
 from oscillink_safety_ops.runtime.configuration import BoundConfiguration
 from oscillink_safety_ops.runtime.contracts import (
     CommandObservation,
+    DependencyBinding,
     PhysicalObservation,
+    SharedDependencyObservation,
     SourceHealthObservation,
     SupervisorConfiguration,
 )
@@ -190,6 +192,69 @@ def test_occupied_measured_motion_creates_only_local_simulated_request_and_latch
     assert result.action_request.delivery_mode == "local_closed_file_simulation"
     assert result.action_request.operational_authority == "none"
     assert result.state.state.supervisor_state == "intervention_latched"
+    assert result.state.state.latched is True
+
+
+def test_failed_shared_dependency_cannot_report_independent_path_success() -> None:
+    raw = b"synthetic-common-cause-config"
+    configuration = bound().configuration.model_copy(
+        update={
+            "required_source_ids": (
+                "independent-dependency-monitor:a",
+                "independent-health-monitor:a",
+                "independent-zone-sensor:a",
+                "production-ai:planner",
+            ),
+            "dependency_bindings": (
+                DependencyBinding(
+                    dependency_id="dependency:power",
+                    dependency_kind="power",
+                    monitor_source_id="independent-dependency-monitor:a",
+                    affected_source_ids=(
+                        "independent-zone-sensor:a",
+                        "production-ai:planner",
+                    ),
+                ),
+            ),
+        }
+    )
+    bound_configuration = BoundConfiguration(
+        configuration=configuration,
+        exact_bytes=raw,
+        configuration_sha256="sha256:" + hashlib.sha256(raw).hexdigest(),
+    )
+    current = start_supervisor(
+        run_id="run:001",
+        configuration=bound_configuration,
+        evaluation_time=NOW,
+        startup_input_sha256=(bound_configuration.configuration_sha256,),
+    )
+    dependency = SharedDependencyObservation(
+        observation_id="dependency:power:0",
+        run_id="run:001",
+        source_id="independent-dependency-monitor:a",
+        sequence_number=0,
+        observed_at=NOW,
+        received_at=NOW,
+        input_sha256="sha256:" + "e" * 64,
+        dependency_id="dependency:power",
+        dependency_kind="power",
+        dependency_state="failed",
+        affected_source_ids=("independent-zone-sensor:a", "production-ai:planner"),
+        configuration_sha256=bound_configuration.configuration_sha256,
+    )
+
+    result = evaluate_supervisor(
+        (*observations(), dependency),
+        evaluation_time=NOW,
+        runtime=current,
+    )
+
+    assert result.common_cause.integrity_state == "unresolved"
+    assert result.common_cause.independence_established is False
+    assert "shared_dependency_failed:power" in result.decision.reason_codes
+    assert "shared_dependency_health_contradiction" in result.decision.reason_codes
+    assert result.decision.action == "protective_stop_request"
     assert result.state.state.latched is True
 
 

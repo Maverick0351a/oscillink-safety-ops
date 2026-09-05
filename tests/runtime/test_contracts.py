@@ -535,9 +535,11 @@ def test_runtime_schema_export_is_complete_canonical_and_current() -> None:
         "action-acknowledgment.schema.json",
         "action-request.schema.json",
         "command-observation.schema.json",
+        "dependency-binding.schema.json",
         "incident-timeline.schema.json",
         "physical-observation.schema.json",
         "recovery-event.schema.json",
+        "shared-dependency-observation.schema.json",
         "source-health-observation.schema.json",
         "supervisor-configuration.schema.json",
         "supervisor-decision.schema.json",
@@ -557,6 +559,7 @@ def test_observation_schemas_fix_untrusted_nonadministrative_authority() -> None
     for name in (
         "command-observation.schema.json",
         "physical-observation.schema.json",
+        "shared-dependency-observation.schema.json",
         "source-health-observation.schema.json",
     ):
         schema = RUNTIME_SCHEMAS[name]

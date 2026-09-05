@@ -232,6 +232,63 @@ class SourceHealthObservation(RuntimeObservation):
         return self
 
 
+DependencyKind: TypeAlias = Literal[
+    "power",
+    "network",
+    "sensor",
+    "clock",
+    "compute",
+    "software_update",
+    "credentials",
+    "enclosure_environment",
+    "communications",
+    "final_element",
+]
+
+
+class DependencyBinding(RuntimeContract):
+    """Signed declaration of one represented shared dependency."""
+
+    schema_version: Literal[1] = 1
+    dependency_id: Identifier
+    dependency_kind: DependencyKind
+    monitor_source_id: Identifier
+    affected_source_ids: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=64)]
+    operational_authority: Literal["none"] = "none"
+
+    _parse_affected_sources = field_validator("affected_source_ids", mode="before")(
+        _json_array_to_tuple
+    )
+
+    @model_validator(mode="after")
+    def validate_affected_sources(self) -> Self:
+        if self.affected_source_ids != tuple(sorted(set(self.affected_source_ids))):
+            raise ValueError("affected_source_ids must be unique and sorted")
+        return self
+
+
+class SharedDependencyObservation(RuntimeObservation):
+    """Untrusted represented dependency health; never proof of independence."""
+
+    source_domain: Literal["independent_dependency_health"] = "independent_dependency_health"
+    dependency_id: Identifier
+    dependency_kind: DependencyKind
+    dependency_state: Literal["healthy", "degraded", "failed", "missing", "contradictory"]
+    affected_source_ids: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=64)]
+    configuration_sha256: Sha256
+    independence_state: Literal["not_established"] = "not_established"
+
+    _parse_affected_sources = field_validator("affected_source_ids", mode="before")(
+        _json_array_to_tuple
+    )
+
+    @model_validator(mode="after")
+    def validate_affected_sources(self) -> Self:
+        if self.affected_source_ids != tuple(sorted(set(self.affected_source_ids))):
+            raise ValueError("affected_source_ids must be unique and sorted")
+        return self
+
+
 class SupervisorConfiguration(RuntimeContract):
     """Signed configuration values; file-byte authority is established by the loader."""
 
@@ -247,6 +304,7 @@ class SupervisorConfiguration(RuntimeContract):
     max_future_skew_seconds: FiniteNonNegative
     max_correlation_delay_seconds: FinitePositive
     approved_calibration_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1, max_length=64)]
+    dependency_bindings: Annotated[tuple[DependencyBinding, ...], Field(max_length=32)] = ()
     max_speed_mps: FinitePositive
     max_acceleration_mps2: FinitePositive
     signer_id: Identifier
@@ -261,6 +319,9 @@ class SupervisorConfiguration(RuntimeContract):
         _json_array_to_tuple
     )
     _parse_approved_calibrations = field_validator("approved_calibration_sha256", mode="before")(
+        _json_array_to_tuple
+    )
+    _parse_dependency_bindings = field_validator("dependency_bindings", mode="before")(
         _json_array_to_tuple
     )
 
@@ -283,6 +344,15 @@ class SupervisorConfiguration(RuntimeContract):
             raise ValueError("duplicate approved_calibration_sha256")
         if tuple(sorted(self.approved_calibration_sha256)) != self.approved_calibration_sha256:
             raise ValueError("approved_calibration_sha256 must be sorted")
+        dependency_ids = tuple(item.dependency_id for item in self.dependency_bindings)
+        if dependency_ids != tuple(sorted(set(dependency_ids))):
+            raise ValueError("dependency_bindings must have unique sorted dependency identities")
+        required_sources = set(self.required_source_ids)
+        for item in self.dependency_bindings:
+            if item.monitor_source_id not in required_sources:
+                raise ValueError("dependency monitor must be a required source")
+            if not set(item.affected_source_ids).issubset(required_sources):
+                raise ValueError("dependency affected sources must be required sources")
         return self
 
 

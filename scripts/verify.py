@@ -227,6 +227,7 @@ def main() -> None:
     check_tla_result()
     check_osha_catalog()
     check_fixture()
+    run("uv", "run", "python", "scripts/verify_common_cause_campaign.py", pythonpath="")
     run("uv", "run", "python", "scripts/verify_production_ai_compromise.py", pythonpath="")
     run("uv", "run", "python", "scripts/verify_process_restart.py", pythonpath="")
     run("uv", "run", "python", "scripts/verify_traceability.py", pythonpath="")

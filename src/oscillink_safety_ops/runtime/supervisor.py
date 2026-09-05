@@ -11,11 +11,14 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from .common_cause import CommonCauseEvaluation, evaluate_common_cause
 from .configuration import BoundConfiguration
 from .contracts import (
     ActionRequest,
     CommandObservation,
     PhysicalObservation,
+    SharedDependencyObservation,
+    SourceHealthObservation,
     SupervisorDecision,
     SupervisorStateRecord,
 )
@@ -50,6 +53,7 @@ class SupervisorEvaluation:
     """One authority-free evaluation result and its next explicit state."""
 
     correlation: CorrelationResult
+    common_cause: CommonCauseEvaluation
     policy: PolicyEvaluation
     decision: SupervisorDecision
     action_request: ActionRequest | None
@@ -152,6 +156,31 @@ def evaluate_supervisor(
         )
         faults = ("correlation_unverifiable",)
 
+    dependency_observations = tuple(
+        item for item in observations if isinstance(item, SharedDependencyObservation)
+    )
+    source_health = tuple(
+        item for item in observations if isinstance(item, SourceHealthObservation)
+    )
+    common_cause = evaluate_common_cause(
+        dependency_observations,
+        configuration=runtime.configuration.configuration,
+        configuration_sha256=runtime.configuration.configuration_sha256,
+        source_health=source_health,
+    )
+    faults = tuple(
+        sorted(
+            {
+                *faults,
+                *(
+                    reason
+                    for reason in common_cause.reason_codes
+                    if reason != "common_cause_unassessed"
+                ),
+            }
+        )
+    )
+
     candidate = candidate_configuration or runtime.configuration
     configuration_changed = (
         candidate.configuration_sha256 != runtime.configuration.configuration_sha256
@@ -250,4 +279,4 @@ def evaluate_supervisor(
         ).state
 
     next_runtime = SupervisorRuntime(runtime.configuration, next_freshness, final_state)
-    return SupervisorEvaluation(correlation, policy, decision, request, next_runtime)
+    return SupervisorEvaluation(correlation, common_cause, policy, decision, request, next_runtime)

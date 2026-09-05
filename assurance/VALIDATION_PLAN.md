@@ -198,6 +198,14 @@ or physical stopping.
 
 ### TEST-012 — Shared-dependency/common-cause campaign
 
+- **Implemented portion:** signed dependency bindings identify represented shared power, network,
+  sensor, clock, compute, software/update, credential, enclosure/environment, communications, and
+  final-element dependencies. Exact dependency observations remain untrusted and explicitly state
+  that independence is not established. Missing, ambiguous, unconfigured, configuration-mismatched,
+  degraded, failed, or contradictory dependencies fail closed; a healthy affected-source claim
+  during shared-dependency failure is reported as a contradiction. A canonical ten-family campaign
+  and an end-to-end supervisor case are implemented.
+
 - **Requirement:** `SR-012`; hazard/control: `HAZ-012` / `CTRL-012`.
 - **Stimuli:** model loss/corruption of shared power, network, sensor, clock, compute, software/update,
   credentials, enclosure/environment, communications, controller fixture, and final-element status.

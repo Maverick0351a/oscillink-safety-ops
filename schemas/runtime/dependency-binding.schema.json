@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "description": "Signed declaration of one represented shared dependency.",
+  "properties": {
+    "affected_source_ids": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Affected Source Ids",
+      "type": "array"
+    },
+    "dependency_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Dependency Id",
+      "type": "string"
+    },
+    "dependency_kind": {
+      "enum": [
+        "power",
+        "network",
+        "sensor",
+        "clock",
+        "compute",
+        "software_update",
+        "credentials",
+        "enclosure_environment",
+        "communications",
+        "final_element"
+      ],
+      "title": "Dependency Kind",
+      "type": "string"
+    },
+    "monitor_source_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "title": "Monitor Source Id",
+      "type": "string"
+    },
+    "operational_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Operational Authority",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "dependency_id",
+    "dependency_kind",
+    "monitor_source_id",
+    "affected_source_ids"
+  ],
+  "title": "DependencyBinding",
+  "type": "object"
+}

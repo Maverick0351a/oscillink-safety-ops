@@ -8,6 +8,7 @@ from pathlib import Path
 from oscillink_safety_ops.runtime.contracts import (
     CommandObservation,
     PhysicalObservation,
+    SharedDependencyObservation,
     SourceHealthObservation,
     bind_observation_bytes,
 )
@@ -22,7 +23,12 @@ def exercise_bytes(data: bytes) -> None:
     except (ReplayError, TypeError, ValueError):
         pass
     observation = data[:-1] if data.endswith(b"\n") else data
-    for model in (CommandObservation, PhysicalObservation, SourceHealthObservation):
+    for model in (
+        CommandObservation,
+        PhysicalObservation,
+        SharedDependencyObservation,
+        SourceHealthObservation,
+    ):
         try:
             bind_observation_bytes(observation, model)
         except (TypeError, ValueError):

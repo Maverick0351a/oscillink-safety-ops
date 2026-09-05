@@ -179,6 +179,8 @@ class EvaluationTimeline(BenchmarkContract):
     request_state: StrictStr
     acknowledgment_state: StrictStr
     physical_stop: Literal["not_established"]
+    common_cause_integrity: Literal["represented_healthy_unvalidated", "unresolved"]
+    independence_established: Literal[False]
 
 
 class RestartTimeline(BenchmarkContract):
@@ -274,6 +276,9 @@ class FinalResult(BenchmarkContract):
     request_state: StrictStr
     acknowledgment_state: StrictStr
     physical_stop: Literal["not_established"]
+    common_cause_integrity: StrictStr
+    independence_established: Literal[False]
+    certification_state: Literal["not_established"]
     latched: StrictBool
     recovery_stage: StrictStr
     fresh_start_required: StrictBool
@@ -431,6 +436,8 @@ def execute_case(parsed: ParsedCase, *, benchmark_root: Path) -> BenchmarkExecut
     }
     acknowledgment_state = "not_observed"
     request_state = "not_requested"
+    common_cause_integrity = "common_cause_unassessed"
+    independence_established = False
     production_attempts: list[str] = []
     for index, step in enumerate(case.steps):
         if isinstance(step, RestartStep):
@@ -586,6 +593,8 @@ def execute_case(parsed: ParsedCase, *, benchmark_root: Path) -> BenchmarkExecut
             output_uncertain=step.output_uncertain,
         )
         runtime = evaluation.state
+        common_cause_integrity = evaluation.common_cause.integrity_state
+        independence_established = evaluation.common_cause.independence_established
         latest_occupancy = evaluation.correlation.occupancy_states
         latest_motion = {
             "commanded": evaluation.correlation.commanded_motion,
@@ -612,6 +621,8 @@ def execute_case(parsed: ParsedCase, *, benchmark_root: Path) -> BenchmarkExecut
                 "request_state": request_state,
                 "acknowledgment_state": acknowledgment_state,
                 "physical_stop": "not_established",
+                "common_cause_integrity": evaluation.common_cause.integrity_state,
+                "independence_established": evaluation.common_cause.independence_established,
             }
         )
     final_state = runtime.state
@@ -642,6 +653,9 @@ def execute_case(parsed: ParsedCase, *, benchmark_root: Path) -> BenchmarkExecut
             "request_state": request_state,
             "acknowledgment_state": acknowledgment_state,
             "physical_stop": "not_established",
+            "common_cause_integrity": common_cause_integrity,
+            "independence_established": independence_established,
+            "certification_state": "not_established",
             "latched": final_state.latched,
             "recovery_stage": final_state.supervisor_state,
             "fresh_start_required": final_state.fresh_start_required,

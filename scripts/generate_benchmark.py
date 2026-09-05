@@ -40,6 +40,7 @@ REQUIRED_FAULT_FAMILIES = (
     "time_order",
 )
 RUNTIME_BASELINE_COMMIT = "cad2eb5aa1a9adc526606f7590755cb8d05d5607"
+CONFIGURATION_SHA256 = "sha256:" + "0" * 64
 SOURCE_PATHS = (
     "scripts/generate_benchmark.py",
     "src/oscillink_safety_ops/benchmark.py",
@@ -72,6 +73,7 @@ def _observations(
     physical_frame_id: str | None = "frame:robot-base",
     command_program_id: str | None = "program:synthetic-cell",
     physical_program_id: str | None = "program:synthetic-cell",
+    dependency_state: str = "healthy",
 ) -> list[dict[str, Any]]:
     run_id = _run(case_id)
     received = received_at or observed_at
@@ -129,6 +131,25 @@ def _observations(
             "source_state": health_state,
             "clock_state": clock_state,
             "last_source_sequence": last_sequence,
+        },
+        {
+            "schema_version": 1,
+            "observation_id": f"dependency:{suffix}",
+            "run_id": run_id,
+            "source_id": "independent-dependency-monitor:a",
+            "sequence_number": sequence,
+            "observed_at": observed_at,
+            "received_at": received,
+            "source_domain": "independent_dependency_health",
+            "dependency_id": "dependency:shared-infrastructure",
+            "dependency_kind": "compute",
+            "dependency_state": dependency_state,
+            "affected_source_ids": [
+                "independent-zone-sensor:a",
+                "production-ai:planner",
+            ],
+            "configuration_sha256": CONFIGURATION_SHA256,
+            "independence_state": "not_established",
         },
     ]
 
@@ -602,6 +623,7 @@ def build_case_documents() -> list[dict[str, Any]]:
         motion_state="moving",
         speed_mps=1.5,
         acceleration_mps2=2.5,
+        dependency_state="failed",
     )
     add(
         source_motion_id,

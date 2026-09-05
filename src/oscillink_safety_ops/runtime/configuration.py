@@ -331,6 +331,15 @@ def _enforce_revision_transition(
         raise ConfigurationError(f"threshold widening is forbidden: {', '.join(widened)}")
     if not set(prior.required_source_ids).issubset(configuration.required_source_ids):
         raise ConfigurationError("removing a previously required source is forbidden")
+    prior_dependencies = {item.dependency_id: item for item in prior.dependency_bindings}
+    current_dependencies = {item.dependency_id: item for item in configuration.dependency_bindings}
+    if not set(prior_dependencies).issubset(current_dependencies):
+        raise ConfigurationError("removing a previously declared dependency is forbidden")
+    if any(
+        current_dependencies[identity] != binding
+        for identity, binding in prior_dependencies.items()
+    ):
+        raise ConfigurationError("changing a declared dependency identity is forbidden")
 
 
 def load_supervisor_configuration(

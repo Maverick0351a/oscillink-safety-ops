@@ -19,7 +19,12 @@ from .configuration import (
     ConfigurationError,
     load_supervisor_configuration,
 )
-from .contracts import CommandObservation, PhysicalObservation, SourceHealthObservation
+from .contracts import (
+    CommandObservation,
+    PhysicalObservation,
+    SharedDependencyObservation,
+    SourceHealthObservation,
+)
 from .freshness import Observation
 from .supervisor import canonical_record_bytes, evaluate_supervisor, start_supervisor
 
@@ -313,13 +318,20 @@ def _observation_from_line(raw_line: bytes) -> Observation:
     if "input_sha256" in data:
         raise ReplayError("reserved_identity", "input_sha256 is reserved for exact-byte replay")
     source_domain = data.get("source_domain")
-    model: type[CommandObservation] | type[PhysicalObservation] | type[SourceHealthObservation]
+    model: (
+        type[CommandObservation]
+        | type[PhysicalObservation]
+        | type[SourceHealthObservation]
+        | type[SharedDependencyObservation]
+    )
     if source_domain == "production_ai":
         model = CommandObservation
     elif source_domain == "independent_physical_observation":
         model = PhysicalObservation
     elif source_domain == "independent_source_health":
         model = SourceHealthObservation
+    elif source_domain == "independent_dependency_health":
+        model = SharedDependencyObservation
     else:
         raise ReplayError("unknown_record", "replay record has an unknown source domain")
     data["input_sha256"] = "sha256:" + hashlib.sha256(raw_line).hexdigest()
@@ -384,6 +396,7 @@ def _source_domain_for_id(source_id: str) -> str | None:
         ("production-ai:", "production_ai"),
         ("independent-zone-sensor:", "independent_physical_observation"),
         ("independent-health-monitor:", "independent_source_health"),
+        ("independent-dependency-monitor:", "independent_dependency_health"),
     ):
         if source_id.startswith(prefix):
             return domain

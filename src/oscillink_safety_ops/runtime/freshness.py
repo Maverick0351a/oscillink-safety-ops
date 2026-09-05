@@ -11,11 +11,14 @@ from typing import Self, TypeAlias
 from .contracts import (
     CommandObservation,
     PhysicalObservation,
+    SharedDependencyObservation,
     SourceHealthObservation,
     SupervisorConfiguration,
 )
 
-Observation: TypeAlias = CommandObservation | PhysicalObservation | SourceHealthObservation
+Observation: TypeAlias = (
+    CommandObservation | PhysicalObservation | SourceHealthObservation | SharedDependencyObservation
+)
 
 
 class FreshnessError(ValueError):
@@ -177,6 +180,9 @@ def _validate_declared_state(observation: Observation) -> None:
             raise FreshnessError("unhealthy_source", (observation.source_id,))
         if observation.clock_state != "healthy":
             raise FreshnessError("unhealthy_clock", (observation.source_id,))
+    elif isinstance(observation, SharedDependencyObservation):
+        if observation.dependency_state != "healthy":
+            raise FreshnessError("unhealthy_shared_dependency", (observation.source_id,))
 
 
 def _validate_cross_source_state(observations: tuple[Observation, ...]) -> None:

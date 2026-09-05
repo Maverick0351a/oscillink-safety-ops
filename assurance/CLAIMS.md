@@ -58,6 +58,12 @@ across evaluations and verified restart. Reuse, substitution, malformed history,
 exhaustion fail closed. This is deterministic software provenance, not authentication of a physical
 command or proof of causation.
 
+Signed configuration may now declare represented shared dependencies and their affected source
+identities. Dependency observations cannot establish independence; nonhealthy or inconsistent
+evidence remains unresolved and a healthy affected-source claim during shared failure is explicitly
+contradictory. This does not validate physical separation, diagnostic coverage, or common-cause
+independence in a target installation.
+
 ### CLM-003 — Conservative simulated response
 
 For a prohibited or unverifiable simulated condition, the planned behavior is to create and latch a
