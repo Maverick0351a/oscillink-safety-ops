@@ -11,7 +11,7 @@ from typing import Any
 import pytest
 
 COMMIT = "b" * 40
-VERSION = "0.1.0a1"
+VERSION = "0.1.0a2"
 
 
 def _canonical(value: object) -> bytes:
@@ -22,8 +22,8 @@ def _canonical(value: object) -> bytes:
 
 def _complete_artifacts(root: Path) -> list[Path]:
     artifacts = [
-        root / "oscillink_safety_ops-0.1.0a1-py3-none-any.whl",
-        root / "oscillink_safety_ops-0.1.0a1.tar.gz",
+        root / "oscillink_safety_ops-0.1.0a2-py3-none-any.whl",
+        root / "oscillink_safety_ops-0.1.0a2.tar.gz",
         root / "cyclonedx-sbom.json",
         root / "provenance.json",
         root / "benchmark-metrics.json",
@@ -130,7 +130,7 @@ def test_release_verifier_rejects_wrong_expected_identity(tmp_path: Path) -> Non
     module, isolated = _isolated_release(tmp_path)
 
     with pytest.raises(ValueError, match="package version does not match"):
-        module.verify_release_directory(isolated, expected_version="0.1.0a2")
+        module.verify_release_directory(isolated, expected_version="0.1.0a1")
     with pytest.raises(ValueError, match="candidate commit does not match"):
         module.verify_release_directory(isolated, expected_commit="c" * 40)
 
@@ -202,12 +202,12 @@ def test_release_evidence_generator_creates_canonical_redacted_metadata(tmp_path
 
 def test_package_archive_verifier_rejects_prohibited_and_unsafe_members(tmp_path: Path) -> None:
     module = importlib.import_module("scripts.verify_package_archives")
-    wheel = tmp_path / "oscillink_safety_ops-0.1.0a1-py3-none-any.whl"
+    wheel = tmp_path / "oscillink_safety_ops-0.1.0a2-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
         archive.writestr("../escape", b"x")
-    sdist = tmp_path / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    sdist = tmp_path / "oscillink_safety_ops-0.1.0a2.tar.gz"
     with tarfile.open(sdist, "w:gz") as archive:
-        item = tarfile.TarInfo("oscillink_safety_ops-0.1.0a1/.hermes/private.md")
+        item = tarfile.TarInfo("oscillink_safety_ops-0.1.0a2/.hermes/private.md")
         item.size = 1
         archive.addfile(item, io.BytesIO(b"x"))
 

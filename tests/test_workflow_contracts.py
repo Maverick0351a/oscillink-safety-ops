@@ -114,7 +114,9 @@ def test_release_is_manual_or_tag_gated_and_checks_artifacts_in_isolation() -> N
     text = _text("release.yml")
     assert "workflow_dispatch:" in text
     assert 'tags:\n      - "v*"' in text
-    assert "refs/tags/v0.1.0-alpha.1" in text
+    assert "refs/tags/v0.1.0-alpha.2" in text
+    assert "PACKAGE_VERSION: 0.1.0a2" in text
+    assert "RELEASE_TAG: v0.1.0-alpha.2" in text
     assert "uv build --out-dir" in text
     assert "cyclonedx-sbom.json" in text
     assert "provenance.json" in text

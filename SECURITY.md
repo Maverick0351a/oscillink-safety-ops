@@ -7,9 +7,8 @@ has no machine, controller, PLC, robot, actuator, live-network, remote-reset, or
 
 ## Reporting
 
-Do not report a vulnerability in a public issue. While the repository remains private, use its
-confidential maintainer collaboration route. Publication remains blocked until GitHub private
-vulnerability reporting or another tested confidential route is enabled and read back. Do not attach
+Do not report a vulnerability in a public issue. Use GitHub private vulnerability reporting through
+the repository Security tab; that confidential route is enabled. Do not attach
 credentials, customer or employee data, facility details, production logs, private prompts, hidden
 evaluation material, incident evidence, or licensed standards text. Prefer a minimal synthetic
 reproduction.
@@ -37,5 +36,6 @@ to real equipment or a production safety function is unsupported and unauthorize
 
 ## Supported versions
 
-No version is currently supported for production or operational deployment. Security fixes apply to
-the development line until a release and support policy are separately approved.
+No version is supported for production or operational deployment. The latest public prerelease
+receives best-effort security fixes on the development line; this is not a production-support or
+functional-safety maintenance commitment.

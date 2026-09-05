@@ -28,16 +28,20 @@ REQUIRED_FILES = (
     "docs/audits/release-candidate-0.1.0a1.md",
     "docs/publication-checklist.md",
     "docs/releases/v0.1.0-alpha.1.md",
+    "docs/releases/v0.1.0-alpha.2.md",
     "docs/release-process.md",
     "docs/milestones/private-pilot-gates.md",
 )
 
 REQUIRED_TEXT = {
-    "CHANGELOG.md": ("## [Unreleased]", "No public version or release tag has been published."),
-    "CITATION.cff": ("cff-version: 1.2.0", "license: Apache-2.0", "version: 0.1.0a1"),
+    "CHANGELOG.md": ("## [Unreleased]", "## [0.1.0-alpha.2] — 2026-09-04"),
+    "CITATION.cff": ("cff-version: 1.2.0", "license: Apache-2.0", "version: 0.1.0a2"),
     "CODE_OF_CONDUCT.md": ("Contributor Covenant", "Report conduct concerns privately"),
     "CONTRIBUTING.md": ("open-core", "Commercial connectors"),
-    "SECURITY.md": ("Publication remains blocked", "No version is currently supported"),
+    "SECURITY.md": (
+        "Use GitHub private vulnerability reporting",
+        "No version is supported for production or operational deployment",
+    ),
     "SUPPORT.md": ("Vulnerabilities must follow",),
     "TRADEMARKS.md": ("does not grant permission", "open-core"),
     ".github/ISSUE_TEMPLATE/bug.yml": ("Do not include credentials",),
@@ -73,6 +77,12 @@ REQUIRED_TEXT = {
         "Release tag: [`v0.1.0-alpha.1`]",
         "Operational authority: none",
     ),
+    "docs/releases/v0.1.0-alpha.2.md": (
+        "Package version: `0.1.0a2`",
+        "Release tag: [`v0.1.0-alpha.2`]",
+        "Operational authority: none",
+        "Architectural independence",
+    ),
     "docs/release-process.md": ("exact candidate commit exists",),
 }
 
@@ -86,6 +96,7 @@ PUBLIC_CLAIM_FILES = (
     "docs/publication-checklist.md",
     "docs/release-process.md",
     "docs/releases/v0.1.0-alpha.1.md",
+    "docs/releases/v0.1.0-alpha.2.md",
 )
 
 

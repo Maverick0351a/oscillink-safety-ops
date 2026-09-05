@@ -19,6 +19,7 @@ TRUST_FILES = (
     "CITATION.cff",
     ".github/pull_request_template.md",
     "docs/releases/v0.1.0-alpha.1.md",
+    "docs/releases/v0.1.0-alpha.2.md",
     "docs/release-process.md",
     "docs/publication-checklist.md",
 )
@@ -72,14 +73,14 @@ def test_current_runtime_claims_match_implemented_simulation_boundary() -> None:
         "docs/assurance-status.md",
         "docs/release-process.md",
         "docs/publication-checklist.md",
-        "docs/releases/v0.1.0-alpha.1.md",
+        "docs/releases/v0.1.0-alpha.2.md",
         "CHANGELOG.md",
     )
     for relative in current_files:
         text = (ROOT / relative).read_text(encoding="utf-8")
         assert "runtime supervisor is planned, not implemented" not in text.lower(), relative
         assert "runtime supervisor is not included" not in text.lower(), relative
-    notes = (ROOT / "docs/releases/v0.1.0-alpha.1.md").read_text(encoding="utf-8")
+    notes = (ROOT / "docs/releases/v0.1.0-alpha.2.md").read_text(encoding="utf-8")
     assert HEADLINE in notes
     assert "closed-file simulation and replay" in notes.lower()
     assert "local simulated one-way protective-stop and inhibit request records" in notes.lower()
@@ -111,8 +112,8 @@ def test_dependabot_tracks_actions_and_python_lock_weekly() -> None:
 
 def test_release_identity_and_unsupported_claim_boundaries() -> None:
     combined = "\n".join((ROOT / relative).read_text(encoding="utf-8") for relative in TRUST_FILES)
-    assert "0.1.0a1" in combined
-    assert "v0.1.0-alpha.1" in combined
+    assert "0.1.0a2" in combined
+    assert "v0.1.0-alpha.2" in combined
     for unsupported in (
         "field-proven",
         "production-ready",

@@ -14,9 +14,10 @@ do not.
 
 Batches 1-8 implemented exact-byte evidence, review lineage, offline evaluation, deterministic
 closed-file replay/simulation, a persistent supervisor latch, local one-way simulated requests, a
-synthetic benchmark, and a static monitor. Public alpha 0.1.0 alpha 1 was released from the exact
-verified candidate. Any real integration remains a separate future decision and is not authorized by
-this plan.
+synthetic benchmark, and a static monitor. Public alpha 0.1.0 alpha 1 was released from its exact
+verified candidate. Public alpha 0.1.0 alpha 2 adds restart-safe request evidence, governed command
+attribution, production-AI compromise testing, common-cause modeling, and the Oscillink brand system.
+Any real integration remains a separate future decision and is not authorized by this plan.
 
 Execution order is fail-closed:
 

@@ -52,7 +52,7 @@ def test_repository_surface_requires_prerelease_notes(tmp_path: Path) -> None:
         "scripts.verify_repository_surface"
     ).validate_repository_surface
 
-    assert "missing required repository file: docs/releases/v0.1.0-alpha.1.md" in validate(tmp_path)
+    assert "missing required repository file: docs/releases/v0.1.0-alpha.2.md" in validate(tmp_path)
 
 
 def test_repository_surface_requires_private_pilot_gates(tmp_path: Path) -> None:
@@ -82,7 +82,9 @@ def test_repository_surface_rejects_required_file_without_boundary_text(tmp_path
 
     errors = module.validate_repository_surface(tmp_path)
 
-    assert "missing required text in SECURITY.md: Publication remains blocked" in errors
+    assert (
+        "missing required text in SECURITY.md: Use GitHub private vulnerability reporting" in errors
+    )
     assert (
         "missing required text in .github/ISSUE_TEMPLATE/config.yml: blank_issues_enabled: false"
     ) in errors
@@ -119,7 +121,7 @@ def test_publication_surfaces_are_launch_ready_and_license_reviewed() -> None:
         ROOT / "benchmark" / "robot_cell_v1" / "DATASET_CARD.md",
         ROOT / "spaces" / "oscillink-safety-ops-demo" / "README.md",
         ROOT / "docs" / "release-process.md",
-        ROOT / "docs" / "releases" / "v0.1.0-alpha.1.md",
+        ROOT / "docs" / "releases" / "v0.1.0-alpha.2.md",
         ROOT / "docs" / "execution-plan.md",
     )
     stale_phrases = (
@@ -189,10 +191,11 @@ def test_public_docs_distinguish_current_evidence_from_planned_supervision() -> 
             "## Current evidence plane",
             "## Implemented simulated runtime plane",
         ),
-        "docs/execution-plan.md": ("## Approved public direction", "Public alpha 0.1.0 alpha 1"),
+        "docs/execution-plan.md": ("## Approved public direction", "Public alpha 0.1.0 alpha 2"),
         "docs/publication-checklist.md": ("Implemented runtime status",),
         "docs/release-process.md": ("current runtime is implemented",),
         "docs/releases/v0.1.0-alpha.1.md": ("## Included in this release",),
+        "docs/releases/v0.1.0-alpha.2.md": ("## Included in this release",),
     }
 
     for relative, markers in required_markers.items():
@@ -212,6 +215,7 @@ def test_public_claims_do_not_overstate_oscillink_assurance_or_results() -> None
         "docs/publication-checklist.md",
         "docs/release-process.md",
         "docs/releases/v0.1.0-alpha.1.md",
+        "docs/releases/v0.1.0-alpha.2.md",
     )
     forbidden_claims = (
         "Oscillink is certified",

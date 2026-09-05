@@ -12,7 +12,7 @@ from pydantic import ValidationError
 from oscillink_safety_ops.release import ReleaseArtifact
 
 COMMIT = "a" * 40
-VERSION = "0.1.0a1"
+VERSION = "0.1.0a2"
 
 
 def test_release_artifact_rejects_non_basename_path() -> None:
@@ -28,8 +28,8 @@ def test_create_release_files_are_deterministic_and_portable(tmp_path: Path) -> 
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "artifacts"
     artifacts.mkdir()
-    wheel = artifacts / "oscillink_safety_ops-0.1.0a1-py3-none-any.whl"
-    source = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    wheel = artifacts / "oscillink_safety_ops-0.1.0a2-py3-none-any.whl"
+    source = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     wheel.write_bytes(b"wheel-bytes")
     source.write_bytes(b"source-bytes")
     output = tmp_path / "release"
@@ -70,8 +70,8 @@ def test_verify_release_directory_uses_only_isolated_files(tmp_path: Path) -> No
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    wheel = artifacts / "oscillink_safety_ops-0.1.0a1-py3-none-any.whl"
-    source = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    wheel = artifacts / "oscillink_safety_ops-0.1.0a2-py3-none-any.whl"
+    source = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     wheel.write_bytes(b"wheel-bytes")
     source.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
@@ -95,7 +95,7 @@ def test_verify_release_directory_rejects_changed_artifact_bytes(tmp_path: Path)
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    artifact = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
     module.create_release_files(
@@ -116,7 +116,7 @@ def test_verify_release_directory_rejects_declared_size_drift(tmp_path: Path) ->
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    artifact = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
     module.create_release_files(
@@ -141,7 +141,7 @@ def test_verify_release_directory_rejects_checksum_manifest_drift(tmp_path: Path
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    artifact = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
     module.create_release_files(
@@ -164,7 +164,7 @@ def test_verify_release_directory_rejects_unmanifested_files(tmp_path: Path) -> 
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    artifact = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
     module.create_release_files(
@@ -184,7 +184,7 @@ def test_verify_release_directory_requires_regular_artifacts(tmp_path: Path) -> 
     module = importlib.import_module("scripts.create_release_manifest")
     artifacts = tmp_path / "originals"
     artifacts.mkdir()
-    artifact = artifacts / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = artifacts / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "isolated"
     module.create_release_files(
@@ -201,7 +201,7 @@ def test_verify_release_directory_requires_regular_artifacts(tmp_path: Path) -> 
 
 def test_release_manifest_cli_creates_candidate_files(tmp_path: Path) -> None:
     module = importlib.import_module("scripts.create_release_manifest")
-    artifact = tmp_path / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = tmp_path / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     output = tmp_path / "candidate"
 
@@ -229,7 +229,7 @@ def test_release_manifest_cli_verifies_isolated_directory(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = importlib.import_module("scripts.create_release_manifest")
-    artifact = tmp_path / "oscillink_safety_ops-0.1.0a1.tar.gz"
+    artifact = tmp_path / "oscillink_safety_ops-0.1.0a2.tar.gz"
     artifact.write_bytes(b"source-bytes")
     isolated = tmp_path / "candidate"
     module.create_release_files(

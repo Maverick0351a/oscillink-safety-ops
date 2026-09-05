@@ -5,8 +5,8 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "0.1.0a1"
-HUMAN_VERSION = "0.1.0-alpha.1"
+EXPECTED_VERSION = "0.1.0a2"
+HUMAN_VERSION = "0.1.0-alpha.2"
 
 
 def test_runtime_version_is_canonical_project_prerelease() -> None:
@@ -29,6 +29,6 @@ def test_release_candidate_documents_match_package_version() -> None:
     assert "version" not in package
     assert package["source"] == {"editable": "."}
     assert f"version: {EXPECTED_VERSION}" in citation
-    assert f"## [{HUMAN_VERSION}] — Unreleased" in changelog
+    assert f"## [{HUMAN_VERSION}] — 2026-09-04" in changelog
     assert release_notes.is_file()
     assert f"Package version: `{EXPECTED_VERSION}`" in release_notes.read_text(encoding="utf-8")

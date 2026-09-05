@@ -5,7 +5,7 @@ correction. Following it does not by itself authorize an external action.
 
 ## Identity and implemented boundary
 
-The package identity `0.1.0a1` maps to the intended human tag `v0.1.0-alpha.1`. That identity must
+The package identity `0.1.0a2` maps to the human tag `v0.1.0-alpha.2`. That identity must
 agree across runtime metadata, wheel, source distribution, `CITATION.cff`, `CHANGELOG.md`, release
 notes, provenance metadata, and release-verification manifest.
 
