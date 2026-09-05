@@ -39,7 +39,7 @@ REQUIRED_FAULT_FAMILIES = (
     "simultaneous_faults",
     "time_order",
 )
-RUNTIME_BASELINE_COMMIT = "dc27cf6ce25be97b0cb70b698679445103409e7b"
+RUNTIME_BASELINE_COMMIT = "cad2eb5aa1a9adc526606f7590755cb8d05d5607"
 SOURCE_PATHS = (
     "scripts/generate_benchmark.py",
     "src/oscillink_safety_ops/benchmark.py",
