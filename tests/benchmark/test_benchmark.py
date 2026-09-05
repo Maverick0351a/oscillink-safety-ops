@@ -72,6 +72,27 @@ def minimal_case() -> dict[str, object]:
                         "clock_state": "healthy",
                         "last_source_sequence": 0,
                     },
+                    {
+                        "schema_version": 1,
+                        "observation_id": "dependency:0",
+                        "run_id": "run:benchmark:nominal-idle",
+                        "source_id": "independent-dependency-monitor:a",
+                        "sequence_number": 0,
+                        "observed_at": "2026-09-03T12:00:00Z",
+                        "received_at": "2026-09-03T12:00:00Z",
+                        "source_domain": "independent_dependency_health",
+                        "dependency_id": "dependency:shared-infrastructure",
+                        "dependency_kind": "compute",
+                        "dependency_state": "healthy",
+                        "affected_source_ids": [
+                            "independent-zone-sensor:a",
+                            "production-ai:planner",
+                        ],
+                        "configuration_sha256": (
+                            "sha256:38068747cb9a5927c334697e6a2649feed488465c9bba3612c85e47695640b86"
+                        ),
+                        "independence_state": "not_established",
+                    },
                 ],
             }
         ],
@@ -115,6 +136,9 @@ def test_execute_nominal_case_is_byte_deterministic_and_exposes_safety_boundarie
     assert first.result["outcome_action"] == "none"
     assert first.result["final"]["policy_state"] == "monitoring_normal"
     assert first.result["final"]["physical_stop"] == "not_established"
+    assert first.result["final"]["common_cause_integrity"] == "represented_healthy_unvalidated"
+    assert first.result["final"]["independence_established"] is False
+    assert first.result["final"]["certification_state"] == "not_established"
     assert first.result["synthetic_evidence"] is True
     assert first.result["operational_authority"] == "none"
 

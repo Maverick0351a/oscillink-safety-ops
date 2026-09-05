@@ -39,8 +39,8 @@ REQUIRED_FAULT_FAMILIES = (
     "simultaneous_faults",
     "time_order",
 )
-RUNTIME_BASELINE_COMMIT = "cad2eb5aa1a9adc526606f7590755cb8d05d5607"
-CONFIGURATION_SHA256 = "sha256:" + "0" * 64
+RUNTIME_BASELINE_COMMIT = "d0ce7509c907edd8d6f1ce385bcd0d2ccd87f35c"
+CONFIGURATION_SHA256 = "sha256:38068747cb9a5927c334697e6a2649feed488465c9bba3612c85e47695640b86"
 SOURCE_PATHS = (
     "scripts/generate_benchmark.py",
     "src/oscillink_safety_ops/benchmark.py",
