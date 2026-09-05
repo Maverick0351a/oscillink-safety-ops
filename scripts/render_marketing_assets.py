@@ -25,6 +25,9 @@ SOCIAL_PREVIEW_LINES = (
     "AI CONTROLLED INDUSTRIAL EQUIPMENT",
     "RISK MITIGATION / OVERSIGHT",
 )
+BRAND_NAVY: tuple[int, int, int] = (21, 26, 61)
+BRAND_TEAL: tuple[int, int, int] = (53, 182, 190)
+BRAND_WHITE: tuple[int, int, int] = (247, 247, 244)
 
 ARCHITECTURE_SVG = (
     dedent(
@@ -37,18 +40,18 @@ ARCHITECTURE_SVG = (
           <path d="M40 0H0V40" fill="none" stroke="#17233a" stroke-width="1"/>
         </pattern>
         <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-          <path d="M0 0L10 5L0 10Z" fill="#38d9f5"/>
+          <path d="M0 0L10 5L0 10Z" fill="#35b6be"/>
         </marker>
         <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#102138"/>
-          <stop offset="1" stop-color="#08111f"/>
+          <stop offset="1" stop-color="#0d1430"/>
         </linearGradient>
       </defs>
-      <rect width="1280" height="720" fill="#050a12"/>
+      <rect width="1280" height="720" fill="#080c21"/>
       <rect width="1280" height="720" fill="url(#grid)" opacity=".72"/>
       <text x="64" y="70" fill="#f5f8ff" font-family="Inter,Segoe UI,sans-serif" font-size="31" font-weight="700">GOVERNED EVIDENCE, END TO END</text>
       <text x="64" y="105" fill="#8ea2bd" font-family="Inter,Segoe UI,sans-serif" font-size="16">Exact identity and authority boundaries remain visible through every transformation.</text>
-      <g fill="none" stroke="#38d9f5" stroke-width="3" marker-end="url(#arrow)">
+      <g fill="none" stroke="#35b6be" stroke-width="3" marker-end="url(#arrow)">
         <path d="M286 275H354"/>
         <path d="M596 275H664"/>
         <path d="M906 275H974"/>
@@ -57,8 +60,8 @@ ARCHITECTURE_SVG = (
       <g font-family="Inter,Segoe UI,sans-serif">
         <g transform="translate(64 172)">
           <rect width="222" height="194" rx="14" fill="#07101d"/>
-          <rect width="222" height="194" rx="14" fill="url(#panel)" stroke="#38d9f5" stroke-width="2"/>
-          <text x="22" y="42" fill="#38d9f5" font-size="14" font-weight="700">01 / EXACT SOURCE INTAKE</text>
+          <rect width="222" height="194" rx="14" fill="url(#panel)" stroke="#35b6be" stroke-width="2"/>
+          <text x="22" y="42" fill="#35b6be" font-size="14" font-weight="700">01 / EXACT SOURCE INTAKE</text>
           <text x="22" y="78" fill="#f5f8ff" font-size="16">Regulations</text>
           <text x="22" y="107" fill="#f5f8ff" font-size="16">Procedures + manuals</text>
           <text x="22" y="136" fill="#f5f8ff" font-size="16">Plans + episodes</text>
@@ -92,8 +95,8 @@ ARCHITECTURE_SVG = (
         </g>
         <g transform="translate(784 458)">
           <rect width="432" height="104" rx="14" fill="#07101d"/>
-          <rect width="432" height="104" rx="14" fill="url(#panel)" stroke="#38d9f5" stroke-width="2"/>
-          <text x="24" y="38" fill="#38d9f5" font-size="14" font-weight="700">OFFLINE PLAN + EPISODE EVALUATION</text>
+          <rect width="432" height="104" rx="14" fill="url(#panel)" stroke="#35b6be" stroke-width="2"/>
+          <text x="24" y="38" fill="#35b6be" font-size="14" font-weight="700">OFFLINE PLAN + EPISODE EVALUATION</text>
           <text x="24" y="70" fill="#f5f8ff" font-size="16">Cited findings for authorized human review</text>
           <text x="24" y="91" fill="#8ea2bd" font-family="JetBrains Mono,monospace" font-size="11">OUTPUT: EVIDENCE_FINDINGS_ONLY</text>
         </g>
@@ -117,9 +120,9 @@ PACKET_SVG = (
       <desc id="desc">A synthetic packet for an identified press and maintenance task. It preserves source revisions, unresolved evidence, and fixed no-authority states.</desc>
       <defs>
         <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#17233a" stroke-width="1"/></pattern>
-        <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#11223a"/><stop offset="1" stop-color="#08111f"/></linearGradient>
+        <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#11223a"/><stop offset="1" stop-color="#0d1430"/></linearGradient>
       </defs>
-      <rect width="1280" height="720" fill="#050a12"/>
+      <rect width="1280" height="720" fill="#080c21"/>
       <rect width="1280" height="720" fill="url(#grid)" opacity=".7"/>
       <g font-family="Inter,Segoe UI,sans-serif">
         <text x="64" y="64" fill="#ffbf47" font-size="13" font-weight="700" letter-spacing="2">SYNTHETIC DEMONSTRATION — NOT FACILITY EVIDENCE</text>
@@ -127,8 +130,8 @@ PACKET_SVG = (
         <text x="64" y="137" fill="#8ea2bd" font-family="JetBrains Mono,monospace" font-size="13">packet-synthetic-press-7 / revision 1 / schema v1</text>
         <g transform="translate(64 174)">
           <rect width="360" height="210" rx="14" fill="#07101d"/>
-          <rect width="360" height="210" rx="14" fill="url(#panel)" stroke="#38d9f5" stroke-width="2"/>
-          <text x="24" y="38" fill="#38d9f5" font-size="14" font-weight="700">IDENTIFIED CONTEXT</text>
+          <rect width="360" height="210" rx="14" fill="url(#panel)" stroke="#35b6be" stroke-width="2"/>
+          <text x="24" y="38" fill="#35b6be" font-size="14" font-weight="700">IDENTIFIED CONTEXT</text>
           <text x="24" y="78" fill="#8ea2bd" font-size="13">ASSET</text><text x="132" y="78" fill="#f5f8ff" font-size="15">SYN-PRESS-7</text>
           <text x="24" y="109" fill="#8ea2bd" font-size="13">SERIAL</text><text x="132" y="109" fill="#f5f8ff" font-size="15">SP7-0042</text>
           <text x="24" y="140" fill="#8ea2bd" font-size="13">TASK</text><text x="132" y="140" fill="#f5f8ff" font-size="15">MAINTENANCE-001</text>
@@ -286,16 +289,16 @@ def png_bytes(canvas: Canvas) -> bytes:
 
 def social_preview() -> bytes:
     """Render the 1280x640 GitHub social preview."""
-    canvas = Canvas(1280, 640, (5, 10, 18))
-    grid = (18, 33, 53)
+    canvas = Canvas(1280, 640, BRAND_NAVY)
+    grid = (38, 53, 82)
     for x in range(0, 1280, 40):
         canvas.line(x, 0, x, 639, grid)
     for y in range(0, 640, 40):
         canvas.line(0, y, 1279, y, grid)
-    canvas.rectangle(56, 58, 8, 524, (56, 217, 245))
-    canvas.text(100, 94, "OSCILLINK", 9, (245, 248, 255))
-    canvas.text(100, 202, SOCIAL_PREVIEW_LINES[0], 5, (56, 217, 245))
-    canvas.text(100, 258, SOCIAL_PREVIEW_LINES[1], 4, (56, 217, 245))
+    canvas.rectangle(56, 58, 8, 524, BRAND_TEAL)
+    canvas.text(100, 94, "OSCILLINK", 9, BRAND_WHITE)
+    canvas.text(100, 202, SOCIAL_PREVIEW_LINES[0], 5, BRAND_TEAL)
+    canvas.text(100, 258, SOCIAL_PREVIEW_LINES[1], 4, BRAND_TEAL)
     canvas.rectangle(100, 350, 936, 2, (54, 78, 106))
     canvas.text(100, 396, SOCIAL_PREVIEW_LINES[2], 3, (255, 191, 71))
     canvas.text(100, 520, "SAFETY OPS", 4, (142, 162, 189))

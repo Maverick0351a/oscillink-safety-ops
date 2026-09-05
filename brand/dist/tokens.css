@@ -1,0 +1,11 @@
+:root {
+  --oscillink-navy: #151a3d;
+  --oscillink-teal: #35b6be;
+  --oscillink-white: #f7f7f4;
+  --oscillink-ink: #101630;
+  --safety-warning: #ffbd5b;
+  --safety-critical: #ff6b73;
+  --safety-positive: #77e1a0;
+}
+
+/* Brand teal does not communicate safety state. Pair safety colors with text and shape. */

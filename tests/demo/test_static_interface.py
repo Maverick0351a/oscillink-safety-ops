@@ -46,7 +46,16 @@ def test_monitor_primary_inspect_secondary_landmarks_and_required_copy() -> None
     assert "section" in tags
     assert "aside" in tags
     assert tags.count("footer") == 1
-    assert {"monitor", "inspect", "scenario-select", "physical-stop"} <= ids
+    assert {
+        "monitor",
+        "inspect",
+        "scenario-select",
+        "physical-stop",
+        "common-cause-integrity",
+        "dependency-record",
+        "independence-established",
+        "certification-state",
+    } <= ids
     assert html.index('id="monitor"') < html.index('id="inspect"')
     assert "SYNTHETIC EVIDENCE — SOFTWARE BEHAVIOR ONLY" in visible_text
     assert "No physical stop established" in visible_text
@@ -55,6 +64,10 @@ def test_monitor_primary_inspect_secondary_landmarks_and_required_copy() -> None
         "Independent occupancy",
         "Independent motion",
         "Independent source health",
+        "Common-cause conclusion",
+        "Represented dependency record",
+        "Architectural independence",
+        "Certification state",
         "Deterministic state",
         "Deterministic action",
         "First-out reason",
@@ -68,6 +81,17 @@ def test_monitor_primary_inspect_secondary_landmarks_and_required_copy() -> None
         "Runtime SHA-256",
     ):
         assert copy in visible_text
+
+    logos = [attrs for tag, attrs in parser.tags if tag == "img"]
+    assert logos == [
+        {
+            "class": "brand-logo",
+            "src": "assets/oscillink-logo.png",
+            "width": "1024",
+            "height": "1024",
+            "alt": "Oscillink",
+        }
+    ]
 
 
 def test_selector_is_labeled_and_only_supports_scenario_inspection() -> None:
@@ -126,7 +150,7 @@ def test_static_demo_has_no_external_or_dynamic_execution_surface() -> None:
 
 
 def test_css_enforces_focus_touch_numerals_responsiveness_and_reduced_motion() -> None:
-    _, css, _, _ = _interface()
+    html, css, script, _ = _interface()
     lowered = css.lower()
 
     assert ":focus-visible" in css
@@ -138,3 +162,19 @@ def test_css_enforces_focus_touch_numerals_responsiveness_and_reduced_motion() -
     assert "Inter," not in css
     assert ".hero" not in css
     assert ".card-grid" not in css
+    assert "--brand-navy: #151a3d" in css
+    assert "--brand-teal: #35b6be" in css
+    assert ".brand-logo" in css
+    assert "max-width: 42ch" in css
+    assert ".monitor {\n  align-self: start" in css
+    assert ".scenario-state {\n  color: var(--cyan)" in css
+    assert '.first-out[data-tone="critical"]' in css
+    assert 'tone("first-out"' in script
+    assert "OFFLINE BENCHMARK · NOT A SAFETY FUNCTION" in html
+    assert "common cause: NOT ESTABLISHED" in html
+    assert '.physical-stop[data-tone="critical"]' in css
+    assert "No physical stop established by this offline record" in html
+    assert "Counts only · not safety results" in html
+    assert "caseRecord.title}`" in script
+    assert "of ${demo.metrics.total_cases} expected" in script
+    assert "Diagnostic coverage (DC): not established" in html

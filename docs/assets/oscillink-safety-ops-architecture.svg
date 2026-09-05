@@ -6,18 +6,18 @@
       <path d="M40 0H0V40" fill="none" stroke="#17233a" stroke-width="1"/>
     </pattern>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 0L10 5L0 10Z" fill="#38d9f5"/>
+      <path d="M0 0L10 5L0 10Z" fill="#35b6be"/>
     </marker>
     <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#102138"/>
-      <stop offset="1" stop-color="#08111f"/>
+      <stop offset="1" stop-color="#0d1430"/>
     </linearGradient>
   </defs>
-  <rect width="1280" height="720" fill="#050a12"/>
+  <rect width="1280" height="720" fill="#080c21"/>
   <rect width="1280" height="720" fill="url(#grid)" opacity=".72"/>
   <text x="64" y="70" fill="#f5f8ff" font-family="Inter,Segoe UI,sans-serif" font-size="31" font-weight="700">GOVERNED EVIDENCE, END TO END</text>
   <text x="64" y="105" fill="#8ea2bd" font-family="Inter,Segoe UI,sans-serif" font-size="16">Exact identity and authority boundaries remain visible through every transformation.</text>
-  <g fill="none" stroke="#38d9f5" stroke-width="3" marker-end="url(#arrow)">
+  <g fill="none" stroke="#35b6be" stroke-width="3" marker-end="url(#arrow)">
     <path d="M286 275H354"/>
     <path d="M596 275H664"/>
     <path d="M906 275H974"/>
@@ -26,8 +26,8 @@
   <g font-family="Inter,Segoe UI,sans-serif">
     <g transform="translate(64 172)">
       <rect width="222" height="194" rx="14" fill="#07101d"/>
-      <rect width="222" height="194" rx="14" fill="url(#panel)" stroke="#38d9f5" stroke-width="2"/>
-      <text x="22" y="42" fill="#38d9f5" font-size="14" font-weight="700">01 / EXACT SOURCE INTAKE</text>
+      <rect width="222" height="194" rx="14" fill="url(#panel)" stroke="#35b6be" stroke-width="2"/>
+      <text x="22" y="42" fill="#35b6be" font-size="14" font-weight="700">01 / EXACT SOURCE INTAKE</text>
       <text x="22" y="78" fill="#f5f8ff" font-size="16">Regulations</text>
       <text x="22" y="107" fill="#f5f8ff" font-size="16">Procedures + manuals</text>
       <text x="22" y="136" fill="#f5f8ff" font-size="16">Plans + episodes</text>
@@ -61,8 +61,8 @@
     </g>
     <g transform="translate(784 458)">
       <rect width="432" height="104" rx="14" fill="#07101d"/>
-      <rect width="432" height="104" rx="14" fill="url(#panel)" stroke="#38d9f5" stroke-width="2"/>
-      <text x="24" y="38" fill="#38d9f5" font-size="14" font-weight="700">OFFLINE PLAN + EPISODE EVALUATION</text>
+      <rect width="432" height="104" rx="14" fill="url(#panel)" stroke="#35b6be" stroke-width="2"/>
+      <text x="24" y="38" fill="#35b6be" font-size="14" font-weight="700">OFFLINE PLAN + EPISODE EVALUATION</text>
       <text x="24" y="70" fill="#f5f8ff" font-size="16">Cited findings for authorized human review</text>
       <text x="24" y="91" fill="#8ea2bd" font-family="JetBrains Mono,monospace" font-size="11">OUTPUT: EVIDENCE_FINDINGS_ONLY</text>
     </g>

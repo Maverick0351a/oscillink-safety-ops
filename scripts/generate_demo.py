@@ -15,15 +15,18 @@ PHYSICAL_STOP_NOTICE = "No physical stop established"
 
 STYLES = """:root {
   color-scheme: dark;
+  --brand-navy: #151a3d;
+  --brand-teal: #35b6be;
+  --brand-white: #f7f7f4;
   --ink: #dbe9ee;
-  --muted: #8da0aa;
-  --dim: #60717a;
-  --base: #071014;
-  --panel: #0a171c;
-  --panel-strong: #0d2026;
-  --line: #1c3a43;
-  --line-strong: #2c6570;
-  --cyan: #54e6e7;
+  --muted: #a9bac8;
+  --dim: #91a4b8;
+  --base: #080c21;
+  --panel: #0d1430;
+  --panel-strong: #111a39;
+  --line: #263552;
+  --line-strong: #316477;
+  --cyan: var(--brand-teal);
   --amber: #ffbd5b;
   --red: #ff6b73;
   --green: #77e1a0;
@@ -45,13 +48,14 @@ body {
   margin: 0;
   color: var(--ink);
   background:
-    linear-gradient(rgba(84, 230, 231, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(84, 230, 231, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 75% -10%, #12343d 0, transparent 34rem),
+    linear-gradient(rgba(53, 182, 190, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(53, 182, 190, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 75% -10%, #172952 0, transparent 34rem),
     var(--base);
   background-size: 28px 28px, 28px 28px, auto, auto;
   font-family: var(--sans);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 body::before {
@@ -88,11 +92,32 @@ body::before {
 
 .site-header {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  padding-block: 1.5rem 1rem;
+  padding-block: 1.25rem 1rem;
   border-bottom: 1px solid var(--line-strong);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.brand-logo {
+  flex: 0 0 auto;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1rem;
+  object-fit: cover;
+  outline: 1px solid oklch(1 0 0 / 0.1);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .product-mark,
@@ -113,7 +138,7 @@ body::before {
 }
 
 .site-header h1 {
-  max-width: 28ch;
+  max-width: 42ch;
   margin: 0.2rem 0 0;
   font-size: clamp(1.35rem, 3vw, 2.15rem);
   font-weight: 620;
@@ -166,10 +191,12 @@ body::before {
 .inspect {
   min-width: 0;
   border: 1px solid var(--line);
-  background: rgba(8, 23, 28, 0.94);
+  background: rgba(13, 20, 48, 0.94);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
 }
 
 .monitor {
+  align-self: start;
   border-top-color: var(--cyan);
 }
 
@@ -212,7 +239,7 @@ body::before {
 }
 
 .scenario-state {
-  color: var(--green);
+  color: var(--cyan);
   font-family: var(--mono);
   font-size: 0.76rem;
   font-variant-numeric: tabular-nums;
@@ -242,7 +269,7 @@ select {
   border: 1px solid var(--line-strong);
   border-radius: 0;
   color: var(--ink);
-  background: #071217;
+  background: #0b1129;
   font: 0.9rem var(--mono);
 }
 
@@ -333,7 +360,7 @@ td:nth-child(2) {
 .hash-key {
   color: var(--dim);
   font-family: var(--mono);
-  font-size: 0.67rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -345,7 +372,7 @@ td:nth-child(2) {
 
 .signal-blocks {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1fr) minmax(0, 1.35fr);
   gap: 1rem;
 }
 
@@ -361,18 +388,39 @@ td:nth-child(2) {
   text-transform: uppercase;
 }
 
+.signal-blocks > div:last-child .signal-list {
+  grid-template-columns: 1fr;
+}
+
+.signal-blocks > div:last-child .signal-list dd {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .decision-list .action-value {
-  color: var(--amber);
+  color: var(--ink);
   font-weight: 750;
 }
 
 .first-out {
+  color: var(--ink);
+}
+
+.action-value[data-tone="warning"] {
+  color: var(--amber);
+}
+
+.first-out[data-tone="critical"] {
   color: var(--red);
 }
 
 .physical-stop {
-  color: #ffacb1;
+  color: var(--ink);
   font-weight: 800;
+}
+
+.physical-stop[data-tone="critical"] {
+  color: #ffacb1;
 }
 
 .output-list {
@@ -421,7 +469,7 @@ td:nth-child(2) {
 .hash-value {
   display: block;
   color: #a9c6cd;
-  font-size: 0.67rem;
+  font-size: 0.72rem;
   overflow-wrap: anywhere;
 }
 
@@ -430,7 +478,7 @@ td:nth-child(2) {
 }
 
 .metric-value {
-  color: var(--green);
+  color: var(--brand-white);
   font-size: 0.78rem;
   text-align: right;
 }
@@ -490,7 +538,7 @@ td:last-child {
   padding-block: 1rem 2rem;
   border-top: 1px solid var(--line);
   color: var(--dim);
-  font-size: 0.74rem;
+  font-size: 0.78rem;
 }
 
 :focus-visible {
@@ -522,6 +570,12 @@ td:last-child {
   .mode-label {
     margin-top: 0.75rem;
     text-align: left;
+  }
+
+  .brand-logo {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 0.8rem;
   }
 
   .signal-blocks,
@@ -591,12 +645,20 @@ function text(id, value) {
   byId(id).textContent = value === null || value === undefined || value === "" ? "—" : String(value);
 }
 
+function tone(id, value, neutralValue) {
+  byId(id).dataset.tone = value === neutralValue ? "neutral" : "critical";
+}
+
 function yesNo(value) {
   return value ? "yes" : "no";
 }
 
 function joined(value) {
   return Array.isArray(value) && value.length > 0 ? value.join(", ") : "none";
+}
+
+function humanState(value) {
+  return String(value).replaceAll("_", " ");
 }
 
 function timelineState(event) {
@@ -632,12 +694,23 @@ function renderScenario(caseRecord) {
   text("motion-acceleration", final.motion.acceleration_mps2);
   text("health-state", final.source_health.source_state);
   text("clock-state", final.source_health.clock_state);
+  text("common-cause-integrity", final.independence_established ? "established" : "not established");
+  text("dependency-record", humanState(final.common_cause_integrity));
+  text(
+    "independence-established",
+    final.independence_established ? "established" : "not established",
+  );
+  text("certification-state", humanState(final.certification_state));
   text("policy-state", final.policy_state);
   text("outcome-action", caseRecord.outcome_action);
+  byId("outcome-action").dataset.tone = caseRecord.outcome_action === "none" ? "neutral" : "warning";
   text("first-out", final.first_out_reason);
+  tone("first-out", final.first_out_reason, "monitoring_normal");
   text("reason-codes", joined(final.reason_codes));
   text("request-state", final.request_state);
   text("ack-state", final.acknowledgment_state);
+  text("physical-stop", "No physical stop established by this offline record");
+  byId("physical-stop").dataset.tone = final.request_state === "not_requested" ? "neutral" : "critical";
   text("latched", yesNo(final.latched));
   text("recovery-stage", final.recovery_stage);
   text("fresh-start", yesNo(final.fresh_start_required));
@@ -656,12 +729,12 @@ function initialize() {
   demo.cases.forEach((caseRecord, index) => {
     const option = document.createElement("option");
     option.value = String(index);
-    option.textContent = `${String(index + 1).padStart(2, "0")} · ${caseRecord.case_id} · ${caseRecord.title}`;
+    option.textContent = `${String(index + 1).padStart(2, "0")} · ${caseRecord.title}`;
     scenarioSelect.append(option);
   });
-  text("metric-exact", `${demo.metrics.exact_matches}/${demo.metrics.total_cases}`);
+  text("metric-exact", `${demo.metrics.exact_matches} of ${demo.metrics.total_cases} expected`);
   text("metric-runs", demo.metrics.deterministic_repeatability.runs_per_case);
-  text("metric-families", `${demo.metrics.fault_family_coverage.covered_families}/${demo.metrics.fault_family_coverage.total_required}`);
+  text("metric-families", `${demo.metrics.fault_family_coverage.covered_families} of ${demo.metrics.fault_family_coverage.total_required} expected`);
   text("metric-executions", demo.metrics.deterministic_repeatability.total_executions);
   text("benchmark-hash", demo.source.benchmark_manifest_sha256);
   text("expected-hash", demo.source.expected_results_sha256);
@@ -694,14 +767,17 @@ HTML = """<!doctype html>
 <body>
   <a class="skip-link" href="#monitor">Skip to monitor</a>
   <header class="site-header">
-    <div>
-      <p class="product-mark">OSCILLINK / SAFETY OPS</p>
-      <h1>Robot-cell supervisor evidence monitor</h1>
+    <div class="brand-lockup">
+      <img class="brand-logo" src="assets/oscillink-logo.png" width="1024" height="1024" alt="Oscillink">
+      <div class="brand-copy">
+        <p class="product-mark">OSCILLINK / SAFETY OPS</p>
+        <h1>Robot-cell supervisor evidence monitor</h1>
+      </div>
     </div>
     <p class="mode-label">MONITOR PRIMARY · INSPECT SECONDARY · READ ONLY</p>
   </header>
 
-  <div class="evidence-banner" role="note">SYNTHETIC EVIDENCE — SOFTWARE BEHAVIOR ONLY</div>
+  <div class="evidence-banner" role="note">SYNTHETIC EVIDENCE — SOFTWARE BEHAVIOR ONLY · OFFLINE BENCHMARK · NOT A SAFETY FUNCTION</div>
 
   <main class="workspace">
     <section id="monitor" class="monitor" aria-labelledby="monitor-heading">
@@ -749,6 +825,10 @@ HTML = """<!doctype html>
             <dl class="signal-list">
               <dt class="term">Source</dt><dd id="health-state" class="value">—</dd>
               <dt class="term">Clock</dt><dd id="clock-state" class="value">—</dd>
+              <dt class="term">Common-cause conclusion</dt><dd id="common-cause-integrity" class="value">—</dd>
+              <dt class="term">Represented dependency record</dt><dd id="dependency-record" class="value">—</dd>
+              <dt class="term">Architectural independence</dt><dd id="independence-established" class="value">—</dd>
+              <dt class="term">Certification state</dt><dd id="certification-state" class="value">—</dd>
             </dl>
           </div>
         </div>
@@ -770,7 +850,7 @@ HTML = """<!doctype html>
         <dl class="output-list">
           <div><dt class="term">Request</dt><dd id="request-state" class="value">—</dd></div>
           <div><dt class="term">Acknowledgment</dt><dd id="ack-state" class="value">—</dd></div>
-          <div><dt class="term">Physical stop</dt><dd id="physical-stop" class="value physical-stop">No physical stop established</dd></div>
+          <div><dt class="term">Physical stop</dt><dd id="physical-stop" class="value physical-stop">No physical stop established by this offline record</dd></div>
         </dl>
       </section>
 
@@ -830,10 +910,11 @@ HTML = """<!doctype html>
 
       <section class="inspect-block" aria-labelledby="metrics-heading">
         <h3 id="metrics-heading">Mechanically derived metrics</h3>
+        <p class="help">Counts only · not safety results</p>
         <dl class="metric-list">
-          <dt class="term">Exact cases</dt><dd id="metric-exact" class="metric-value">—</dd>
+          <dt class="term">Cases present</dt><dd id="metric-exact" class="metric-value">—</dd>
           <dt class="term">Runs per case</dt><dd id="metric-runs" class="metric-value">—</dd>
-          <dt class="term">Fault families</dt><dd id="metric-families" class="metric-value">—</dd>
+          <dt class="term">Fault-family records</dt><dd id="metric-families" class="metric-value">—</dd>
           <dt class="term">Executions</dt><dd id="metric-executions" class="metric-value">—</dd>
         </dl>
       </section>
@@ -842,7 +923,7 @@ HTML = """<!doctype html>
 
   <footer class="site-footer">
     <span>Read-only benchmark inspection. No runtime machine interface.</span>
-    <span>PLr · SIL · stopping time · DC · application validation · common cause: TBD</span>
+    <span>PLr: not established · SIL: not established · stopping time: not established · Diagnostic coverage (DC): not established · application validation: not established · common cause: NOT ESTABLISHED</span>
   </footer>
 
   <script id="demo-data" type="application/json">__DEMO_DATA__</script>
@@ -936,6 +1017,9 @@ def generate_demo(
     (assets / "styles.css").write_bytes(STYLES.encode("utf-8"))
     (assets / "app.js").write_bytes(APP.encode("utf-8"))
     (assets / "data.json").write_bytes(data_raw)
+    (assets / "oscillink-logo.png").write_bytes(
+        (source_repository / "brand" / "source" / "oscillink-logo-original.png").read_bytes()
+    )
     return data
 
 

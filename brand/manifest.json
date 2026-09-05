@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "brand_identity": "oscillink-brand-v1",
+  "source": {
+    "path": "source/oscillink-logo-original.png",
+    "sha256": "sha256:350d999865a14123bbf4501f24fbde1d3f5ad0367b1e8b7b39094c049aa7b66f",
+    "byte_count": 353145,
+    "media_type": "image/png",
+    "width": 1024,
+    "height": 1024,
+    "provenance": "owner-supplied brand artwork"
+  },
+  "generated_assets": [
+    {
+      "path": "dist/oscillink-lockup-dark.svg",
+      "sha256": "sha256:0dc061956938b3269adf9120c8e7c968afe93abf1f51a32e4d1b033c33084d5f"
+    },
+    {
+      "path": "dist/oscillink-lockup-light.svg",
+      "sha256": "sha256:d8dde732223c4aee7fb990ecf012b42af425d372403833e0939cb98b3d44e291"
+    },
+    {
+      "path": "dist/oscillink-lockup-mono.svg",
+      "sha256": "sha256:fb93944b561b948e9febf87104e09a5358780df40a9f1f0c55a754c97fc1c1d1"
+    },
+    {
+      "path": "dist/oscillink-mark.svg",
+      "sha256": "sha256:cfc65cae987e323c6cf1fba696492b585110b5f983b62e64a1ccb3514362d39a"
+    },
+    {
+      "path": "dist/tokens.css",
+      "sha256": "sha256:049e46e034dbe4fa8ad4f4c55b85016852473c98e99fe1de679eb4a4d81f1324"
+    }
+  ],
+  "authority": {
+    "trademark_owner": "Oscillink",
+    "license": "trademark-reserved",
+    "certification_mark": false,
+    "operational_authority": "none"
+  }
+}

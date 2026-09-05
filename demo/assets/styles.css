@@ -1,14 +1,17 @@
 :root {
   color-scheme: dark;
+  --brand-navy: #151a3d;
+  --brand-teal: #35b6be;
+  --brand-white: #f7f7f4;
   --ink: #dbe9ee;
-  --muted: #8da0aa;
-  --dim: #60717a;
-  --base: #071014;
-  --panel: #0a171c;
-  --panel-strong: #0d2026;
-  --line: #1c3a43;
-  --line-strong: #2c6570;
-  --cyan: #54e6e7;
+  --muted: #a9bac8;
+  --dim: #91a4b8;
+  --base: #080c21;
+  --panel: #0d1430;
+  --panel-strong: #111a39;
+  --line: #263552;
+  --line-strong: #316477;
+  --cyan: var(--brand-teal);
   --amber: #ffbd5b;
   --red: #ff6b73;
   --green: #77e1a0;
@@ -30,13 +33,14 @@ body {
   margin: 0;
   color: var(--ink);
   background:
-    linear-gradient(rgba(84, 230, 231, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(84, 230, 231, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 75% -10%, #12343d 0, transparent 34rem),
+    linear-gradient(rgba(53, 182, 190, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(53, 182, 190, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 75% -10%, #172952 0, transparent 34rem),
     var(--base);
   background-size: 28px 28px, 28px 28px, auto, auto;
   font-family: var(--sans);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 body::before {
@@ -73,11 +77,32 @@ body::before {
 
 .site-header {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  padding-block: 1.5rem 1rem;
+  padding-block: 1.25rem 1rem;
   border-bottom: 1px solid var(--line-strong);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.brand-logo {
+  flex: 0 0 auto;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1rem;
+  object-fit: cover;
+  outline: 1px solid oklch(1 0 0 / 0.1);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .product-mark,
@@ -98,7 +123,7 @@ body::before {
 }
 
 .site-header h1 {
-  max-width: 28ch;
+  max-width: 42ch;
   margin: 0.2rem 0 0;
   font-size: clamp(1.35rem, 3vw, 2.15rem);
   font-weight: 620;
@@ -151,10 +176,12 @@ body::before {
 .inspect {
   min-width: 0;
   border: 1px solid var(--line);
-  background: rgba(8, 23, 28, 0.94);
+  background: rgba(13, 20, 48, 0.94);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
 }
 
 .monitor {
+  align-self: start;
   border-top-color: var(--cyan);
 }
 
@@ -197,7 +224,7 @@ body::before {
 }
 
 .scenario-state {
-  color: var(--green);
+  color: var(--cyan);
   font-family: var(--mono);
   font-size: 0.76rem;
   font-variant-numeric: tabular-nums;
@@ -227,7 +254,7 @@ select {
   border: 1px solid var(--line-strong);
   border-radius: 0;
   color: var(--ink);
-  background: #071217;
+  background: #0b1129;
   font: 0.9rem var(--mono);
 }
 
@@ -318,7 +345,7 @@ td:nth-child(2) {
 .hash-key {
   color: var(--dim);
   font-family: var(--mono);
-  font-size: 0.67rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -330,7 +357,7 @@ td:nth-child(2) {
 
 .signal-blocks {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1fr) minmax(0, 1.35fr);
   gap: 1rem;
 }
 
@@ -346,18 +373,39 @@ td:nth-child(2) {
   text-transform: uppercase;
 }
 
+.signal-blocks > div:last-child .signal-list {
+  grid-template-columns: 1fr;
+}
+
+.signal-blocks > div:last-child .signal-list dd {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .decision-list .action-value {
-  color: var(--amber);
+  color: var(--ink);
   font-weight: 750;
 }
 
 .first-out {
+  color: var(--ink);
+}
+
+.action-value[data-tone="warning"] {
+  color: var(--amber);
+}
+
+.first-out[data-tone="critical"] {
   color: var(--red);
 }
 
 .physical-stop {
-  color: #ffacb1;
+  color: var(--ink);
   font-weight: 800;
+}
+
+.physical-stop[data-tone="critical"] {
+  color: #ffacb1;
 }
 
 .output-list {
@@ -406,7 +454,7 @@ td:nth-child(2) {
 .hash-value {
   display: block;
   color: #a9c6cd;
-  font-size: 0.67rem;
+  font-size: 0.72rem;
   overflow-wrap: anywhere;
 }
 
@@ -415,7 +463,7 @@ td:nth-child(2) {
 }
 
 .metric-value {
-  color: var(--green);
+  color: var(--brand-white);
   font-size: 0.78rem;
   text-align: right;
 }
@@ -475,7 +523,7 @@ td:last-child {
   padding-block: 1rem 2rem;
   border-top: 1px solid var(--line);
   color: var(--dim);
-  font-size: 0.74rem;
+  font-size: 0.78rem;
 }
 
 :focus-visible {
@@ -507,6 +555,12 @@ td:last-child {
   .mode-label {
     margin-top: 0.75rem;
     text-align: left;
+  }
+
+  .brand-logo {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 0.8rem;
   }
 
   .signal-blocks,

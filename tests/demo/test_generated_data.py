@@ -75,7 +75,13 @@ def test_demo_generation_is_byte_repeatable_and_has_no_hand_entered_metrics(
     second = _run_generator(tmp_path / "second")
 
     assert first == second
-    assert set(first) == {"assets/app.js", "assets/data.json", "assets/styles.css", "index.html"}
+    assert set(first) == {
+        "assets/app.js",
+        "assets/data.json",
+        "assets/oscillink-logo.png",
+        "assets/styles.css",
+        "index.html",
+    }
     html = first["index.html"].decode("utf-8")
     before_data, _, after_data = html.partition('<script id="demo-data" type="application/json">')
     _, separator, after_data = after_data.partition("</script>")

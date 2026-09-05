@@ -21,12 +21,20 @@ function text(id, value) {
   byId(id).textContent = value === null || value === undefined || value === "" ? "—" : String(value);
 }
 
+function tone(id, value, neutralValue) {
+  byId(id).dataset.tone = value === neutralValue ? "neutral" : "critical";
+}
+
 function yesNo(value) {
   return value ? "yes" : "no";
 }
 
 function joined(value) {
   return Array.isArray(value) && value.length > 0 ? value.join(", ") : "none";
+}
+
+function humanState(value) {
+  return String(value).replaceAll("_", " ");
 }
 
 function timelineState(event) {
@@ -62,12 +70,23 @@ function renderScenario(caseRecord) {
   text("motion-acceleration", final.motion.acceleration_mps2);
   text("health-state", final.source_health.source_state);
   text("clock-state", final.source_health.clock_state);
+  text("common-cause-integrity", final.independence_established ? "established" : "not established");
+  text("dependency-record", humanState(final.common_cause_integrity));
+  text(
+    "independence-established",
+    final.independence_established ? "established" : "not established",
+  );
+  text("certification-state", humanState(final.certification_state));
   text("policy-state", final.policy_state);
   text("outcome-action", caseRecord.outcome_action);
+  byId("outcome-action").dataset.tone = caseRecord.outcome_action === "none" ? "neutral" : "warning";
   text("first-out", final.first_out_reason);
+  tone("first-out", final.first_out_reason, "monitoring_normal");
   text("reason-codes", joined(final.reason_codes));
   text("request-state", final.request_state);
   text("ack-state", final.acknowledgment_state);
+  text("physical-stop", "No physical stop established by this offline record");
+  byId("physical-stop").dataset.tone = final.request_state === "not_requested" ? "neutral" : "critical";
   text("latched", yesNo(final.latched));
   text("recovery-stage", final.recovery_stage);
   text("fresh-start", yesNo(final.fresh_start_required));
@@ -86,12 +105,12 @@ function initialize() {
   demo.cases.forEach((caseRecord, index) => {
     const option = document.createElement("option");
     option.value = String(index);
-    option.textContent = `${String(index + 1).padStart(2, "0")} · ${caseRecord.case_id} · ${caseRecord.title}`;
+    option.textContent = `${String(index + 1).padStart(2, "0")} · ${caseRecord.title}`;
     scenarioSelect.append(option);
   });
-  text("metric-exact", `${demo.metrics.exact_matches}/${demo.metrics.total_cases}`);
+  text("metric-exact", `${demo.metrics.exact_matches} of ${demo.metrics.total_cases} expected`);
   text("metric-runs", demo.metrics.deterministic_repeatability.runs_per_case);
-  text("metric-families", `${demo.metrics.fault_family_coverage.covered_families}/${demo.metrics.fault_family_coverage.total_required}`);
+  text("metric-families", `${demo.metrics.fault_family_coverage.covered_families} of ${demo.metrics.fault_family_coverage.total_required} expected`);
   text("metric-executions", demo.metrics.deterministic_repeatability.total_executions);
   text("benchmark-hash", demo.source.benchmark_manifest_sha256);
   text("expected-hash", demo.source.expected_results_sha256);

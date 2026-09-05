@@ -71,6 +71,8 @@ def test_social_preview_copy_uses_approved_product_positioning() -> None:
 
     assert hasattr(module, "HEADLINE")
     assert hasattr(module, "SOCIAL_PREVIEW_LINES")
+    assert module.BRAND_NAVY == (21, 26, 61)
+    assert module.BRAND_TEAL == (53, 182, 190)
     assert module.HEADLINE == APPROVED_HEADLINE
     assert "INDEPENDENT SAFETY SUPERVISOR" in module.SOCIAL_PREVIEW_LINES
     assert "AI CONTROLLED INDUSTRIAL EQUIPMENT" in module.SOCIAL_PREVIEW_LINES

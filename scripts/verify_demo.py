@@ -22,6 +22,7 @@ from scripts.generate_demo import canonical_json, generate_demo  # noqa: E402
 REQUIRED_FILES = {
     "assets/app.js",
     "assets/data.json",
+    "assets/oscillink-logo.png",
     "assets/styles.css",
     "index.html",
 }

@@ -2,6 +2,10 @@
 
 Oscillink Safety Ops is an independent safety and risk-mitigation supervisor for AI-controlled industrial equipment, connecting machine intent, observed behavior, and safety-manager oversight.
 
+<p align="center">
+  <img src="brand/source/oscillink-logo-original.png" alt="Oscillink" width="280">
+</p>
+
 > The production AI runs the machine. Oscillink independently monitors whether commanded and
 > observed behavior remain within the approved operating envelope and requests a protective response
 > when they do not.
