@@ -42,7 +42,7 @@ def test_repository_surface_requires_release_candidate_evidence(tmp_path: Path) 
         "scripts.verify_repository_surface"
     ).validate_repository_surface
 
-    assert "missing required repository file: docs/audits/release-candidate-0.1.0a1.md" in validate(
+    assert "missing required repository file: docs/audits/release-candidate-0.1.0a2.md" in validate(
         tmp_path
     )
 
@@ -195,7 +195,11 @@ def test_public_docs_distinguish_current_evidence_from_planned_supervision() -> 
         "docs/publication-checklist.md": ("Implemented runtime status",),
         "docs/release-process.md": ("current runtime is implemented",),
         "docs/releases/v0.1.0-alpha.1.md": ("## Included in this release",),
-        "docs/releases/v0.1.0-alpha.2.md": ("## Included in this release",),
+        "docs/releases/v0.1.0-alpha.2.md": (
+            "published public prerelease",
+            "Tagged commit: `58cb8e494018481ac81810c56cdfffd20bb6c993`",
+            "## Included in this release",
+        ),
     }
 
     for relative, markers in required_markers.items():

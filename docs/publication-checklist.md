@@ -66,3 +66,24 @@ release, deployment, announcement, or other external-system mutation.
       external action.
 - [x] Batch 8 verified public API visibility, anonymous clone, community rendering, release download,
       and fresh-clone quickstart without credentials.
+
+## Alpha 2 promotion record
+
+- [x] Package, citation, changelog, release notes, workflow, wheel, and source-distribution identities
+      agree on `0.1.0a2` / `v0.1.0-alpha.2`.
+- [x] Exact candidate `58cb8e494018481ac81810c56cdfffd20bb6c993` passed clean Windows and
+      detached Buildbox Linux canonical verification.
+- [x] Hosted Ubuntu/Windows verification, CodeQL, locked dependency audit, full-history Gitleaks,
+      GitGuardian, TLC, property, fuzz, benchmark, and artifact workflows passed on the exact SHA.
+- [x] Annotated release tag resolves to the exact candidate and the release is a GitHub prerelease.
+- [x] All eight release assets were downloaded anonymously and passed isolated manifest/checksum
+      verification.
+- [x] Benchmark revision `be77064fb545b03d4d77933b222fcfe0550b46b6` was downloaded anonymously;
+      all 12 staged files matched exact bytes.
+- [x] Static monitor revision `5fca4511be9c931f904c649c54d3875b74dcd22c` was downloaded anonymously;
+      all 6 staged files matched exact bytes.
+- [x] Public static monitor loaded 36 scenarios, the governed logo, and no command/form/input surface;
+      its scenario selector changed displayed evidence only.
+- [x] Credential-free shallow-clone quickstart and canonical verification passed at the public main
+      SHA with only explicit shallow-history/platform skips.
+- [x] Owner gave separate explicit authorization for alpha 2 promotion and publication.

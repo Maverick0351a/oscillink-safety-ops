@@ -82,6 +82,7 @@ def test_current_runtime_claims_match_implemented_simulation_boundary() -> None:
         assert "runtime supervisor is not included" not in text.lower(), relative
     notes = (ROOT / "docs/releases/v0.1.0-alpha.2.md").read_text(encoding="utf-8")
     assert HEADLINE in notes
+    assert "published public prerelease" in notes
     assert "closed-file simulation and replay" in notes.lower()
     assert "local simulated one-way protective-stop and inhibit request records" in notes.lower()
     assert "TLA+" in notes and "synthetic benchmark" in notes and "hosted CI" in notes

@@ -31,4 +31,7 @@ def test_release_candidate_documents_match_package_version() -> None:
     assert f"version: {EXPECTED_VERSION}" in citation
     assert f"## [{HUMAN_VERSION}] — 2026-09-04" in changelog
     assert release_notes.is_file()
-    assert f"Package version: `{EXPECTED_VERSION}`" in release_notes.read_text(encoding="utf-8")
+    notes = release_notes.read_text(encoding="utf-8")
+    assert f"Package version: `{EXPECTED_VERSION}`" in notes
+    assert "published public prerelease" in notes
+    assert "Tagged commit: `58cb8e494018481ac81810c56cdfffd20bb6c993`" in notes

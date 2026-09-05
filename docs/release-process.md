@@ -89,8 +89,9 @@ equivalent release gates on that SHA.
 
 ### 7. Promote separately
 
-Tagging and publishing are Batch 8 actions. The release workflow only uploads short-lived verified CI
-artifacts; it has read-only repository permissions and no deploy or publication step.
+Tagging and publishing require separate owner-authorized actions after all exact-candidate gates pass.
+The release workflow only uploads short-lived verified CI artifacts; it has read-only repository
+permissions and no deploy or publication step.
 
 ## Rollback and correction
 

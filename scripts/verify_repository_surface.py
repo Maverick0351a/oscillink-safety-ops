@@ -26,6 +26,7 @@ REQUIRED_FILES = (
     "docs/audits/history-baseline-2943db2.json",
     "docs/audits/publication-readiness-2026-09-01.md",
     "docs/audits/release-candidate-0.1.0a1.md",
+    "docs/audits/release-candidate-0.1.0a2.md",
     "docs/publication-checklist.md",
     "docs/releases/v0.1.0-alpha.1.md",
     "docs/releases/v0.1.0-alpha.2.md",
@@ -70,6 +71,12 @@ REQUIRED_TEXT = {
         "uncompressed member payload differences: 0",
         "Keep the candidate private and unpushed.",
     ),
+    "docs/audits/release-candidate-0.1.0a2.md": (
+        "Tagged commit: `58cb8e494018481ac81810c56cdfffd20bb6c993`",
+        "593 tests",
+        "be77064fb545b03d4d77933b222fcfe0550b46b6",
+        "5fca4511be9c931f904c649c54d3875b74dcd22c",
+    ),
     "docs/publication-checklist.md": ("separate explicit authorization",),
     "docs/releases/v0.1.0-alpha.1.md": (
         "published public prerelease",
@@ -78,8 +85,10 @@ REQUIRED_TEXT = {
         "Operational authority: none",
     ),
     "docs/releases/v0.1.0-alpha.2.md": (
+        "published public prerelease",
         "Package version: `0.1.0a2`",
         "Release tag: [`v0.1.0-alpha.2`]",
+        "Tagged commit: `58cb8e494018481ac81810c56cdfffd20bb6c993`",
         "Operational authority: none",
         "Architectural independence",
     ),
