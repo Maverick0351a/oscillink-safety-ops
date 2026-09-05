@@ -479,6 +479,7 @@ def execute_case(parsed: ParsedCase, *, benchmark_root: Path) -> BenchmarkExecut
                 ),
                 configuration_sha256=configuration.configuration_sha256,
                 input_sha256=(step_hash,),
+                source_domain="simulated_fixture",
                 status=step.status,
             )
             transition = observe_action_acknowledgment(

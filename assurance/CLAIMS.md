@@ -41,6 +41,12 @@ calibration identities are explicit, and accepted calibration hashes are bound t
 configuration. Physical independence, calibration adequacy, measurement accuracy, and common-cause
 behavior of any target system remain unvalidated.
 
+A canonical production-AI compromise campaign rejects privileged-field smuggling, authority
+escalation, forged fixture acknowledgment, production recovery, command identity reuse, unapproved
+calibration, history exhaustion, and modeled configuration/output/disable/suppression attempts.
+Passing this campaign demonstrates the declared software boundary only; it is not penetration
+testing of a deployed target system.
+
 Physical motion attribution additionally binds a represented command ID and source sequence as one
 pair and evaluates response chronology against a signed configuration-controlled maximum delay.
 Missing, mismatched, ambiguous, non-motion, early, or late attribution remains explicit and produces

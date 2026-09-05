@@ -114,6 +114,22 @@ def test_every_generated_case_executes_exactly_and_key_boundary_oracles_hold(
     assert late_attribution["action"] == "protective_stop_request"
     assert "command_response_late" in late_attribution["reason_codes"]
     assert late_attribution["physical_stop"] == "not_established"
+    compromise_attempts = {
+        *results["case:production-reset-attempt"].result["production_authority_attempts"],
+        *results["case:production-admin-attempt"].result["production_authority_attempts"],
+    }
+    assert compromise_attempts == {
+        "administration",
+        "configuration",
+        "disable",
+        "output_acknowledgment",
+        "reset",
+        "suppress",
+    }
+    compromise_timeline = results["case:production-admin-attempt"].result["timeline"][1:]
+    assert all(item["disposition"] == "rejected_no_authority" for item in compromise_timeline)
+    assert all(item["state_unchanged"] is True for item in compromise_timeline)
+    assert all(item["physical_stop"] == "not_established" for item in compromise_timeline)
     for execution in results.values():
         reasons = execution.result["final"]["reason_codes"]
         assert reasons == sorted(set(reasons))

@@ -184,8 +184,11 @@ or physical stopping.
 
 - **Implemented portion:** strict observation contracts reject producer-supplied administrative
   fields and fix no configuration/reset/output/evidence-suppression authority; runtime policy never
-  consumes production data as configuration or recovery authority. End-to-end compromise campaigns
-  remain planned.
+  consumes production data as configuration or recovery authority. A deterministic campaign now
+  exercises privileged-field smuggling, authority escalation, forged fixture acknowledgment,
+  production recovery, configuration/calibration substitution, command reuse/history exhaustion,
+  evidence mutation surfaces, and all six modeled benchmark authority attempts. Every modeled
+  attempt is rejected or fails closed without granting authority or establishing physical stopping.
 
 - **Requirement:** `SR-011`; hazard/control: `HAZ-011` / `CTRL-011`.
 - **Stimuli:** inject disable, policy, threshold, identity, clock, watchdog, credential, output-route,

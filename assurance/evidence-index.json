@@ -352,6 +352,26 @@
       "requirement_ids": ["SR-003", "SR-006", "SR-009"],
       "test_ids": ["TEST-003", "TEST-006", "TEST-009"],
       "change_impact_id": "CI-009"
+    },
+    {
+      "evidence_id": "EVID-036",
+      "evidence_type": "synthetic_production_ai_compromise_campaign",
+      "path": "scripts/verify_production_ai_compromise.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-011"],
+      "test_ids": ["TEST-011"],
+      "change_impact_id": "CI-011"
+    },
+    {
+      "evidence_id": "EVID-037",
+      "evidence_type": "implemented_production_ai_compromise_tests",
+      "path": "tests/runtime/test_production_ai_compromise.py",
+      "owner": "ROLE-SAFETY-OWNER",
+      "status": "implemented",
+      "requirement_ids": ["SR-011"],
+      "test_ids": ["TEST-011"],
+      "change_impact_id": "CI-011"
     }
   ],
   "open_target_system_values": {

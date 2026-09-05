@@ -507,11 +507,20 @@ def build_case_documents() -> list[dict[str, Any]]:
         ("authority_boundary",),
         [
             _hazard(admin_id),
-            {
-                "kind": "production_authority_attempt",
-                "attempted_operation": "administration",
-                "actor_domain": "production_ai",
-            },
+            *(
+                {
+                    "kind": "production_authority_attempt",
+                    "attempted_operation": operation,
+                    "actor_domain": "production_ai",
+                }
+                for operation in (
+                    "administration",
+                    "configuration",
+                    "output_acknowledgment",
+                    "disable",
+                    "suppress",
+                )
+            ),
         ],
     )
     blocked_id = "case:reset-not-permitted"

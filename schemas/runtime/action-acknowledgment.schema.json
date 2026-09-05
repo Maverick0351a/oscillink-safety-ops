@@ -65,6 +65,11 @@
       "title": "Schema Version",
       "type": "integer"
     },
+    "source_domain": {
+      "const": "simulated_fixture",
+      "title": "Source Domain",
+      "type": "string"
+    },
     "status": {
       "enum": [
         "received_by_simulated_fixture",
@@ -88,6 +93,7 @@
     "request_sha256",
     "configuration_sha256",
     "input_sha256",
+    "source_domain",
     "status"
   ],
   "title": "ActionAcknowledgment",

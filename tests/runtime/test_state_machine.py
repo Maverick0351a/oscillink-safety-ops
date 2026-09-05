@@ -71,6 +71,7 @@ def acknowledgment(
             "request_sha256": request_sha256,
             "configuration_sha256": CONFIG,
             "input_sha256": (ACK_INPUT,),
+            "source_domain": "simulated_fixture",
             "status": status,
         }
     )

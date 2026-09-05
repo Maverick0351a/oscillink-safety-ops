@@ -188,6 +188,7 @@ def acknowledgment_data() -> dict[str, object]:
         "request_sha256": SHA_A,
         "configuration_sha256": SHA_B,
         "input_sha256": (SHA_C,),
+        "source_domain": "simulated_fixture",
         "status": "received_by_simulated_fixture",
         "authority_state": "untrusted_observation",
         "stopping_claim": "not_established",

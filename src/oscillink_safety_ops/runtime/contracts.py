@@ -504,6 +504,7 @@ class ActionAcknowledgment(RuntimeContract):
     request_sha256: Sha256
     configuration_sha256: Sha256
     input_sha256: Annotated[tuple[Sha256, ...], Field(min_length=1, max_length=256)]
+    source_domain: Literal["simulated_fixture"]
     status: Literal[
         "received_by_simulated_fixture",
         "rejected_by_simulated_fixture",

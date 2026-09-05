@@ -197,6 +197,7 @@ def _ready_state() -> SupervisorStateRecord:
         request_sha256=REQUEST,
         configuration_sha256=CONFIG,
         input_sha256=(INPUT,),
+        source_domain="simulated_fixture",
         status="received_by_simulated_fixture",
     )
     stopped = observe_action_acknowledgment(

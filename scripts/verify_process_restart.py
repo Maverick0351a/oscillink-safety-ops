@@ -192,6 +192,7 @@ def _acknowledgment() -> ActionAcknowledgment:
             "request_sha256": REQUEST_SHA256,
             "configuration_sha256": CONFIGURATION_SHA256,
             "input_sha256": ("sha256:" + "d" * 64,),
+            "source_domain": "simulated_fixture",
             "status": "received_by_simulated_fixture",
         }
     )

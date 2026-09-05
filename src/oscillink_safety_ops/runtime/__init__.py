@@ -12,6 +12,7 @@ from .configuration import (
 from .contracts import (
     ActionAcknowledgment,
     ActionRequest,
+    CommandAttributionRecord,
     CommandObservation,
     IncidentEvent,
     IncidentTimeline,
@@ -36,6 +37,7 @@ __all__ = [
     "ActionAcknowledgment",
     "ActionRequest",
     "BoundConfiguration",
+    "CommandAttributionRecord",
     "CommandObservation",
     "ConfigurationAuthority",
     "ConfigurationConstraints",
